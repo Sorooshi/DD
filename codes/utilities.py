@@ -271,21 +271,24 @@ def wandb_metrics(run, y_true, y_pred, learning_method):
     if learning_method == "regression":
 
         # wasser = np.asarray(wasserstein_distance(y_true, y_pred))
-        # jsd = np.asarray(distance.jensenshannon(y_true, y_pred))
+        jsd = np.asarray(distance.jensenshannon(y_true, y_pred))
 
         run.log({
             "MAE": mae(y_true=y_true, y_pred=y_pred),
             "RMSE": rmse(y_true=y_true, y_pred=y_pred),
             "MRAE": mrae(y_true=y_true, y_pred=y_pred),
+            "JSD": jsd.mean(),
             "R^2-Score": metrics.r2_score(y_true, y_pred),
             "MEAPE": mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100)
         })
 
     else:
+        jsd = np.asarray(distance.jensenshannon(y_true, y_pred))
 
         run.log({
             "ARI": metrics.adjusted_rand_score(y_true, y_pred),
             "NMI": metrics.normalized_mutual_info_score(y_true, y_pred),
+            "JSD": jsd.mean(),
             "Precision": metrics.precision_score(y_true, y_pred),
             "Recall": metrics.recall_score(y_true, y_pred),
             "F1-SCore": metrics.accuracy_score(y_true, y_pred),
