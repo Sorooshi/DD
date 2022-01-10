@@ -1,5 +1,4 @@
 import os
-import glob
 import wandb
 import numpy as np
 import pandas as pd
@@ -19,244 +18,6 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler, QuantileTransfor
 
 
 np.set_printoptions(suppress=True, precision=3)
-
-
-def load_data(data_name, group):
-
-    """
-        :param data_name: string, name of dataset
-        :param group: string, W&B group name, i.e., "
-                "using Features: FClustering, FClassification, FRegression, "
-                "or using Time-series: TClustering, TClassification, TRegression")
-        :return:
-            data_org := Pandas df, concatenated (normal + abnormal) not preprocessed dataset.
-            x := numpy, independent variables (features)
-            y := numpy dependent variables (target values)
-            indicators := list, a list of subject id, sentence etc depending on the dataset structure
-
-    """
-    # load the corresponding data
-    data = {}
-    # demographic data
-    if data_name == "dd_demo":
-
-        demo_xls = pd.ExcelFile("../data/demo.xlsx")
-        indicators = ['SubjID', ]
-
-        data["normal"] = remove_missing_data(
-            df=pd.read_excel(demo_xls, "norm").sort_values(by=indicators)
-        )
-
-        data["normal"].replace({"fem": 1, "f": 1, "masc": -1, "m": -1}, inplace=True)
-
-        data["abnormal"] = remove_missing_data(
-            df=pd.read_excel(demo_xls, "dyslexia").sort_values(by=indicators)
-        )
-
-        data["abnormal"].replace({"fem": 1, "f": 1, "masc": -1, "m": -1}, inplace=True)
-
-        q_features = ['Age', 'IQ', 'Sound_detection', 'Sound_change', ]
-        c_features = ['Sex', 'Grade', ]
-        features = q_features + c_features
-
-        if "regression" in group.lower():
-            targets = ['Reading_speed', ]
-        else:
-            targets = ['Group', ]
-
-    # ia_report data
-    elif data_name == "dd_ia":
-
-        ia_report_xls = pd.ExcelFile("../data/IA_report.xlsx")
-
-        indicators = ['SubjectID', 'Sentence_ID', 'Word_Number', ]
-
-        data["normal"] = remove_missing_data(
-            df=pd.read_excel(ia_report_xls, "norm").sort_values(
-                by=indicators,
-                axis=0)
-        )
-
-        data["abnormal"] = remove_missing_data(
-            df=pd.read_excel(ia_report_xls, "dyslexia").sort_values(
-                by=indicators,
-                axis=0)
-        )
-
-        q_features = ['FIXATION_COUNT', 'TOTAL_READING_TIME',
-                      'FIRST_FIXATION_DURATION', 'FIRST_FIXATION_X',
-                      'FIRST_FIXATION_Y', 'FIRST_RUN_TOTAL_READING_TIME',
-                      'FIRST_SACCADE_AMPLITUDE', 'REGRESSION_IN', 'REGRESSION_OUT',
-                      'REGRESSION_OUT_FULL', 'REGRESSION_PATH_DURATION']
-
-        c_features = ['QUESTION_ACCURACY', 'SKIP', ]
-
-        features = q_features + c_features
-
-        if "regression" in group.lower():
-            targets = ['Reading_speed', ]
-        else:
-            targets = ['Group', ]
-
-    # fixation report data
-    elif data_name == "dd_fix":
-
-        fixation_xls = pd.ExcelFile("../data/Fixation_report.xlsx")
-        indicators = ['SubjectID', 'Sentence_ID', 'Word_Number', ]
-
-        data["normal"] = remove_missing_data(
-            df=pd.read_excel(fixation_xls, "norm").sort_values(
-                by=indicators,
-                axis=0)
-        )
-
-        data["abnormal"] = remove_missing_data(
-            df=pd.read_excel(fixation_xls, "dyslexia").sort_values(
-                by=indicators,
-                axis=0)
-        )
-
-        q_features = ['FIX_X', 'FIX_Y', 'FIX_DURATION', ]
-        c_features = None
-
-        features = q_features
-
-        if "regression" in group.lower():
-            targets = ['Reading_speed', ]
-        else:
-            targets = ['Group', ]
-    else:
-        print("Undefined data set, define it above!")
-
-    data_org = pd.concat([data["normal"], data["abnormal"]])
-    data_org.replace({"norm": 1, "dyslexia": -1}, inplace=True)
-
-    if c_features:
-        pd.get_dummies(data_org, columns=c_features)
-
-    # I should modify here and after it
-    x = data_org.loc[:, features].values
-    y = data_org.loc[:, targets].values
-
-    return data_org, x, y, features, targets, indicators
-
-
-def remove_missing_data(df):
-    for col in df.columns:
-        try:
-            df[col].replace({".": np.nan}, inplace=True)
-
-        except Exception as e:
-            print(e, "\n No missing values in", col)
-    return df.dropna()
-
-
-def mae(y_trues, y_preds):
-    if not isinstance(y_trues, np.ndarray):
-        y_trues = np.asarray(y_trues)
-
-    if not isinstance(y_preds, np.ndarray):
-        y_preds = np.asarray(y_preds)
-
-    return np.mean(np.abs(y_trues-y_preds))
-
-
-def rmse(y_trues, y_preds):
-    if not isinstance(y_trues, np.ndarray):
-        y_trues = np.asarray(y_trues)
-
-    if not isinstance(y_preds, np.ndarray):
-        y_preds = np.asarray(y_preds)
-
-    return np.sqrt(np.mean(np.power(y_trues-y_preds, 2)))
-
-
-def mrae(y_trues, y_preds):
-    if not isinstance(y_trues, np.ndarray):
-        y_trues = np.asarray(y_trues)
-
-    if not isinstance(y_preds, np.ndarray):
-        y_preds = np.asarray(y_preds)
-    return np.mean(np.abs(np.divide(y_trues -y_preds, y_trues)))
-
-
-def mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100):
-    errors = []
-    inds = np.arange(len(y_true))
-    for i in range(n_iters):
-        inds_boot = resample(inds)
-
-        y_true_boot = y_true[inds_boot]
-        y_pred_boot = y_pred[inds_boot]
-
-        y_true_mean = y_true_boot.mean(axis=0)
-        y_pred_mean = y_pred_boot.mean(axis=0)
-
-        ierr = np.abs((y_true_mean - y_pred_mean) / y_true_mean) * 100
-        errors.append(ierr)
-
-    errors = np.array(errors)
-    return errors.mean(axis=0), errors.std(axis=0)
-
-
-def discrepancy_score(observations, forecasts, model='QDA', n_iters=1):
-
-    """
-    Parameters:
-    -----------
-    observations : numpy.ndarray, shape=(n_samples, n_features)
-        True values.
-        Example: [[1, 2], [3, 4], [4, 5], ...]
-    forecasts : numpy.ndarray, shape=(n_samples, n_features)
-        Predicted values.
-        Example: [[1, 2], [3, 4], [4, 5], ...]
-    model : sklearn binary classifier
-        Possible values: RF, DT, LR, QDA, GBDT
-    n_iters : int
-        Number of iteration per one forecast.
-
-    Returns:
-    --------
-    mean : float
-        Mean value of discrepancy score.
-    std : float
-        Standard deviation of the mean discrepancy score.
-
-    """
-
-    scores = []
-
-    X0 = observations
-    y0 = np.zeros(len(observations))
-
-    X1 = forecasts
-    y1 = np.ones(len(forecasts))
-
-    X = np.concatenate((X0, X1), axis=0)
-    y = np.concatenate((y0, y1), axis=0)
-
-    for it in range(n_iters):
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, shuffle=True)
-        if model == 'RF':
-            clf = RandomForestClassifier(n_estimators=100, max_depth=10, max_features=None)
-        elif model == 'GDBT':
-            clf = GradientBoostingClassifier(max_depth=6, subsample=0.7)
-        elif model == 'DT':
-            clf = DecisionTreeClassifier(max_depth=10)
-        elif model == 'LR':
-            clf = LogisticRegression()
-        elif model == 'QDA':
-            clf = QuadraticDiscriminantAnalysis()
-        clf.fit(X_train, y_train)
-        y_pred_test = clf.predict_proba(X_test)[:, 1]
-        auc = 2 * roc_auc_score(y_test, y_pred_test) - 1
-        scores.append(auc)
-
-    scores = np.array(scores)
-    mean = scores.mean()
-    std = scores.std() / np.sqrt(len(scores))
-
-    return mean, std
 
 
 def range_standardizer(x):
@@ -374,6 +135,114 @@ def data_splitter(x, validation=False):
         return train_idx, val_idx, test_idx
 
 
+def mae(y_true, y_pred):
+    if not isinstance(y_true, np.ndarray):
+        y_true = np.asarray(y_true)
+
+    if not isinstance(y_pred, np.ndarray):
+        y_pred = np.asarray(y_pred)
+
+    return np.mean(np.abs(y_true-y_pred))
+
+
+def rmse(y_true, y_pred):
+    if not isinstance(y_true, np.ndarray):
+        y_true = np.asarray(y_true)
+
+    if not isinstance(y_pred, np.ndarray):
+        y_pred = np.asarray(y_pred)
+
+    return np.sqrt(np.mean(np.power(y_true-y_pred, 2)))
+
+
+def mrae(y_true, y_pred):
+    if not isinstance(y_true, np.ndarray):
+        y_true = np.asarray(y_true)
+
+    if not isinstance(y_pred, np.ndarray):
+        y_pred = np.asarray(y_pred)
+    return np.mean(np.abs(np.divide(y_true -y_pred, y_true)))
+
+
+def mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100):
+    errors = []
+    inds = np.arange(len(y_true))
+    for i in range(n_iters):
+        inds_boot = resample(inds)
+
+        y_true_boot = y_true[inds_boot]
+        y_pred_boot = y_pred[inds_boot]
+
+        y_true_mean = y_true_boot.mean(axis=0)
+        y_pred_mean = y_pred_boot.mean(axis=0)
+
+        ierr = np.abs((y_true_mean - y_pred_mean) / y_true_mean) * 100
+        errors.append(ierr)
+
+    errors = np.array(errors)
+    return errors.mean(axis=0), errors.std(axis=0)
+
+
+def discrepancy_score(observations, forecasts, model='QDA', n_iters=1):
+
+    """
+    Parameters:
+    -----------
+    observations : numpy.ndarray, shape=(n_samples, n_features)
+        True values.
+        Example: [[1, 2], [3, 4], [4, 5], ...]
+    forecasts : numpy.ndarray, shape=(n_samples, n_features)
+        Predicted values.
+        Example: [[1, 2], [3, 4], [4, 5], ...]
+    model : sklearn binary classifier
+        Possible values: RF, DT, LR, QDA, GBDT
+    n_iters : int
+        Number of iteration per one forecast.
+
+    Returns:
+    --------
+    mean : float
+        Mean value of discrepancy score.
+    std : float
+        Standard deviation of the mean discrepancy score.
+
+    """
+
+    scores = []
+
+    X0 = observations
+    y0 = np.zeros(len(observations))
+
+    X1 = forecasts
+    y1 = np.ones(len(forecasts))
+
+    X = np.concatenate((X0, X1), axis=0)
+    y = np.concatenate((y0, y1), axis=0)
+
+    for it in range(n_iters):
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, shuffle=True)
+        if model == 'RF':
+            clf = RandomForestClassifier(n_estimators=100, max_depth=10, max_features=None)
+        elif model == 'GDBT':
+            clf = GradientBoostingClassifier(max_depth=6, subsample=0.7)
+        elif model == 'DT':
+            clf = DecisionTreeClassifier(max_depth=10)
+        elif model == 'LR':
+            clf = LogisticRegression()
+        elif model == 'QDA':
+            clf = QuadraticDiscriminantAnalysis()
+        clf.fit(X_train, y_train)
+        y_pred_test = clf.predict_proba(X_test)[:, 1]
+        auc = 2 * roc_auc_score(y_test, y_pred_test) - 1
+        scores.append(auc)
+
+    scores = np.array(scores)
+    mean = scores.mean()
+    std = scores.std() / np.sqrt(len(scores))
+
+    return mean, std
+
+
 def init_a_wandb(name, project, notes, group, tag, config):
 
     """ name := the within the project name, e.g., RF-reg-1
@@ -397,39 +266,51 @@ def init_a_wandb(name, project, notes, group, tag, config):
 
 
 # Old set of metrics: the means of two predicted targets values are computed
-def _wandb_metrics(run, y_trues, y_preds):
-    wasser = []
-    for i in range(y_trues.shape[1]):
-        wasser += [wasserstein_distance(y_trues[:, i], y_preds[:, i])]
-    wasser = np.asarray(wasser)
-    jsd = np.asarray(distance.jensenshannon(y_trues, y_preds))
-    run.log({
-        "MAE": mae(y_trues=y_trues, y_preds=y_preds),
-        "RMSE": rmse(y_trues=y_trues, y_preds=y_preds),
-        "MRAE": mrae(y_trues=y_trues, y_preds=y_preds),
-        "R^2-Score": metrics.r2_score(y_trues, y_preds),
-        "JSD": jsd.mean(),
-        "Wasser": wasser.mean(),
-    })
+def wandb_metrics(run, y_true, y_pred, learning_method):
+
+    if learning_method == "regression":
+
+        # wasser = np.asarray(wasserstein_distance(y_true, y_pred))
+        # jsd = np.asarray(distance.jensenshannon(y_true, y_pred))
+
+        run.log({
+            "MAE": mae(y_true=y_true, y_pred=y_pred),
+            "RMSE": rmse(y_true=y_true, y_pred=y_pred),
+            "MRAE": mrae(y_true=y_true, y_pred=y_pred),
+            "R^2-Score": metrics.r2_score(y_true, y_pred),
+            "MEAPE": mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100)
+        })
+
+    else:
+
+        run.log({
+            "ARI": metrics.adjusted_rand_score(y_true, y_pred),
+            "NMI": metrics.normalized_mutual_info_score(y_true, y_pred),
+            "Precision": metrics.precision_score(y_true, y_pred),
+            "Recall": metrics.recall_score(y_true, y_pred),
+            "F1-SCore": metrics.accuracy_score(y_true, y_pred),
+            "ROC AUC": metrics.roc_auc(y_true, y_pred),
+            "MEAPE": mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100)
+        })
 
     return run
 
 
-def evaluate_a_x_test(y_trues, y_preds,):
+def evaluate_a_x_test(y_true, y_pred,):
 
     # MEAPE >> Mean Estimation Absolute Percentage Error
-    meape_mu, meape_std = mean_estimation_absolute_percentage_error(y_trues, y_preds, n_iters=100)
+    meape_mu, meape_std = mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100)
 
     # gb >> Gradient Decent Boosting Classifier
-    gb_mu, gb_std = discrepancy_score(y_trues, y_preds, model='GDBT', n_iters=10)
+    gb_mu, gb_std = discrepancy_score(y_true, y_pred, model='GDBT', n_iters=10)
 
     # qda >> Quadratic Discriminant Analysis
-    qda_mu, qda_std = discrepancy_score(y_trues, y_preds, model='QDA', n_iters=10)
+    qda_mu, qda_std = discrepancy_score(y_true, y_pred, model='QDA', n_iters=10)
 
     return meape_mu, gb_mu, qda_mu
 
 
-def wandb_metrics(run, meape_iops_mu, meape_lat_mu,  gb_mu, qda_mu,):
+def _wandb_metrics_(run, meape_iops_mu, meape_lat_mu,  gb_mu, qda_mu,):
 
     """
     meape >> Mean Estimation Absolute Percentage Error
@@ -464,79 +345,25 @@ def wandb_features_importance(run, values_features_importance,
     return run
 
 
-def wandb_plot_total_predictions(run, algorithm, y_trues, y_preds, run_no):
+def wandb_plot_total_predictions(run, algorithm, y_true, y_pred, repeat, target_name):
 
-    n_outputs = y_trues.shape[1]
-    for j in range(n_outputs):
-        target_name = "iops"
-        t = np.arange(len(y_trues[:, j]))
-        fig, ax = plt.subplots(1, figsize=(15, 10))
-        ax.plot(t, y_trues[:, j], lw=1.5, c='g', label="y_trues", alpha=0.5)
-        ax.plot(t, y_preds[:, j], lw=2., c='m', label="y_preds", alpha=0.5)
-        if j == 1: target_name = "lat"
-        ax.fill_between(t, y_preds[:, j] - y_preds[:, j].std(),
-                        y_preds[:, j] + y_preds[:, j].std(),
-                        facecolor='blue', alpha=0.7,
-                        label=algorithm + "-" +  target_name
-                        )
-        ax.legend(loc="best")
+    t = np.arange(len(y_true))
+    fig, ax = plt.subplots(1, figsize=(15, 10))
+    ax.plot(t, y_true, lw=1.5, c='g', label="y_true", alpha=0.5)
+    ax.plot(t, y_pred, lw=2., c='m', label="y_pred", alpha=0.5)
 
-        # run.log({"True & Pred. values of " + algorithm + str(j+1) + "-th preds.":
-        #              wandb.Image(ax, caption="std of " + algorithm)})
+    ax.fill_between(t, y_pred - y_pred.std(),
+                    y_pred + y_pred.std(),
+                    facecolor='blue', alpha=0.7,
+                    label=algorithm+"-"+target_name
+                    )
+    ax.legend(loc="best")
 
-        r2 = metrics.r2_score(y_trues[:, j], y_preds[:, j])
+    r2 = metrics.r2_score(y_true, y_pred)
 
-        # plt.savefig("../figures/" + target_name +  " run_num=" + run_no + ".png" )
+    # plt.savefig("../figures/" + target_name +  " run_num=" + run_no + ".png" )
 
-        run.log({algorithm + ": " + target_name + ", run_num=" + run_no + ": R^2-Score= %.3f" %r2 : ax})
-
-    return run
-
-
-def wandb_plot_per_feature_predictions(run, features, x_test_org, x_test, model, algorithm, y_trues):
-
-    for i in range(len(features)):
-        for j in range(i, len(features)):
-
-            rows = list(set(
-                np.where(x_test_org[:, i] == 1)[0].tolist()).intersection(np.where(x_test_org[:, j] == 1)[0].tolist())
-                        )
-
-            if len(rows) > 0:
-                x_test_slice = x_test[rows, :]
-                y_test_slice = y_trues[rows, :]
-                y_preds_slice = model.predict(x_test_slice)
-
-                # print("Average results for:" + features[i] + " and " + features[j], " \n",
-                #       "\t MRAE: %.3f" % mrae(y_trues=y_test_slice, y_preds=y_preds_slice),
-                #       "R^2-Scoer: %.3f" % metrics.r2_score(y_true=y_test_slice, y_pred=y_preds_slice),
-                #       "\n"
-                #       )
-
-                mrae_0 = mrae(y_trues=y_test_slice[:, 0], y_preds=y_preds_slice[:, 0])
-                r2_0 = metrics.r2_score(y_true=y_test_slice[:, 0], y_pred=y_preds_slice[:, 0])
-
-                plt.figure(figsize=(12, 8))
-                plt.plot(y_test_slice[:, 0], c="g", marker=".", alpha=.4, label="iops-y_true")
-                plt.plot(y_preds_slice[:, 0], c="b", alpha=.6, label="iops-y_pred")
-                plt.legend()
-                plt.title("MRAE = %.3f" % mrae_0 + " R2Score = %.3f" % r2_0)
-                run.log({ "IOPS: R^2 score= %.3f"  % r2_0 + " of " + features[i] + " & " + features[j] : plt})
-                plt.show()
-
-                mrae_1 = mrae(y_trues=y_test_slice[:, 1], y_preds=y_preds_slice[:, 1])
-                r2_1 = metrics.r2_score(y_true=y_test_slice[:, 1], y_pred=y_preds_slice[:, 1])
-
-                plt.figure(figsize=(12, 8))
-                plt.plot(y_test_slice[:, 1], c="g", marker=".", alpha=.4, label="lat-y_true")
-                plt.plot(y_preds_slice[:, 1], c="b", alpha=.6, label="lat-y_pred")
-                plt.legend()
-                plt.title("MRAE = %.3f" % mrae_1 + " R2Score = %.3f" % r2_1)
-                run.log({ "LAT: R^2 score=  %.3f"  % r2_1 + " of " + features[i] + " & " + features[j]: plt})
-                plt.show()
-
-            else:
-                print("no intersection for", i, j)
+    run.log({algorithm+": "+target_name+", run_num="+repeat+": R^2-Score= %.3f" %r2:ax})
 
     return run
 
@@ -596,14 +423,13 @@ def basic_plots(run, y_true, y_pred, run_no, specifier, title="", ):
 
 def plot_true_pred_distributions(run, y_test, y_pred, algorithm, n_bins):
 
-
     for i in range(y_test.shape[1]):
         _ = plt.figure(figsize=(12, 8))
         plt.hist(y_test[:, i], color="g", bins=n_bins, label="y_true", histtype='step')
         plt.hist(y_pred[:, i], color="b", bins=n_bins, label="y_pred", histtype='step')
         _max = max(y_test[:, i].max(), y_pred[:, i].max()) + 400
         plt.xlim([0, _max])
-        plt.xlabel("True and Pred. values' Distributions " )
+        plt.xlabel("True and Pred. values' Distributions ")
         plt.ylabel('Count')
         plt.legend(loc="best")
         run.log({"Distributions of " + algorithm + str(i+1) + "-th preds.": plt})
