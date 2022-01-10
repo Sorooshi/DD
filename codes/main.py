@@ -4,22 +4,16 @@ import time
 import pickle
 import argparse
 import numpy as np
-import pandas as pd
-import tensorflow as tf
-
 
 sys.path.append("../codes")
 
-import data as data
+import flow as nf
 import utilities as util
-# import nn_regression as nnr
-# import ensemble_regression as enr
-
-tfk = tf.keras
+import nn_regression as nnr
+import dyslexia_data as data
+import other_regression as otr
 
 np.set_printoptions(suppress=True, precision=3, linewidth=140)
-
-tf.keras.backend.set_floatx('float32')
 
 
 def args_parser(args):
@@ -44,30 +38,6 @@ def args_parser(args):
 
     return _pp, _tag, _run, _note, _data_name, _loss, _alg_name, _group, _project, _n_units,\
         _n_epochs, _optimizer, _batch_size, _learning_rate, _n_estimators, _output_dim, _n_clusters
-
-
-def compile_and_fit(model, optimizer, loss, learning_rate, batch_size,
-                    n_epochs, x_train, y_train, x_val, y_val, ):
-
-    if optimizer.lower() == "adam":
-        model.compile(optimizer=tfk.optimizers.Adam(learning_rate=learning_rate), loss=loss)
-
-    elif optimizer.lower() == "adamax":
-        model.compile(optimizer=tfk.optimizers.Adamax(learning_rate=learning_rate), loss=loss)
-
-    elif optimizer.lower() == "rmsprop":
-        model.compile(optimizer=tfk.optimizers.RMSprop(learning_rate=learning_rate), loss=loss)
-
-    elif optimizer.lower() == "sgd":
-        model.compile(optimizer=tfk.optimizers.SGD(learning_rate=learning_rate), loss=loss)
-
-    else:
-        print("undefined optimizer.")
-
-    history = model.fit(x=x_train, y=y_train, validation_data=(x_val, y_val),
-                        batch_size=batch_size, epochs=n_epochs, verbose=True,)
-
-    return model, history
 
 
 if __name__ == "__main__":
@@ -130,7 +100,7 @@ if __name__ == "__main__":
     parser.add_argument("--n_estimators", type=int, default=100,
                         help="Number of estimators in ensemble regressor algorithms")
 
-    parser.add_argument("--output_dim", type=int, default=2,
+    parser.add_argument("--output_dim", type=int, default=1,
                         help="The output dimension of a prediction algorithm")
 
     parser.add_argument("--n_clusters", type=int, default=2,
@@ -157,10 +127,11 @@ if __name__ == "__main__":
 
     if "nn" in alg_name.lower():
         specifier = alg_name + ", loss=" + loss + ", opt="+optimizer + ", repeat=" + tag + "; "
+
     elif "ens" in alg_name.lower():
         specifier = alg_name + ", loss=" + loss + ", n_estimators=" + str(n_estimators) + ", repeat=" + tag + "; "
     else:
-        specifier = alg_name, ", repeat=" + tag + "; "
+        specifier = alg_name + ", repeat=" + tag + "; "
 
     print("specifier:", specifier)
 
@@ -227,39 +198,16 @@ if __name__ == "__main__":
     # start of the program execution
     start = time.time()
 
-    # loss function TF function:
-    if loss.lower() == "mae":
-        loss_fn = tfk.losses.mean_absolute_error
-
-    elif loss.lower() == "mse":
-        loss_fn = tfk.losses.mean_squared_error
-
-    elif loss.lower() == "msle":
-        loss_fn = tfk.losses.mean_squared_logarithmic_error
-
-    elif loss.lower() == "mape":
-        loss_fn = tfk.losses.mean_absolute_percentage_error
-
-    elif loss.lower() == "kld":
-        loss_fn = tfk.losses.kl_divergence
-
-    elif loss.lower() == "cosine_similarity":  # check the loss function here
-        loss_fn = tfk.losses.cosine_similarity
-
-    elif loss.lower() == "squared_hinge":  # check the loss function here
-        loss_fn = tfk.losses.SquaredHinge
-
-    else:
-        print("Loss function is not defined.")
-
     input_dim = x_train.shape[1]
     # output_dim = y_train.shape[1]
 
     # instantiating model
     if alg_name.lower() == "vnn_reg":
+        loss_fn = nnr.determine_tf_loss(loss=loss)
         _model = nnr.VNNRegression(n_units=n_units, input_dim=input_dim, output_dim=output_dim)
 
     elif alg_name.lower() == "dnn_reg":
+        loss_fn = nnr.determine_tf_loss(loss=loss)
         _model = nnr.DNNRegression(n_units=n_units, input_dim=input_dim, output_dim=output_dim)
 
     elif alg_name.lower() == "nf_reg":
@@ -271,21 +219,17 @@ if __name__ == "__main__":
 
     elif alg_name.lower() == "rfr" or alg_name.lower() == "gbr" or \
             alg_name.lower() == "ar" or alg_name.lower() == "lr":
-        model = enr.apply_a_regressor(alg_name=alg_name,
+        model = otr.apply_a_regressor(alg_name=alg_name,
                                       n_estimators=n_estimators,
                                       x_train=x_train, y_train=y_train)
         history = None
 
     elif alg_name.lower() == "gpr":
-        ss_idx = np.random.randint(low=0, high=x_train.shape[0], size=20000)  # because of memory issue
-        model = enr.apply_a_regressor(alg_name=alg_name,
+        # ss_idx = np.random.randint(low=0, high=x_train.shape[0], size=20000)  # because of memory issue
+        model = otr.apply_a_regressor(alg_name=alg_name,
                                       n_estimators=n_estimators,
-                                      x_train=x_train[ss_idx, :], y_train=y_train[ss_idx, :])
+                                      x_train=x_train, y_train=y_train)
         history = None
-
-    if alg_name.lower() == "vnn_reg_1d":
-        _model_iops = nnr.VNNRegression(n_units=n_units, input_dim=input_dim, output_dim=output_dim)
-        _model_lat = nnr.VNNRegression(n_units=n_units, input_dim=input_dim, output_dim=output_dim)
 
     else:
         _model = None
@@ -293,164 +237,42 @@ if __name__ == "__main__":
         print("Undefined model.")
 
     if alg_name.lower() == "vnn_reg" or alg_name.lower() == "dnn_reg":
-        model, history = compile_and_fit(model=_model, optimizer=optimizer,
-                                         loss=loss, learning_rate=learning_rate,
-                                         batch_size=batch_size, n_epochs=n_epochs,
-                                         x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val,)
-
-    # N.B. it could be implemented in a for loop too
-    if alg_name.lower() == "vnn_reg_1d" or alg_name.lower() == "dnn_reg_1d":
-        model_iops, history_iops = compile_and_fit(model=_model_iops, optimizer=optimizer,
-                                                   loss=loss, learning_rate=learning_rate,
-                                                   batch_size=batch_size, n_epochs=n_epochs,
-                                                   x_train=x_train, y_train=y_train[:, 0],
-                                                   x_val=x_val, y_val=y_val[:, 0],)
-
-        model_lat, history_lat = compile_and_fit(model=_model_lat, optimizer=optimizer,
-                                                 loss=loss, learning_rate=learning_rate,
-                                                 batch_size=batch_size, n_epochs=n_epochs,
-                                                 x_train=x_train, y_train=y_train[:, 1],
-                                                 x_val=x_val, y_val=y_val[:, 1],)
-        history = None
+        model, history = nnr.compile_and_fit(model=_model, optimizer=optimizer,
+                                             loss=loss, learning_rate=learning_rate,
+                                             batch_size=batch_size, n_epochs=n_epochs,
+                                             x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val,)
 
     # plot the train and validation loss function errors
     if history is not None:
         util.plot_loss(run=run, history=history, name=specifier)
 
-    # This part of the code is related to my previous task,
-    # in which all the Soroosh_testing data were aggregated together into one array.
-    if partitioned is False:
-        y_preds = model.predict(x_test)
+    y_pred = model.predict(x_test)
 
-        # evaluate and saved the result in WandB for the entire Soroosh_testing set
-        util.wandb_metrics(run=run, y_trues=y_test, y_preds=y_preds, run_no=x_test.shape[1])
+    # evaluate and saved the result in WandB for the entire test set
+    if "regression" in group.lower():
+        learning_method = "regression"
+    elif "clustering" in group.lower():
+        learning_method = "clustering"
+    elif "classification" in group.lower():
+        learning_method = "classification"
 
-        # plot the predicted values and their std for the entire Soroosh_testing set
-        util.wandb_plot_total_predictions(run=run, algorithm=specifier,
-                                          y_trues=y_test, y_preds=y_preds)
+    util.wandb_metrics(run=run, y_true=y_test, y_pred=y_pred, learning_method=learning_method)
 
-        # for some datasets this might not work and should be modified accordingly
-        # (because of different features location
-        features = list(data.columns[2:])
-        util.wandb_plot_per_feature_predictions(run=run, features=features,
-                                                x_test_org=x_test_org,
-                                                x_test=x_test, model=model,
-                                                algorithm=specifier, y_trues=y_test, )
 
-        # util.plot_true_pred_distributions(run=run, y_test=y_test, y_pred=y_preds,
-        #                                   algorithm=specifier, n_bins=50)
+    # plot the predicted values and their std for the entire Soroosh_testing set
+    util.wandb_plot_total_predictions(run=run, algorithm=specifier,
+                                      y_true=y_test, y_pred=y_pred,
+                                      repeat=tag, target_name=data_name)
 
-    # This is a very specific Soroosh_testing case scenario which is designed for this project.
-    # In this Soroosh_testing scenario each Soroosh_testing run is saved separately
-    # from the other as x_test and fitted to trained model.
-    elif (partitioned is True and "hdd" in name.lower() or\
-          partitioned is True and "ssd" in name.lower()):
-        run_no = 0
-        meape_iops_mu, meape_lat_mu, gb_mu, qda_mu = [], [], [], []
-
-        for data_test in data_tests:
-
-            run_no += 1
-
-            print("data_tests:", len(data_tests))
-            x_test_org, y_test_org = data_test[x_cols].values, data_test[y_cols].values
-            if pp == "rng":
-                print("pre-processing:", pp)
-                x_test = util.range_standardizer_(x_test=x_test_org, x_train=x_org)
-                y_test = util.range_standardizer_(x_test=y_test_org, x_train=y_org)
-                print("Preprocessed x and y shapes:", x_test.shape, y_test.shape)
-            elif pp == "zsc":
-                print("pre-processing:", pp)
-                x_test = util.zscore_standardizer_(x_test=x_test_org, x_train=x_org)
-                y_test = util.zscore_standardizer_(x_test=y_test_org, x_train=y_org)
-                print("Preprocessed x and y shapes:", x_test.shape, y_test.shape)
-            elif pp == "mm":  # MinMax
-                print("pre-processing:", pp)
-                x_test = util.minmax_standardizer_(x_test=x_test_org, x_train=x_org)
-                y_test = util.minmax_standardizer_(x_test=y_test_org, x_train=y_org)
-            elif pp == "rs":  # robust scaler (subtract median and divide with [q1, q3]) >> should be modified later
-                print("pre-processing:", pp)
-                x_test = util.robust_standardizer_(RS=rs_x, x=x_test_org, )
-                y_test = util.robust_standardizer_(RS=rs_y, x=y_test_org, )
-            elif pp == "qtn" or pp == "qtu":
-                x_test = util.quantile_standardizer_(QT=qt_x, x=x_test_org)
-                y_test = util.quantile_standardizer_(QT=qt_y, x=y_test_org)
-            elif pp is None:
-                print("No pre-processing")
-                x_test = x_test_org
-                y_test = y_test_org
-            else:
-                print("Undefined pre-processing")
-            if output_dim > 1:
-                y_preds = model.predict(x_test)
-            elif output_dim == 1:
-                y_preds_iops = model_iops.predict(x_test).reshape(-1, 1)
-                y_preds_lat = model_lat.predict(x_test).reshape(-1, 1)
-                y_preds = np.concatenate((y_preds_iops, y_preds_lat), axis=1)
-
-            print("**************************************************")
-            print("x_test: \n", x_test[:5, :])
-            print("**************************************************")
-            print("y_test: \n", y_test[:5, :])
-            print("**************************************************")
-            print("y_preds: \n", y_preds[:5])
-
-            eps = np.random.normal(loc=0, scale=10**-6, size=y_preds.shape)
-            y_preds = y_preds + eps  # to avoid error when we use QDA
-
-            # plot the predicted values and their std for the entire Soroosh_testing set
-            util.wandb_plot_total_predictions(run=run, algorithm=specifier,
-                                              y_trues=y_test, y_preds=y_preds, run_no=str(run_no))
-
-            # evaluate and saved the result in WandB for the entire Soroosh_testing set
-            _meape_mu, _gb_mu, _qda_mu = util.evaluate_a_x_test(y_trues=y_test, y_preds=y_preds, )
-
-            meape_iops_mu.append(_meape_mu[0])
-            meape_lat_mu.append(_meape_mu[1])
-
-            gb_mu.append(_gb_mu)
-            qda_mu.append(_qda_mu)
-
-            for io_type in [0, 1]:
-                data_io = data_test[data_test['io_type'] == io_type]
-
-                _title = 'Write'
-                if io_type == 0: _title = 'Read'
-                util.basic_plots(run=run, y_true=y_test, y_pred=y_preds,
-                                 run_no=str(run_no), specifier=specifier, title=_title,)
-
-                # if it was need I should modify this function (regarding the feature filtering)
-                """
-                features = xcols
-                util.wandb_plot_per_feature_predictions(run=run, features=features,
-                                                        x_test_org=x_test_org,
-                                                       x_test=x_test, model=model,
-                                                       algorithm=specifier+"-"+str(run_no), y_trues=y_test, )
-                """
-
-        meape_iops_mu = np.asarray(meape_iops_mu)
-        meape_lat_mu = np.asarray(meape_lat_mu)
-        gb_mu = np.asarray(gb_mu)
-        qda_mu = np.asarray(qda_mu)
-
-        # save the ave. and std of all Soroosh_testing result in WandB
-        util.wandb_metrics(run=run, meape_iops_mu=meape_iops_mu,
-                           meape_lat_mu=meape_lat_mu,
-                           gb_mu=gb_mu, qda_mu=qda_mu)
-
-    else:
-        print("Undefined Soroosh_testing scenario.")
+    util.plot_true_pred_distributions(run=run, y_test=y_test, y_pred=y_pred,
+                                      algorithm=specifier, n_bins=50)
 
     # end of the program execution
     end = time.time()
 
     print("Execution time=", end-start)
 
-    if output_dim > 1:
-        util.save_model(run=run, model=model, name=alg_name, experiment_name=specifier)
-    else:
-        util.save_model(run=run, model=model_iops, name=alg_name, experiment_name=specifier + "-iops")
-        util.save_model(run=run, model=model_lat, name=alg_name, experiment_name=specifier + "-lat")
+    util.save_model(run=run, model=model, name=alg_name, experiment_name=specifier)
 
     run.finish()
 
