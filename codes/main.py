@@ -4,6 +4,7 @@ import time
 import pickle
 import argparse
 import numpy as np
+from sklearn import metrics
 
 sys.path.append("../codes")
 
@@ -21,10 +22,10 @@ def args_parser(args):
     _pp = args.pp.lower()
     _tag = args.tag.lower()
     _run = args.run
-    _data_name = args.data_name.lower()
+    _data_name = args.data_name  # .lower()
     _note = args.note
     _loss = args.loss.lower()
-    _alg_name = args.alg_name.lower()
+    _alg_name = args.alg_name  # .lower()
     _group = args.group
     _project = args.project
     _n_units = args.n_units
@@ -187,8 +188,8 @@ if __name__ == "__main__":
         if "nn" in alg_name.lower():
             specifier = alg_name+", loss="+loss+", opt="+optimizer+", repeat="+repeat
 
-        elif "ens" in alg_name.lower():
-            specifier = alg_name+", loss="+loss+", n_estimators="+str(n_estimators)+", repeat="+repeat
+        elif "rfr" in alg_name.lower() or "gbr" in alg_name.lower():
+            specifier = alg_name+", n_estimators="+str(n_estimators)+", repeat="+repeat
         else:
             specifier = alg_name+", repeat="+repeat
 
@@ -271,14 +272,13 @@ if __name__ == "__main__":
         if history is not None:
             util.plot_loss(run=run, history=history, name=specifier)
 
-        y_pred = model.predict(x_test)
+        y_pred = model.predict(x_test).ravel()
         t = np.arange(len(y_test))
 
         print("Shapes: \n",
               "y_pred", y_pred.shape, "\n",
               "y_test", y_test.shape, "\n"
               "t.shape:", t.shape
-
               )
 
         results[repeat]["specifier"] = specifier
@@ -317,6 +317,142 @@ if __name__ == "__main__":
         run = util.save_model(run=run, model=model, name=alg_name, experiment_name=specifier)
 
         run.finish()
+
+    with open("../results/"+specifier, "wb") as fp:
+        pickle.dump(results, fp)
+
+    # Regression metrics
+    MEA, RMSE, MRAE, JSD, R2_Score, MEAPE_mu, MEAPE_std = [], [], [], [], [], [], []
+    # Classification and clustering metrics
+    ARI, NMI, Precision, Recall, F1_Score, ROC_AUC = [], [], [], [], [], [],
+
+    for repeat, result in results.items():
+        y_true = result["y_test"]
+        y_pred = result["y_pred"]
+
+        if learning_method == "regression":
+
+            MEA.append(util.mae(y_true=y_true, y_pred=y_pred))
+            RMSE.append(util.rmse(y_true=y_true, y_pred=y_pred))
+            MRAE.append(util.mrae(y_true=y_true, y_pred=y_pred))
+            JSD.append(util.jsd(y_true=y_true, y_pred=y_pred).mean())
+            R2_Score.append(metrics.r2_score(y_true, y_pred))
+            meape_errors = util.mean_estimation_absolute_percentage_error(
+                y_true=y_true, y_pred=y_pred, n_iters=100)
+
+            MEAPE_mu.append(meape_errors.mean(axis=0))
+            MEAPE_std.append(meape_errors.std(axis=0))
+
+        else:
+
+            ARI.append(metrics.adjusted_rand_score(y_true, y_pred))
+            NMI.append(metrics.normalized_mutual_info_score(y_true, y_pred))
+            JSD.append(util.jsd(y_true=y_true, y_pred=y_pred).mean())
+            Precision.append(metrics.precision_score(y_true, y_pred))
+            Recall.append(metrics.recall_score(y_true, y_pred))
+            F1_Score.append(metrics.accuracy_score(y_true, y_pred))
+            ROC_AUC.append(metrics.roc_auc(y_true, y_pred))
+            meape_errors = util.mean_estimation_absolute_percentage_error(
+                y_true=y_true, y_pred=y_pred, n_iters=100)
+
+            MEAPE_mu.append(meape_errors.mean(axis=0))
+            MEAPE_std.append(meape_errors.std(axis=0))
+
+    if learning_method == "regression":
+        MEA = np.nan_to_num(np.asarray(MEA))
+        RMSE = np.nan_to_num(np.asarray(RMSE))
+        MRAE = np.nan_to_num(np.asarray(MRAE))
+        JSD = np.nan_to_num(np.asarray(JSD))
+        R2_Score = np.nan_to_num(np.asarray(R2_Score))
+        MEAPE_mu = np.nan_to_num(np.asarray(MEAPE_mu))
+
+        mae_ave = np.mean(MEA, axis=0)
+        mae_std = np.std(MEA, axis=0)
+
+        rmse_ave = np.mean(RMSE, axis=0)
+        rmse_std = np.std(RMSE, axis=0)
+
+        mrae_ave = np.mean(MRAE, axis=0)
+        mrae_std = np.std(MRAE, axis=0)
+
+        jsd_ave = np.mean(JSD, axis=0)
+        jsd_std = np.std(JSD, axis=0)
+
+        r2_ave = np.mean(R2_Score, axis=0)
+        r2_std = np.std(R2_Score, axis=0)
+
+        meape_ave = np.mean(MEAPE_mu, axis=0)
+        meape_std = np.std(MEAPE_mu, axis=0)
+
+        print("     mae  ", " \t rmse ", "\t mrae",
+              "\t r2_score ",  "\t meape ", "\t jsd ",
+              )
+
+        print(" Ave ", " std", " Ave ", " std ", " Ave ", " std ", " Ave ", " std ",
+              " Ave ", " std ", " Ave ", " std ",
+              )
+
+        print(
+            "%.3f" % mae_ave, "%.3f" % mae_std,
+            "%.3f" % rmse_ave, "%.3f" % rmse_std,
+            "%.3f" % mrae_ave, "%.3f" % mrae_std,
+            "%.3f" % r2_ave, "%.3f" % r2_std,
+            "%.3f" % meape_ave, "%.3f" % meape_std,
+            "%.3f" % jsd_ave, "%.3f" % jsd_std,
+        )
+    else:
+        JSD = np.nan_to_num(np.asarray(JSD))
+        MEAPE_mu = np.nan_to_num(np.asarray(MEAPE_mu))
+        ARI = np.nan_to_num(np.asarray(ARI))
+        NMI = np.nan_to_num(np.asarray(NMI))
+        Precision = np.nan_to_num(np.asarray(Precision))
+        Recall = np.nan_to_num(np.asarray(Recall))
+        F1_Score = np.nan_to_num(np.asarray(F1_Score))
+        ROC_AUC = np.nan_to_num(np.asarray(ROC_AUC))
+
+        ari_ave = np.mean(ARI, axis=0)
+        ari_std = np.std(ARI, axis=0)
+
+        nmi_ave = np.mean(NMI, axis=0)
+        nmi_std = np.std(NMI, axis=0)
+
+        precision_ave = np.mean(Precision, axis=0)
+        precision_std = np.std(Precision, axis=0)
+
+        recall_ave = np.mean(Recall, axis=0)
+        recall_std = np.std(Recall, axis=0)
+
+        f1_score_ave = np.mean(F1_Score, axis=0)
+        f1_score_std = np.std(F1_Score, axis=0)
+
+        roc_auc_ave = np.mean(ROC_AUC, axis=0)
+        roc_auv_std = np.std(ROC_AUC, axis=0)
+
+        jsd_ave = np.mean(JSD, axis=0)
+        jsd_std = np.std(JSD, axis=0)
+
+        meape_ave = np.mean(MEAPE_mu, axis=0)
+        meape_std = np.std(MEAPE_std, axis=0)
+
+        print("      ari ", " \t nmi ", "\t preci", "\t recall ",
+              "\t f1_score ", "\t roc_auc ", "\t meape ", "\t jsd ",
+              )
+
+        print(" Ave ", " std", " Ave ", " std ", " Ave ", " std ", " Ave ", " std ",
+              " Ave ", " std ", " Ave ", " std ", " Ave ", " std ", " Ave ", " std "
+              )
+
+        print("%.3f" % ari_ave, "%.3f" % ari_std,
+              "%.3f" % nmi_ave, "%.3f" % nmi_std,
+              "%.3f" % precision_ave, "%.3f" % precision_std,
+              "%.3f" % recall_ave, "%.3f" % recall_std,
+              "%.3f" % f1_score_ave, "%.3f" % f1_score_std,
+              "%.3f" % roc_auc_ave, "%.3f" % roc_auv_std,
+              "%.3f" % meape_ave, "%.3f" % meape_std,
+              "%.3f" % jsd_ave, "%.3f" % jsd_std,
+
+              )
+
 
 
 

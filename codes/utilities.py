@@ -8,10 +8,9 @@ import matplotlib.pyplot as plt
 from sklearn.utils import resample
 from scipy.spatial import distance
 from sklearn.metrics import roc_auc_score
-from scipy.stats import wasserstein_distance
-from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, QuantileTransformer, RobustScaler
@@ -158,10 +157,13 @@ def rmse(y_true, y_pred):
 def mrae(y_true, y_pred):
     if not isinstance(y_true, np.ndarray):
         y_true = np.asarray(y_true)
-
     if not isinstance(y_pred, np.ndarray):
         y_pred = np.asarray(y_pred)
     return np.mean(np.abs(np.divide(y_true - y_pred, y_true)))
+
+
+def jsd(y_true, y_pred):
+    return np.asarray(distance.jensenshannon(y_true, y_pred))
 
 
 def mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100):
@@ -268,7 +270,6 @@ def init_a_wandb(name, project, notes, group, tag, config):
 # Old set of metrics: the means of two predicted targets values are computed
 def wandb_metrics(run, y_true, y_pred, learning_method):
 
-    jsd = np.asarray(distance.jensenshannon(y_true, y_pred))
     meape_errors = mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100)
 
     if learning_method == "regression":
@@ -276,7 +277,7 @@ def wandb_metrics(run, y_true, y_pred, learning_method):
             "MAE": mae(y_true=y_true, y_pred=y_pred),
             "RMSE": rmse(y_true=y_true, y_pred=y_pred),
             "MRAE": mrae(y_true=y_true, y_pred=y_pred),
-            "JSD": jsd.mean(),
+            "JSD": jsd(y_true=y_true, y_pred=y_pred).mean(),
             "R^2-Score": metrics.r2_score(y_true, y_pred),
             "MEAPE-mu": meape_errors.mean(axis=0),
             "MEAPE-std": meape_errors.std(axis=0)
@@ -291,7 +292,7 @@ def wandb_metrics(run, y_true, y_pred, learning_method):
             "JSD": jsd.mean(),
             "Precision": metrics.precision_score(y_true, y_pred),
             "Recall": metrics.recall_score(y_true, y_pred),
-            "F1-SCore": metrics.accuracy_score(y_true, y_pred),
+            "F1-Score": metrics.accuracy_score(y_true, y_pred),
             "ROC AUC": metrics.roc_auc(y_true, y_pred),
             "MEAPE-mu": meape_errors.mean(axis=0),
             "MEAPE-std": meape_errors.std(axis=0)
@@ -358,9 +359,9 @@ def wandb_true_pred_plots(run, y_true, y_pred, specifier, data_name):
 
     ax.fill_between(t, y_pred + y_pred.std(),
                     y_pred - y_pred.std(),
-                    facecolor='red',
+                    facecolor='yellow',
                     alpha=.5,
-                    label=specifier+"-"+data_name
+                    label="Std",
                     )
 
     ax.legend(loc="best")
@@ -370,9 +371,9 @@ def wandb_true_pred_plots(run, y_true, y_pred, specifier, data_name):
     plt.ylabel("True/Pred Values")
     plt.legend(loc="best")
 
-    plt.title("Target vs predicted value plots of " + specifier + "on" + data_name)
-    plt.savefig("../figures/plots-" + specifier + "on" + data_name + ".png")
-    run.log({"Target vs predicted value plots of " + specifier + "on" + data_name + str(r2): ax})
+    plt.title("Plots: target vs predicted value of " + specifier + " on: " + data_name)
+    plt.savefig("../figures/Plots:" + specifier + "on" + data_name + ".png")
+    run.log({"Plots: target vs predicted value of " + specifier + " on: " + data_name + str(r2): ax})
 
     return run
 
@@ -381,18 +382,18 @@ def wandb_true_pred_scatters(run, y_test, y_pred, specifier, data_name):
 
     _ = plt.figure(figsize=(12, 5))
 
-    plt.scatter(y_test, np.arange(len(y_test)),
+    plt.scatter(np.arange(len(y_test)), y_test,
                 alpha=0.7, marker='+', label='True')
 
-    plt.scatter(y_pred, np.arange(len(y_pred)),
+    plt.scatter(np.arange(len(y_pred)), y_pred,
                 alpha=0.8, marker='o', label='Prediction')
 
-    plt.xlabel("True Values")
-    plt.ylabel("Pred Values ")
+    plt.xlabel("Index")
+    plt.ylabel("True/Pred Values ")
     plt.legend(loc="best")
-    plt.title("Target vs predicted value scatter plots of "+specifier+"on"+data_name)
-    plt.savefig("../figures/Scatters-" + data_name + "-" + specifier + ".png")
-    run.log({"Target vs predicted value scatter plots of "+specifier+"on"+data_name: plt})
+    plt.title("Scatters: target vs predicted values of "+specifier+" on: "+data_name)
+    plt.savefig("../figures/Scatters: " + data_name + "-" + specifier + ".png")
+    run.log({"Scatters: target vs predicted values of "+specifier+" on: "+data_name: plt})
 
     return run
 
@@ -401,12 +402,12 @@ def wandb_true_pred_histograms(run, y_test, y_pred, specifier, data_name):
 
     plt.figure(figsize=(12, 5))
     plt.subplot(131)
-    n_bins = np.linspace(y_test.min()-10, y_test.max()+10, 50)
+    n_bins = np.linspace(y_test.min()-5, y_test.max()+5, 50)
 
     plt.hist(y_test, color="g",
              bins=n_bins, label="y_true",
-             histtype='step', alpha=1.,
-             linewidth=3,
+             histtype='step', alpha=.7,
+             linewidth=2,
              )
 
     # n_bins = np.linspace(y_pred.min()-20, y_pred.max()+20, 50)
@@ -420,12 +421,12 @@ def wandb_true_pred_histograms(run, y_test, y_pred, specifier, data_name):
     _max = max(y_test.max(), y_pred.max()) + 20
 
     plt.xlim([-_max, _max])
-    plt.xlabel("True and Pred. values' Distributions ")
+    plt.xlabel("True and Pred. values ")
     plt.ylabel('Count')
     plt.legend(loc="best")
-    plt.title("Histograms of of " + specifier + "on: " + data_name, )  # , font_size=12
-    plt.savefig("../figures/Histograms-" + data_name + "-" + specifier + ".png")
-    run.log({"Distributions of target vs predicted of " + specifier + "on" + data_name: plt})
+    plt.title("Histograms: " + specifier + " on: " + data_name, )  # , font_size=12
+    plt.savefig("../figures/Histograms: " + data_name + "-" + specifier + ".png")
+    run.log({"Histograms: target vs predicted of " + specifier + " on: " + data_name: plt})
     plt.show()
 
     return run
