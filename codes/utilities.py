@@ -161,7 +161,7 @@ def mrae(y_true, y_pred):
 
     if not isinstance(y_pred, np.ndarray):
         y_pred = np.asarray(y_pred)
-    return np.mean(np.abs(np.divide(y_true -y_pred, y_true)))
+    return np.mean(np.abs(np.divide(y_true - y_pred, y_true)))
 
 
 def mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100):
@@ -349,50 +349,91 @@ def wandb_features_importance(run, values_features_importance,
     return run
 
 
-def wandb_plot_total_predictions(run, algorithm, y_true, y_pred, repeat, target_name):
+def wandb_true_pred_plots(run, y_true, y_pred, specifier, data_name):
 
     t = np.arange(len(y_true))
-    fig, ax = plt.subplots(1, figsize=(15, 10))
-    ax.plot(t, y_true, lw=1.5, c='g', label="y_true", alpha=0.5)
-    ax.plot(t, y_pred, lw=2., c='m', label="y_pred", alpha=0.5)
+    fig, ax = plt.subplots(1, figsize=(12, 5))
+    ax.plot(t, y_true, lw=1.5, c='g', label="y_true", alpha=1.)
+    ax.plot(t, y_pred, lw=2., c='m', label="y_pred", alpha=1.)
 
-    ax.fill_between(t, y_pred - y_pred.std(),
-                    y_pred + y_pred.std(),
-                    facecolor='blue', alpha=0.7,
-                    label=algorithm+"-"+target_name
+    ax.fill_between(t, y_pred + y_pred.std(),
+                    y_pred - y_pred.std(),
+                    facecolor='red',
+                    alpha=.5,
+                    label=specifier+"-"+data_name
                     )
-    ax.legend(loc="best")
 
+    ax.legend(loc="best")
     r2 = metrics.r2_score(y_true, y_pred)
 
-    # plt.savefig("../figures/" + target_name +  " run_num=" + run_no + ".png" )
+    plt.xlabel("Index")
+    plt.ylabel("True/Pred Values")
+    plt.legend(loc="best")
 
-    run.log({algorithm+": "+target_name+", run_num="+repeat+": R^2-Score= %.3f" %r2:ax})
+    plt.title("Target vs predicted value plots of " + specifier + "on" + data_name)
+    plt.savefig("../figures/plots-" + specifier + "on" + data_name + ".png")
+    run.log({"Target vs predicted value plots of " + specifier + "on" + data_name + str(r2): ax})
 
     return run
 
 
-def wandb_plot_true_pred_histograms(run, y_test, y_pred, algorithm):
+def wandb_true_pred_scatters(run, y_test, y_pred, specifier, data_name):
 
-    _ = plt.figure(figsize=(12, 8))
-    vals = np.concatenate((y_pred, y_test))
-    n_bins = np.linspace(vals.min(), vals.max(), 50)
+    _ = plt.figure(figsize=(12, 5))
 
-    plt.hist(y_test, color="g", bins=n_bins, label="y_true", histtype='step')
-    plt.hist(y_pred, color="b", bins=n_bins, label="y_pred", histtype='step')
-    _max = max(y_test.max(), y_pred.max()) + 400
-    plt.xlim([0, _max])
+    plt.scatter(y_test, np.arange(len(y_test)),
+                alpha=0.7, marker='+', label='True')
+
+    plt.scatter(y_pred, np.arange(len(y_pred)),
+                alpha=0.8, marker='o', label='Prediction')
+
+    plt.xlabel("True Values")
+    plt.ylabel("Pred Values ")
+    plt.legend(loc="best")
+    plt.title("Target vs predicted value scatter plots of "+specifier+"on"+data_name)
+    plt.savefig("../figures/Scatters-" + data_name + "-" + specifier + ".png")
+    run.log({"Target vs predicted value scatter plots of "+specifier+"on"+data_name: plt})
+
+    return run
+
+
+def wandb_true_pred_histograms(run, y_test, y_pred, specifier, data_name):
+
+    plt.figure(figsize=(12, 5))
+    plt.subplot(131)
+    n_bins = np.linspace(y_test.min()-10, y_test.max()+10, 50)
+
+    plt.hist(y_test, color="g",
+             bins=n_bins, label="y_true",
+             histtype='step', alpha=1.,
+             linewidth=3,
+             )
+
+    # n_bins = np.linspace(y_pred.min()-20, y_pred.max()+20, 50)
+
+    plt.hist(y_pred, color="m",
+             bins=n_bins, label="y_pred",
+             histtype='step',
+             alpha=1.,
+             )
+
+    _max = max(y_test.max(), y_pred.max()) + 20
+
+    plt.xlim([-_max, _max])
     plt.xlabel("True and Pred. values' Distributions ")
     plt.ylabel('Count')
     plt.legend(loc="best")
-    run.log({"Distributions of " + algorithm + "predictions": plt})
+    plt.title("Histograms of of " + specifier + "on: " + data_name, )  # , font_size=12
+    plt.savefig("../figures/Histograms-" + data_name + "-" + specifier + ".png")
+    run.log({"Distributions of target vs predicted of " + specifier + "on" + data_name: plt})
+    plt.show()
 
     return run
 
 
 def plot_loss(run, history, name):
 
-    fig, ax = plt.subplots(1, figsize=(12, 8))
+    fig, ax = plt.subplots(1, figsize=(12, 5))
     ax.plot(history.history['loss'], label='Train Loss-' + name)
     ax.plot(history.history['val_loss'], label='Valid. Loss-' + name)
     plt.ylabel("Error")
@@ -405,53 +446,6 @@ def plot_loss(run, history, name):
 
     return run
 
-
-def wandb_plot_pred_true_scatters(run, y_test, y_pred, name):
-
-    _ = plt.figure(figsize=(13.5, 7.5))
-
-    plt.scatter(y_test, np.arange(len(y_test)),
-                alpha=0.5, marker='o', label='True')
-
-    plt.scatter(y_pred, np.arange(len(y_pred)),
-                alpha=0.5, marker='+', label='Prediction')
-
-    plt.xlabel("True Values (" + name + ")")
-    plt.ylabel("Pred Values (" + name + ")")
-    plt.title("Scatter plot of target values vs predicted values")
-    run.log({"Scatter plot of target values vs predicted values (" + name + ")": plt})
-    return run
-
-""" 
-def plot_error_distribution(run, y_test, y_pred, name,):
-
-    vals = np.concatenate((y_pred, y_test))
-    n_bins = np.linspace(vals.min(), vals.max(), 50)
-    _max = max(y_test.max(), y_pred.max()) + 400
-    error = y_pred - y_test
-    plt.hist(error, bins=n_bins)
-    plt.xlim([0, _max])
-    plt.xlabel("Prediction Error (" + name + ")")
-    plt.ylabel('Count')
-    run.log({"Prediction Error (" + name + ")": plt})
-
-    return run
-"""
-
-"""
-def display_samples(x, y=None):
-    if not isinstance(x, (np.ndarray, np.generic)):
-        x = np.array(x)
-    n = x.shape[0]
-    fig, axs = plt.subplots(1, n, figsize=(n, 1))
-    if y is not None:
-        fig.suptitle(np.argmax(y, axis=1))
-    for i in range(n):
-        axs.flat[i].plot(x[i].squeeze(), )
-        axs.flat[i].axis('off')
-    plt.show()
-    plt.close()
-"""
 
 def save_model(run, model, name, experiment_name):
 

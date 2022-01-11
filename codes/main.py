@@ -204,10 +204,10 @@ if __name__ == "__main__":
 
         # train, validation and test split:
         train_idx, val_idx, test_idx = util.data_splitter(x=x, validation=True)
-        x_train, y_train = x[train_idx, :], y[train_idx, :].reshape(-1, 1)
-        x_test, y_test = x[test_idx, :], y[test_idx, :].reshape(-1, 1)
-        x_val, y_val = x[val_idx, :], y[val_idx, :].reshape(-1, 1)
-        x_test_org, y_test_org = x[test_idx, :], y[test_idx, :].reshape(-1, 1)
+        x_train, y_train = x[train_idx, :], y[train_idx, :].ravel()
+        x_test, y_test = x[test_idx, :], y[test_idx, :].ravel()
+        x_val, y_val = x[val_idx, :], y[val_idx, :].ravel()
+        x_test_org, y_test_org = x[test_idx, :], y[test_idx, :].ravel()
 
         print("Data splits shape: \n",
               "\t Train:", x_train.shape, y_train.shape, "\n",
@@ -217,7 +217,7 @@ if __name__ == "__main__":
         print("************************************************************************")
         print("x_train: \n", x_train[:5, :])
         print("************************************************************************")
-        print("y_train: \n", y_train[:5, :])
+        print("y_train: \n", y_train[:5])
         print("************************************************************************")
 
         # start of the program execution
@@ -272,6 +272,14 @@ if __name__ == "__main__":
             util.plot_loss(run=run, history=history, name=specifier)
 
         y_pred = model.predict(x_test)
+        t = np.arange(len(y_test))
+
+        print("Shapes: \n",
+              "y_pred", y_pred.shape, "\n",
+              "y_test", y_test.shape, "\n"
+              "t.shape:", t.shape
+
+              )
 
         results[repeat]["specifier"] = specifier
 
@@ -283,24 +291,30 @@ if __name__ == "__main__":
 
         results[repeat]["y_pred"] = y_pred
 
-        util.wandb_metrics(run=run, y_true=y_test, y_pred=y_pred, learning_method=learning_method)
+        run = util.wandb_metrics(run=run, y_true=y_test, y_pred=y_pred, learning_method=learning_method)
 
         # plot the predicted values and their std for the entire test set
-        util.wandb_plot_total_predictions(run=run, algorithm=specifier,
-                                          y_true=y_test, y_pred=y_pred,
-                                          repeat=repeat, target_name=data_name)
+        run = util.wandb_true_pred_plots(run=run,
+                                         y_true=y_test, y_pred=y_pred,
+                                         specifier=specifier,
+                                         data_name=data_name,)
 
-        util.wandb_plot_pred_true_scatters(run=run, y_test=y_test,
-                                           y_pred=y_pred, name=specifier)
+        run = util.wandb_true_pred_scatters(run=run,
+                                            y_test=y_test, y_pred=y_pred,
+                                            specifier=specifier,
+                                            data_name=data_name,)
 
-        util.wandb_plot_true_pred_histograms(run=run, y_test=y_test,
-                                             y_pred=y_pred, algorithm=specifier,)
+        run = util.wandb_true_pred_histograms(run=run,
+                                              y_test=y_test, y_pred=y_pred,
+                                              specifier=specifier,
+                                              data_name=data_name,
+                                              )
         # end of the program execution
         end = time.time()
 
         print("Execution time of repeat number"+repeat + " is:", end-start)
 
-        util.save_model(run=run, model=model, name=alg_name, experiment_name=specifier)
+        run = util.save_model(run=run, model=model, name=alg_name, experiment_name=specifier)
 
         run.finish()
 
