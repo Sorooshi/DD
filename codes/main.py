@@ -87,9 +87,8 @@ if __name__ == "__main__":
                              " MinMax/Z-Scoring/etc.")
 
     parser.add_argument("--tag", type=str, default="warmup",
-                        help="W&B tag will be used to indicate the number of "
-                             "run of the same set of experiments to "
-                             "compute the average and std.")
+                        help="W&B tag will be used to filter some of runs"
+                             "of the same set of experiments if needed.")
 
     parser.add_argument("--note", type=str, default="--",
                         help="W&B note, e.g., clustering for DD: Demographic")
