@@ -151,8 +151,9 @@ if __name__ == "__main__":
         print("Undefined pre-processing")
 
     results = {}
-    for repeat in range(n_repeats):
+    for repeat in range(1, n_repeats+1):
 
+        repeat = str(repeat)
         results[repeat] = {}
 
         config = {
@@ -184,12 +185,12 @@ if __name__ == "__main__":
             assert learning_method is True
 
         if "nn" in alg_name.lower():
-            specifier = alg_name+", loss="+loss+", opt="+optimizer+", repeat="+str(repeat)
+            specifier = alg_name+", loss="+loss+", opt="+optimizer+", repeat="+repeat
 
         elif "ens" in alg_name.lower():
-            specifier = alg_name+", loss="+loss+", n_estimators="+str(n_estimators)+", repeat="+str(repeat)
+            specifier = alg_name+", loss="+loss+", n_estimators="+str(n_estimators)+", repeat="+repeat
         else:
-            specifier = alg_name+", repeat="+str(repeat)
+            specifier = alg_name+", repeat="+repeat
 
         print("specifier:", specifier)
 
@@ -297,7 +298,7 @@ if __name__ == "__main__":
         # end of the program execution
         end = time.time()
 
-        print("Execution time of repeat number" + str(repeat) + " is:", end-start)
+        print("Execution time of repeat number"+repeat + " is:", end-start)
 
         util.save_model(run=run, model=model, name=alg_name, experiment_name=specifier)
 
