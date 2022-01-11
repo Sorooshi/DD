@@ -180,7 +180,7 @@ def mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100):
         errors.append(ierr)
 
     errors = np.array(errors)
-    return errors.mean(axis=0), errors.std(axis=0)
+    return errors
 
 
 def discrepancy_score(observations, forecasts, model='QDA', n_iters=1):
@@ -268,22 +268,22 @@ def init_a_wandb(name, project, notes, group, tag, config):
 # Old set of metrics: the means of two predicted targets values are computed
 def wandb_metrics(run, y_true, y_pred, learning_method):
 
+    jsd = np.asarray(distance.jensenshannon(y_true, y_pred))
+    meape_errors = mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100)
+
     if learning_method == "regression":
-
-        # wasser = np.asarray(wasserstein_distance(y_true, y_pred))
-        jsd = np.asarray(distance.jensenshannon(y_true, y_pred))
-
         run.log({
             "MAE": mae(y_true=y_true, y_pred=y_pred),
             "RMSE": rmse(y_true=y_true, y_pred=y_pred),
             "MRAE": mrae(y_true=y_true, y_pred=y_pred),
             "JSD": jsd.mean(),
             "R^2-Score": metrics.r2_score(y_true, y_pred),
-            "MEAPE": mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100)
+            "MEAPE-mu": meape_errors.mean(axis=0),
+            "MEAPE-std": meape_errors.std(axis=0)
+
         })
 
     else:
-        jsd = np.asarray(distance.jensenshannon(y_true, y_pred))
 
         run.log({
             "ARI": metrics.adjusted_rand_score(y_true, y_pred),
@@ -293,7 +293,8 @@ def wandb_metrics(run, y_true, y_pred, learning_method):
             "Recall": metrics.recall_score(y_true, y_pred),
             "F1-SCore": metrics.accuracy_score(y_true, y_pred),
             "ROC AUC": metrics.roc_auc(y_true, y_pred),
-            "MEAPE": mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100)
+            "MEAPE-mu": meape_errors.mean(axis=0),
+            "MEAPE-std": meape_errors.std(axis=0)
         })
 
     return run
@@ -371,71 +372,20 @@ def wandb_plot_total_predictions(run, algorithm, y_true, y_pred, repeat, target_
     return run
 
 
-def basic_plots(run, y_true, y_pred, run_no, specifier, title="", ):
+def wandb_plot_true_pred_histograms(run, y_test, y_pred, algorithm):
 
-    iops_true = y_true[:, 0]
-    iops_pred = y_pred[:, 0]
+    _ = plt.figure(figsize=(12, 8))
+    vals = np.concatenate((y_pred, y_test))
+    n_bins = np.linspace(vals.min(), vals.max(), 50)
 
-    lat_true = y_true[:, 1]   # / 10 ** 6  # bcs I don't inverse the predictions
-    lat_pred = y_pred[:, 1]   # / 10 ** 6  # bcs I don't inverse the predictions
-
-    plt.figure(figsize=(21, 6))
-
-    plt.subplot(131)
-    plt.scatter(iops_true, lat_true, alpha=0.5, marker='o', label='True')
-    plt.scatter(iops_pred, lat_pred, alpha=0.5, marker='+', label='Prediction')
-    plt.xlabel('IOPS', size=14)
-    plt.ylabel('Latency, ms', size=14)
-    plt.xticks(size=14)
-    plt.yticks(size=14)
-    plt.title(title, size=14)
-    plt.legend(loc='best', fontsize=10)
-    # run.log({"Scatter of IOPS vs LAT run=" + run_no: plt})
-    # plt.show()
-
-    plt.subplot(132)
-    vals = np.concatenate((iops_true, iops_pred))
-    bins = np.linspace(vals.min(), vals.max(), 50)
-    plt.hist(iops_true, bins=bins, alpha=1., label='True', histtype='step', linewidth=3)
-    plt.hist(iops_pred, bins=bins, alpha=1., label='Prediction')
-    plt.xlabel('IOPS', size=14)
-    plt.ylabel('Counts', size=14)
-    plt.xticks(size=14)
-    plt.yticks(size=14)
-    plt.title(title, size=14)
-    plt.legend(loc='best', fontsize=10)
-    # run.log({"Hist. of IOPS run=" + run_no: plt})
-    # plt.show()
-
-    plt.subplot(133)
-    vals = np.concatenate((lat_true, lat_pred))
-    bins = np.linspace(vals.min(), vals.max(), 50)
-    plt.hist(lat_true, bins=bins, alpha=1., label='True', histtype='step', linewidth=3)
-    plt.hist(lat_pred, bins=bins, alpha=1., label='Prediction')
-    plt.xlabel('Latency, ms', size=14)
-    plt.ylabel('Counts', size=14)
-    plt.xticks(size=14)
-    plt.yticks(size=14)
-    plt.title(title, size=14)
-    plt.legend(loc='best', fontsize=10)
-    # plt.savefig("../figures/" + specifier + " num_run=" + run_no + " op-" + title + ".png")
-    run.log({ specifier + "-num_run=" + run_no + " op-" + title:
-                  wandb.Image(plt, caption=specifier + " num_run=" + run_no + " op-" + title)})
-    plt.show()
-
-
-def plot_true_pred_distributions(run, y_test, y_pred, algorithm, n_bins):
-
-    for i in range(y_test.shape[1]):
-        _ = plt.figure(figsize=(12, 8))
-        plt.hist(y_test[:, i], color="g", bins=n_bins, label="y_true", histtype='step')
-        plt.hist(y_pred[:, i], color="b", bins=n_bins, label="y_pred", histtype='step')
-        _max = max(y_test[:, i].max(), y_pred[:, i].max()) + 400
-        plt.xlim([0, _max])
-        plt.xlabel("True and Pred. values' Distributions ")
-        plt.ylabel('Count')
-        plt.legend(loc="best")
-        run.log({"Distributions of " + algorithm + str(i+1) + "-th preds.": plt})
+    plt.hist(y_test, color="g", bins=n_bins, label="y_true", histtype='step')
+    plt.hist(y_pred, color="b", bins=n_bins, label="y_pred", histtype='step')
+    _max = max(y_test.max(), y_pred.max()) + 400
+    plt.xlim([0, _max])
+    plt.xlabel("True and Pred. values' Distributions ")
+    plt.ylabel('Count')
+    plt.legend(loc="best")
+    run.log({"Distributions of " + algorithm + "predictions": plt})
 
     return run
 
@@ -456,22 +406,39 @@ def plot_loss(run, history, name):
     return run
 
 
-def plot_predictions(y_test, y_pred, name):
+def wandb_plot_pred_true_scatters(run, y_test, y_pred, name):
+
     _ = plt.figure(figsize=(13.5, 7.5))
-    plt.scatter(y_test, y_pred)
+
+    plt.scatter(y_test, np.arange(len(y_test)),
+                alpha=0.5, marker='o', label='True')
+
+    plt.scatter(y_pred, np.arange(len(y_pred)),
+                alpha=0.5, marker='+', label='Prediction')
+
     plt.xlabel("True Values (" + name + ")")
-    plt.ylabel("True Values (" + name + ")")
+    plt.ylabel("Pred Values (" + name + ")")
     plt.title("Scatter plot of target values vs predicted values")
+    run.log({"Scatter plot of target values vs predicted values (" + name + ")": plt})
+    return run
 
+""" 
+def plot_error_distribution(run, y_test, y_pred, name,):
 
-def plot_error_distribution(y_test, y_pred, name, n_bins):
+    vals = np.concatenate((y_pred, y_test))
+    n_bins = np.linspace(vals.min(), vals.max(), 50)
+    _max = max(y_test.max(), y_pred.max()) + 400
     error = y_pred - y_test
     plt.hist(error, bins=n_bins)
+    plt.xlim([0, _max])
     plt.xlabel("Prediction Error (" + name + ")")
     plt.ylabel('Count')
-    return None
+    run.log({"Prediction Error (" + name + ")": plt})
 
+    return run
+"""
 
+"""
 def display_samples(x, y=None):
     if not isinstance(x, (np.ndarray, np.generic)):
         x = np.array(x)
@@ -484,7 +451,7 @@ def display_samples(x, y=None):
         axs.flat[i].axis('off')
     plt.show()
     plt.close()
-
+"""
 
 def save_model(run, model, name, experiment_name):
 
@@ -499,6 +466,4 @@ def save_model(run, model, name, experiment_name):
     #                             name + experiment_name + ".h5"))
 
     return run
-
-
 
