@@ -2,9 +2,6 @@ import sys
 import tensorflow as tf
 import tensorflow_probability as tfp
 
-sys.path.append("../soroosh_scripts")
-
-import utilities as util
 
 tfk = tf.keras
 tfkl = tf.keras.layers
@@ -93,7 +90,7 @@ class RBFKernelFn(tfkl.Layer):
 
 
 # TF loss function:
-def determine_tf_loss(loss):
+def determine_reg_tf_loss(loss):
 
     loss = loss.lower()
 
@@ -117,6 +114,19 @@ def determine_tf_loss(loss):
 
     elif loss == "squared_hinge":  # check the loss function here
         loss_fn = tfk.losses.SquaredHinge
+
+    else:
+        print("Loss function is not defined.")
+
+    return loss_fn
+
+
+def determine_cls_tf_loss(loss):
+
+    loss = loss.lower()
+
+    if loss == "mae":
+        loss_fn = tfk.losses.mean_absolute_error
 
     else:
         print("Loss function is not defined.")

@@ -4,15 +4,13 @@ import time
 import pickle
 import argparse
 import numpy as np
-from sklearn import metrics
-
-sys.path.append("../codes")
-
-import flow as nf
 import utilities as util
-import nn_regression as nnr
+import clusterings as clu
+from sklearn import metrics
 import dyslexia_data as data
-import other_regression as otr
+import classifications as cls
+import regressions as reg
+
 
 np.set_printoptions(suppress=True, precision=3, linewidth=140)
 
@@ -68,7 +66,7 @@ if __name__ == "__main__":
                         help="Number of neurons in the"
                              " first hidden layer.")
 
-    parser.add_argument("--n_epochs", type=int, default=100,
+    parser.add_argument("--n_epochs", type=int, default=1000,
                         help="Number of epochs.")
 
     parser.add_argument("--batch_size", type=int, default=64,
@@ -120,36 +118,7 @@ if __name__ == "__main__":
     data_org, x, y, features, targets, indicators = data.load_data(data_name=data_name, group=group)
 
     # Preprocessing tha data
-    if pp == "rng":
-        print("pre-processing:", pp)
-        x = util.range_standardizer(x=x)
-        y = util.range_standardizer(x=y)
-        print("Preprocessed x and y shapes:", x.shape, y.shape)
-    elif pp == "zsc":
-        print("pre-processing:", pp)
-        x = util.zscore_standardizer(x=x)
-        y = util.zscore_standardizer(x=y)
-        print("Preprocessed x and y shapes:", x.shape, y.shape)
-    elif pp == "mm":  # MinMax
-        print("pre-processing:", pp)
-        x = util.minmax_standardizer(x=x)
-        y = util.minmax_standardizer(x=y)
-    elif pp == "rs":  # Robust Scaler (subtract median and divide with [q1, q3])
-        print("pre-processing:", pp)
-        x, rs_x = util.robust_standardizer(x=x)
-        y, rs_y = util.robust_standardizer(x=y)
-    elif pp == "qtn":  # quantile_transformation with Gaussian distribution as output
-        x, qt_x = util.quantile_standardizer(x=x, out_dist="normal")
-        y, qt_y = util.quantile_standardizer(x=y, out_dist="normal")
-    elif pp == "qtu":  # quantile_transformation with Uniform distribution as output
-        x, qt_x = util.quantile_standardizer(x=x, out_dist="uniform")
-        y, qt_y = util.quantile_standardizer(x=y, out_dist="uniform")
-    elif pp is None:
-        x_org = x
-        y_org = y
-        print("No pre-processing")
-    else:
-        print("Undefined pre-processing")
+    x, y = data.preprocess_data(x=x, y=y, pp=pp)
 
     results = {}
     for repeat in range(1, n_repeats+1):
@@ -186,12 +155,12 @@ if __name__ == "__main__":
             assert learning_method is True
 
         if "nn" in alg_name.lower():
-            specifier = alg_name+", loss="+loss+", opt="+optimizer+", repeat="+repeat
+            specifier = alg_name+", loss="+loss+", opt="+optimizer+", repeat="+repeat+", pp="+pp
 
-        elif "rfr" in alg_name.lower() or "gbr" in alg_name.lower():
-            specifier = alg_name+", n_estimators="+str(n_estimators)+", repeat="+repeat
+        elif "rf" in alg_name.lower() or "gb" in alg_name.lower():
+            specifier = alg_name+", n_estimators="+str(n_estimators)+", repeat="+repeat+", pp="+pp
         else:
-            specifier = alg_name+", repeat="+repeat
+            specifier = alg_name+", repeat="+repeat+", pp="+pp
 
         print("specifier:", specifier)
 
@@ -227,46 +196,22 @@ if __name__ == "__main__":
         input_dim = x_train.shape[1]
         # output_dim = y_train.shape[1]
 
-        # instantiating model
-        if alg_name.lower() == "vnn_reg":
-            loss_fn = nnr.determine_tf_loss(loss=loss)
-            _model = nnr.VNNRegression(n_units=n_units, input_dim=input_dim, output_dim=output_dim)
+        # instantiating and fitting the model
+        if learning_method == "regression":
+            model, history = reg.instantiate_fit_reg_model(
+                alg_name=alg_name, loss=loss, n_units=n_units,
+                input_dim=input_dim, output_dim=output_dim,
+                batch_size=batch_size, n_epochs=n_epochs,
+                learning_rate=learning_rate,
+                x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val,
+                n_estimators=n_estimators, optimizer=optimizer,
+            )
 
-        elif alg_name.lower() == "dnn_reg":
-            loss_fn = nnr.determine_tf_loss(loss=loss)
-            _model = nnr.DNNRegression(n_units=n_units, input_dim=input_dim, output_dim=output_dim)
+        elif learning_method == "clustering":
+            model, history = clu.instantiate_fit_clu_model(alg_name, n_clusters, x_train, )
 
-        elif alg_name.lower() == "nf_reg":
-            model = nf.NFFitter(var_size=output_dim, cond_size=input_dim, batch_size=batch_size,
-                                n_epochs=n_epochs, lr=learning_rate)
-            model.fit(x_train, y_train)
-
-            history = None
-
-        elif alg_name.lower() == "rfr" or alg_name.lower() == "gbr" or \
-                alg_name.lower() == "ar" or alg_name.lower() == "lr":
-            model = otr.apply_a_regressor(alg_name=alg_name,
-                                          n_estimators=n_estimators,
-                                          x_train=x_train, y_train=y_train)
-            history = None
-
-        elif alg_name.lower() == "gpr":
-            # ss_idx = np.random.randint(low=0, high=x_train.shape[0], size=20000)  # because of memory issue
-            model = otr.apply_a_regressor(alg_name=alg_name,
-                                          n_estimators=n_estimators,
-                                          x_train=x_train, y_train=y_train)
-            history = None
-
-        else:
-            _model = None
-            history = None
-            print("Undefined model.")
-
-        if alg_name.lower() == "vnn_reg" or alg_name.lower() == "dnn_reg":
-            model, history = nnr.compile_and_fit(model=_model, optimizer=optimizer,
-                                                 loss=loss, learning_rate=learning_rate,
-                                                 batch_size=batch_size, n_epochs=n_epochs,
-                                                 x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val,)
+        elif learning_method == "classification":
+            model, history = cls.apply_a_classification(alg_name, n_clusters, x_train, )
 
         # plot the train and validation loss function errors
         if history is not None:
@@ -291,6 +236,12 @@ if __name__ == "__main__":
 
         results[repeat]["y_pred"] = y_pred
 
+        # end of the program execution
+        end = time.time()
+        print("Execution time of repeat number " + repeat + " is:", end - start)
+
+        results[repeat]["time"] = end - start
+
         run = util.wandb_metrics(run=run, y_true=y_test, y_pred=y_pred, learning_method=learning_method)
 
         # plot the predicted values and their std for the entire test set
@@ -309,10 +260,6 @@ if __name__ == "__main__":
                                               specifier=specifier,
                                               data_name=data_name,
                                               )
-        # end of the program execution
-        end = time.time()
-
-        print("Execution time of repeat number"+repeat + " is:", end-start)
 
         run = util.save_model(run=run, model=model, name=alg_name, experiment_name=specifier)
 
