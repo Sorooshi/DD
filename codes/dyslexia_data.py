@@ -4,6 +4,7 @@ import utilities as util
 
 
 def load_data(data_name, group):
+
     """
     :param data_name: string, name of dataset
     :param group: string, W&B group name, i.e., "
@@ -31,13 +32,13 @@ def load_data(data_name, group):
             df=pd.read_excel(demo_xls, "norm").sort_values(by=indicators)
         )
 
-        data["normal"].replace({"fem": 1, "f": 1, "masc": -1, "m": -1}, inplace=True)
+        data["normal"].replace({"fem": 1, "f": 1, "masc": 2, "m": 2}, inplace=True)
 
         data["abnormal"] = remove_missing_data(
             df=pd.read_excel(demo_xls, "dyslexia").sort_values(by=indicators)
         )
 
-        data["abnormal"].replace({"fem": 1, "f": 1, "masc": -1, "m": -1}, inplace=True)
+        data["abnormal"].replace({"fem": 1, "f": 1, "masc": 2, "m": 2}, inplace=True)
 
         q_features = ['Age', 'IQ', 'Sound_detection', 'Sound_change', ]
         c_features = ['Sex', 'Grade', ]
@@ -116,7 +117,7 @@ def load_data(data_name, group):
         print("Undefined data set, define it above!")
 
     _data_org = pd.concat([data["normal"], data["abnormal"]])
-    _data_org = _data_org.replace({"norm": 1, "dyslexia": -1}, )
+    _data_org = _data_org.replace({"norm": 1, "dyslexia": 2}, )
 
     if len(c_features) > 0:
         data_org = pd.get_dummies(_data_org, columns=c_features)

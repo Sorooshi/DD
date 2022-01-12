@@ -114,7 +114,7 @@ def robust_standardizer_(RS, x):
     return x_rs
 
 
-def data_splitter(x, validation=False):
+def index_splitter(x, validation=False):
 
     if not validation:
         all_idx = np.arange(len(x))
@@ -132,6 +132,33 @@ def data_splitter(x, validation=False):
         val_idx = np.random.choice(test_idx, size=test_size, replace=False)
         test_idx = list(set(test_idx).difference(val_idx))
         return train_idx, val_idx, test_idx
+
+
+def data_splitter(x, y, x_org, y_org, learning_method):
+
+    # train, validation and test split:
+    train_idx, val_idx, test_idx = index_splitter(x=x, validation=True)
+    x_train, y_train = x[train_idx, :], y[train_idx, :].ravel()
+    x_test, y_test = x[test_idx, :], y[test_idx, :].ravel()
+    x_val, y_val = x[val_idx, :], y[val_idx, :].ravel()
+    x_test_org, y_test_org = x_org[test_idx, :], y_org[test_idx, :].ravel()
+
+    print("Data splits shape: \n",
+          "\t Train:", x_train.shape, y_train.shape, "\n",
+          "\t Val:", x_val.shape, y_val.shape, "\n",
+          "\t Test:", x_test.shape, y_test.shape)
+
+    print("************************************************************************")
+    print("x_train: \n", x_train[:5, :])
+    print("************************************************************************")
+    print("y_train: \n", y_train[:5])
+    print("************************************************************************")
+
+    # because labels for classification and clustering should not be standardized
+    if learning_method == "regression":
+        return x_train, y_train, x_val, y_val, x_test, y_test,
+    else:
+        return x_train, y_train, x_val, y_val, x_test, y_test_org
 
 
 def mae(y_true, y_pred):
@@ -169,6 +196,7 @@ def jsd(y_true, y_pred):
 def mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100):
     errors = []
     inds = np.arange(len(y_true))
+
     for i in range(n_iters):
         inds_boot = resample(inds)
 
@@ -267,7 +295,6 @@ def init_a_wandb(name, project, notes, group, tag, config):
     return run
 
 
-# Old set of metrics: the means of two predicted targets values are computed
 def wandb_metrics(run, y_true, y_pred, learning_method):
 
     meape_errors = mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100)
@@ -284,16 +311,31 @@ def wandb_metrics(run, y_true, y_pred, learning_method):
 
         })
 
-    else:
+    elif learning_method == "classification":
 
         run.log({
             "ARI": metrics.adjusted_rand_score(y_true, y_pred),
             "NMI": metrics.normalized_mutual_info_score(y_true, y_pred),
-            "JSD": jsd.mean(),
-            "Precision": metrics.precision_score(y_true, y_pred),
-            "Recall": metrics.recall_score(y_true, y_pred),
-            "F1-Score": metrics.accuracy_score(y_true, y_pred),
-            "ROC AUC": metrics.roc_auc(y_true, y_pred),
+            "JSD": jsd(y_true=y_true, y_pred=y_pred).mean(),
+            "Precision": metrics.precision_score(y_true, y_pred, average='weighted'),
+            "Recall": metrics.recall_score(y_true, y_pred, average='weighted'),
+            "F1-Score": metrics.f1_score(y_true, y_pred, average='weighted'),
+            "ROC AUC": metrics.roc_auc_score(y_true, y_pred, average='weighted'),
+            "MEAPE-mu": meape_errors.mean(axis=0),
+            "MEAPE-std": meape_errors.std(axis=0)
+        })
+
+    # for future applications I separate cls and clu
+    elif learning_method == "clustering":
+
+        run.log({
+            "ARI": metrics.adjusted_rand_score(y_true, y_pred),
+            "NMI": metrics.normalized_mutual_info_score(y_true, y_pred),
+            "JSD": jsd(y_true=y_true, y_pred=y_pred).mean(),
+            "Precision": metrics.precision_score(y_true, y_pred, average='weighted'),
+            "Recall": metrics.recall_score(y_true, y_pred, average='weighted'),
+            "F1-Score": metrics.f1_score(y_true, y_pred, average='weighted'),
+            "ROC AUC": metrics.roc_auc_score(y_true, y_pred, average='weighted'),
             "MEAPE-mu": meape_errors.mean(axis=0),
             "MEAPE-std": meape_errors.std(axis=0)
         })

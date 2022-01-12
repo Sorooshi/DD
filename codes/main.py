@@ -118,6 +118,7 @@ if __name__ == "__main__":
     data_org, x, y, features, targets, indicators = data.load_data(data_name=data_name, group=group)
 
     # Preprocessing tha data
+    x_org, y_org = x, y
     x, y = data.preprocess_data(x=x, y=y, pp=pp)
 
     results = {}
@@ -173,22 +174,9 @@ if __name__ == "__main__":
                                 )
 
         # train, validation and test split:
-        train_idx, val_idx, test_idx = util.data_splitter(x=x, validation=True)
-        x_train, y_train = x[train_idx, :], y[train_idx, :].ravel()
-        x_test, y_test = x[test_idx, :], y[test_idx, :].ravel()
-        x_val, y_val = x[val_idx, :], y[val_idx, :].ravel()
-        x_test_org, y_test_org = x[test_idx, :], y[test_idx, :].ravel()
-
-        print("Data splits shape: \n",
-              "\t Train:", x_train.shape, y_train.shape, "\n",
-              "\t Val:", x_val.shape, y_val.shape, "\n",
-              "\t Test:", x_test.shape, y_test.shape)
-
-        print("************************************************************************")
-        print("x_train: \n", x_train[:5, :])
-        print("************************************************************************")
-        print("y_train: \n", y_train[:5])
-        print("************************************************************************")
+        x_train, y_train, x_val, y_val, x_test, y_test, = util.data_splitter(
+            x=x, y=y, x_org=x_org, y_org=y_org, learning_method=learning_method
+        )
 
         # start of the program execution
         start = time.time()
@@ -198,6 +186,7 @@ if __name__ == "__main__":
 
         # instantiating and fitting the model
         if learning_method == "regression":
+
             model, history = reg.instantiate_fit_reg_model(
                 alg_name=alg_name, loss=loss, n_units=n_units,
                 input_dim=input_dim, output_dim=output_dim,
@@ -208,6 +197,7 @@ if __name__ == "__main__":
             )
 
         elif learning_method == "clustering":
+
             model, history = clu.instantiate_fit_clu_model(alg_name, n_clusters, x_train, )
 
         elif learning_method == "classification":
@@ -217,23 +207,25 @@ if __name__ == "__main__":
         if history is not None:
             util.plot_loss(run=run, history=history, name=specifier)
 
-        y_pred = model.predict(x_test).ravel()
-        t = np.arange(len(y_test))
+        try:
+            y_pred = model.predict(x_test).ravel()
+        except:
+            y_pred = model.fit_predict(x_test).ravel()
+        # to avoid 1) ill-defined situation in computing precision, recall, f1_score and roc_auc,
+        # 2) to avoid wrong computation in MEAPE, I labeled normal as 1 and abnormal as 2;
+        # thus y_pred should be compatible and to this end I added 1 to each of its entries.
+        y_pred = y_pred + 1
 
         print("Shapes: \n",
               "y_pred", y_pred.shape, "\n",
               "y_test", y_test.shape, "\n"
-              "t.shape:", t.shape
+              "y_pred:", y_pred, "\n" 
+              "y_test:", y_test
               )
 
         results[repeat]["specifier"] = specifier
-
-        results[repeat]["x_test_org"] = x_test_org
-        results[repeat]["y_test_org"] = y_test_org
-
         results[repeat]["x_test"] = x_test
         results[repeat]["y_test"] = y_test
-
         results[repeat]["y_pred"] = y_pred
 
         # end of the program execution
@@ -291,14 +283,13 @@ if __name__ == "__main__":
             MEAPE_std.append(meape_errors.std(axis=0))
 
         else:
-
             ARI.append(metrics.adjusted_rand_score(y_true, y_pred))
             NMI.append(metrics.normalized_mutual_info_score(y_true, y_pred))
             JSD.append(util.jsd(y_true=y_true, y_pred=y_pred).mean())
-            Precision.append(metrics.precision_score(y_true, y_pred))
-            Recall.append(metrics.recall_score(y_true, y_pred))
-            F1_Score.append(metrics.accuracy_score(y_true, y_pred))
-            ROC_AUC.append(metrics.roc_auc(y_true, y_pred))
+            Precision.append(metrics.precision_score(y_true, y_pred, average='weighted'))
+            Recall.append(metrics.recall_score(y_true, y_pred, average='weighted'))
+            F1_Score.append(metrics.f1_score(y_true, y_pred, average='weighted'))
+            ROC_AUC.append(metrics.roc_auc_score(y_true, y_pred, average='weighted'))
             meape_errors = util.mean_estimation_absolute_percentage_error(
                 y_true=y_true, y_pred=y_pred, n_iters=100)
 
@@ -347,7 +338,9 @@ if __name__ == "__main__":
             "%.3f" % meape_ave, "%.3f" % meape_std,
             "%.3f" % jsd_ave, "%.3f" % jsd_std,
         )
+
     else:
+
         JSD = np.nan_to_num(np.asarray(JSD))
         MEAPE_mu = np.nan_to_num(np.asarray(MEAPE_mu))
         ARI = np.nan_to_num(np.asarray(ARI))
@@ -397,7 +390,6 @@ if __name__ == "__main__":
               "%.3f" % roc_auc_ave, "%.3f" % roc_auv_std,
               "%.3f" % meape_ave, "%.3f" % meape_std,
               "%.3f" % jsd_ave, "%.3f" % jsd_std,
-
               )
 
 
