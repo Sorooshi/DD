@@ -8,6 +8,7 @@ import utilities as util
 
 tfk = tf.keras
 tfkl = tf.keras.layers
+tf.keras.backend.set_floatx('float32')
 
 
 class VNNRegression(tfk.Model):

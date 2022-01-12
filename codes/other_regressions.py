@@ -2,7 +2,6 @@ from sklearn.ensemble import AdaBoostRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import GradientBoostingRegressor
-
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import DotProduct, WhiteKernel
 
@@ -12,6 +11,7 @@ def apply_a_regressor(alg_name, n_estimators, x_train, y_train):
     # Random Forest Regressor
     if alg_name.lower() == "rfr":
         print("Random Forest!")
+
         model = RandomForestRegressor(n_estimators=n_estimators,
                                       criterion='mse',
                                       min_samples_leaf=1,
@@ -41,7 +41,7 @@ def apply_a_regressor(alg_name, n_estimators, x_train, y_train):
                                   )
     elif alg_name.lower() == "lr":
         print ("Linear Regression!")
-        model = LinearRegression(n_jobs=-2)
+        model = LinearRegression()
     else:
         print ("Undefined ensembling model.")
         f = True
