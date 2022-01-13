@@ -4,13 +4,13 @@ import time
 import pickle
 import argparse
 import numpy as np
+import baseline as bl
 import utilities as util
 import regressions as reg
 import clusterings as clu
 from sklearn import metrics
 import dyslexia_data as data
 import classifications as cls
-
 
 
 np.set_printoptions(suppress=True, precision=3, linewidth=140)
@@ -36,10 +36,11 @@ def args_parser(args):
     _output_dim = args.output_dim
     _n_clusters = args.n_clusters
     _n_repeats = args.n_repeats
+    _target_is_org = args.target_is_org
 
     return _pp, _tag, _run, _note, _data_name, _loss, _alg_name, \
            _group, _project, _n_units,_n_epochs, _optimizer, _batch_size, \
-           _learning_rate, _n_estimators, _output_dim, _n_clusters, _n_repeats
+           _learning_rate, _n_estimators, _output_dim, _n_clusters, _n_repeats, _target_is_org
 
 
 if __name__ == "__main__":
@@ -110,11 +111,14 @@ if __name__ == "__main__":
     parser.add_argument("--n_repeats", type=int, default=10,
                         help="Number of repeats in K-Fold cross validation.")
 
+    parser.add_argument("--target_is_org", type=int, default=1,
+                        help="Weather to use not preprocessed target values or not.")
+
     args = parser.parse_args()
 
     pp, tag, run, note, data_name, loss, alg_name, group, \
         project, n_units, n_epochs, optimizer, batch_size, \
-        learning_rate, n_estimators, output_dim, n_clusters, n_repeats = args_parser(args)
+        learning_rate, n_estimators, output_dim, n_clusters, n_repeats, target_is_org = args_parser(args)
 
     data_org, x, y, features, targets, indicators = data.load_data(data_name=data_name, group=group)
 
@@ -151,6 +155,8 @@ if __name__ == "__main__":
             learning_method = "clustering"
         elif "classification" in group.lower():
             learning_method = "classification"
+        elif "baseline" in group.lower():
+            learning_method = "baseline"
         else:
             print ("Wrong learning method is defined!")
             learning_method = True
@@ -176,7 +182,7 @@ if __name__ == "__main__":
 
         # train, validation and test split:
         x_train, y_train, x_val, y_val, x_test, y_test, = data.data_splitter(
-            x=x, y=y, x_org=x_org, y_org=y_org, learning_method=learning_method
+            x=x, y=y, x_org=x_org, y_org=y_org, target_is_org=target_is_org,
         )
 
         # start of the program execution
@@ -187,7 +193,6 @@ if __name__ == "__main__":
 
         # instantiating and fitting the model
         if learning_method == "regression":
-
             model, history = reg.instantiate_fit_reg_model(
                 alg_name=alg_name, loss=loss, n_units=n_units,
                 input_dim=input_dim, output_dim=output_dim,
@@ -198,20 +203,25 @@ if __name__ == "__main__":
             )
 
         elif learning_method == "clustering":
-
             model, history = clu.instantiate_fit_clu_model(alg_name, n_clusters, x_train, y_train)
 
         elif learning_method == "classification":
             model, history = cls.instantiate_fit_cls_model(alg_name, n_clusters, x_train, y_train)
 
+        elif learning_method == "baseline":
+            model, history, y_pred = bl.instantiate_fit_baseline_model(
+                y_train=y_train, y_test=y_test, target_is_org=target_is_org)
+
         # plot the train and validation loss function errors
         if history is not None:
             util.plot_loss(run=run, history=history, name=specifier)
 
-        try:
-            y_pred = model.predict(x_test).ravel()
-        except:
-            y_pred = model.fit_predict(x_test).ravel()
+        if learning_method != "baseline":
+            try:
+                y_pred = model.predict(x_test).ravel()
+            except:
+                y_pred = model.fit_predict(x_test).ravel()
+
         # to avoid 1) ill-defined situation in computing precision, recall, f1_score and roc_auc,
         # 2) to avoid wrong computation in MEAPE, I labeled normal as 1 and abnormal as 2;
         # thus y_pred should be compatible and to this end I added 1 to each of its entries.
@@ -270,7 +280,7 @@ if __name__ == "__main__":
         y_true = result["y_test"]
         y_pred = result["y_pred"]
 
-        if learning_method == "regression":
+        if learning_method == "regression":  # or learning_method == "baseline"
 
             MEA.append(util.mae(y_true=y_true, y_pred=y_pred))
             RMSE.append(util.rmse(y_true=y_true, y_pred=y_pred))
