@@ -5,11 +5,11 @@ import pickle
 import argparse
 import numpy as np
 import utilities as util
+import regressions as reg
 import clusterings as clu
 from sklearn import metrics
 import dyslexia_data as data
 import classifications as cls
-import regressions as reg
 
 
 np.set_printoptions(suppress=True, precision=3, linewidth=140)

@@ -148,33 +148,127 @@ def remove_missing_data(df):
 
     return df.dropna()
 
+def range_standardizer(x):
+    """ Returns Range standardized data set.
+    Input: a numpy array, representing entity-to-feature matrix.
+    """
+
+    x_rngs = np.ptp(x, axis=0)
+    x_means = np.mean(x, axis=0)
+
+    x_r = np.divide(np.subtract(x, x_means), x_rngs)  # range standardization
+
+    return np.nan_to_num(x_r)
+
+
+def range_standardizer_(x_test, x_train):
+    """ Returns Range standardized data set.
+    Input: a numpy array, representing entity-to-feature matrix.
+    """
+
+    x_rngs = np.ptp(x_train, axis=0)
+    x_means = np.mean(x_train, axis=0)
+
+    x_r = np.divide(np.subtract(x_test, x_means), x_rngs)  # range standardization
+
+    return np.nan_to_num(x_r)
+
+
+def zscore_standardizer(x):
+    """ Returns Z-scored standardized data set.
+    Input: a numpy array, representing entity-to-feature matrix.
+    """
+
+    x_stds = np.std(x, axis=0)
+    x_means = np.mean(x, axis=0)
+
+    x_z = np.divide(np.subtract(x, x_means), x_stds)  # z-scoring
+
+    return np.nan_to_num(x_z)
+
+
+def zscore_standardizer_(x_test, x_train):
+    """ Returns Z-scored standardized data set.
+    Input: a numpy array, representing entity-to-feature matrix.
+    """
+
+    x_stds = np.std(x_train, axis=0)
+    x_means = np.mean(x_train, axis=0)
+
+    x_z = np.divide(np.subtract(x_test, x_means), x_stds)  # z-scoring
+
+    return np.nan_to_num(x_z)
+
+
+def quantile_standardizer(x, out_dist):
+
+    QT =  QuantileTransformer(output_distribution=out_dist,)
+    x_q = QT.fit_transform(x)
+
+    return x_q, QT
+
+
+def quantile_standardizer_(QT, x,):
+
+    x_q = QT.fit_transform(x)
+
+    return x_q
+
+
+def _minmax_standardizer(x):
+    x_mm = MinMaxScaler().fit_transform(x)
+    return x_mm
+
+
+def minmax_standardizer(x):
+    x_mm = np.divide(np.subtract(x, x.min(axis=0)),
+                     (x.max(axis=0) - x.min(axis=0)))
+    return np.nan_to_num(x_mm)
+
+
+def minmax_standardizer_(x_test, x_train):
+    x_mm = np.divide(np.subtract(x_test, x_train.min(axis=0)),
+                     (x_train.max(axis=0) - x_train.min(axis=0)))
+    return np.nan_to_num(x_mm)
+
+
+def robust_standardizer(x):
+    RS = RobustScaler()
+    x_rs = RS.fit_transform(x)
+    return x_rs, RS
+
+
+def robust_standardizer_(RS, x):
+    x_rs = RS.fit_transform(x)
+    return x_rs
+
 
 def preprocess_data(x, y, pp):
 
     if pp == "rng":
         print("pre-processing:", pp)
-        x = util.range_standardizer(x=x)
-        y = util.range_standardizer(x=y)
+        x = range_standardizer(x=x)
+        y = range_standardizer(x=y)
         print("Preprocessed x and y shapes:", x.shape, y.shape)
     elif pp == "zsc":
         print("pre-processing:", pp)
-        x = util.zscore_standardizer(x=x)
-        y = util.zscore_standardizer(x=y)
+        x = zscore_standardizer(x=x)
+        y = zscore_standardizer(x=y)
         print("Preprocessed x and y shapes:", x.shape, y.shape)
     elif pp == "mm":  # MinMax
         print("pre-processing:", pp)
-        x = util.minmax_standardizer(x=x)
-        y = util.minmax_standardizer(x=y)
+        x = minmax_standardizer(x=x)
+        y = minmax_standardizer(x=y)
     elif pp == "rs":  # Robust Scaler (subtract median and divide with [q1, q3])
         print("pre-processing:", pp)
-        x, rs_x = util.robust_standardizer(x=x)
-        y, rs_y = util.robust_standardizer(x=y)
+        x, rs_x = robust_standardizer(x=x)
+        y, rs_y = robust_standardizer(x=y)
     elif pp == "qtn":  # quantile_transformation with Gaussian distribution as output
-        x, qt_x = util.quantile_standardizer(x=x, out_dist="normal")
-        y, qt_y = util.quantile_standardizer(x=y, out_dist="normal")
+        x, qt_x = quantile_standardizer(x=x, out_dist="normal")
+        y, qt_y = quantile_standardizer(x=y, out_dist="normal")
     elif pp == "qtu":  # quantile_transformation with Uniform distribution as output
-        x, qt_x = util.quantile_standardizer(x=x, out_dist="uniform")
-        y, qt_y = util.quantile_standardizer(x=y, out_dist="uniform")
+        x, qt_x = quantile_standardizer(x=x, out_dist="uniform")
+        y, qt_y = quantile_standardizer(x=y, out_dist="uniform")
     elif pp is None:
         x_org = x
         y_org = y
@@ -183,4 +277,57 @@ def preprocess_data(x, y, pp):
         print("Undefined pre-processing")
 
     return x, y
+
+
+def data_index_splitter(x, validation=False):
+
+    if not validation:
+        all_idx = np.arange(len(x))
+        train_size = int(0.9 * len(all_idx))
+        train_idx = np.random.choice(a=all_idx, size=train_size, replace=False, )
+        test_idx = list(set(all_idx).difference(train_idx))
+        return train_idx, test_idx
+
+    elif validation:
+        all_idx = np.arange(len(x))
+        train_size = int(0.7 * len(all_idx))
+        train_idx = np.random.choice(a=all_idx, size=train_size, replace=False, )
+        test_idx = list(set(all_idx).difference(train_idx))
+        test_size = int(0.5 * len(test_idx))
+        val_idx = np.random.choice(test_idx, size=test_size, replace=False)
+        test_idx = list(set(test_idx).difference(val_idx))
+        return train_idx, val_idx, test_idx
+
+
+def data_splitter(x, y, x_org, y_org, learning_method):
+
+    # train, validation and test split:
+    train_idx, val_idx, test_idx = data_index_splitter(x=x, validation=True)
+
+    x_train, y_train = x[train_idx, :], y[train_idx, :].ravel()
+    x_val, y_val = x[val_idx, :], y[val_idx, :].ravel()
+    x_test, y_test = x[test_idx, :], y[test_idx, :].ravel()
+
+    # not preprocessed data
+    x_train_org, y_train_org = x_org[train_idx, :], y_org[train_idx, :].ravel()
+    x_val_org, y_val_org = x_org[val_idx, :], y_org[val_idx, :].ravel()
+    x_test_org, y_test_org = x_org[test_idx, :], y_org[test_idx, :].ravel()
+
+    print("Data splits shape: \n",
+          "\t Train:", x_train.shape, y_train.shape, "\n",
+          "\t Val:", x_val.shape, y_val.shape, "\n",
+          "\t Test:", x_test.shape, y_test.shape)
+
+    print("************************************************************************")
+    print("x_train: \n", x_train[:5, :])
+    print("************************************************************************")
+    print("y_train: \n", y_train[:5])
+    print("************************************************************************")
+
+    # because labels for classification and clustering should not be standardized
+    if learning_method == "regression":
+        return x_train, y_train_org, x_val, y_val_org, x_test, y_test_org,
+    else:
+        return x_train, y_train_org, x_val, y_val_org, x_test, y_test_org
+
 
