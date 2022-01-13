@@ -12,6 +12,7 @@ import dyslexia_data as data
 import classifications as cls
 
 
+
 np.set_printoptions(suppress=True, precision=3, linewidth=140)
 
 
@@ -174,7 +175,7 @@ if __name__ == "__main__":
                                 )
 
         # train, validation and test split:
-        x_train, y_train, x_val, y_val, x_test, y_test, = util.data_splitter(
+        x_train, y_train, x_val, y_val, x_test, y_test, = data.data_splitter(
             x=x, y=y, x_org=x_org, y_org=y_org, learning_method=learning_method
         )
 
@@ -198,10 +199,10 @@ if __name__ == "__main__":
 
         elif learning_method == "clustering":
 
-            model, history = clu.instantiate_fit_clu_model(alg_name, n_clusters, x_train, )
+            model, history = clu.instantiate_fit_clu_model(alg_name, n_clusters, x_train, y_train)
 
         elif learning_method == "classification":
-            model, history = cls.apply_a_classification(alg_name, n_clusters, x_train, )
+            model, history = cls.instantiate_fit_cls_model(alg_name, n_clusters, x_train, y_train)
 
         # plot the train and validation loss function errors
         if history is not None:

@@ -6,7 +6,7 @@ from sklearn.cluster import AffinityPropagation
 from sklearn.cluster import AgglomerativeClustering
 
 
-def instantiate_fit_clu_model(alg_name, n_clusters, x_train, ):
+def instantiate_fit_clu_model(alg_name, n_clusters, x_train, y_train):
 
     alg_name = alg_name.lower()
 

@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 import utilities as util
+from sklearn.preprocessing import MinMaxScaler, \
+    StandardScaler, QuantileTransformer, RobustScaler
 
 
 def load_data(data_name, group):
@@ -148,6 +150,7 @@ def remove_missing_data(df):
 
     return df.dropna()
 
+
 def range_standardizer(x):
     """ Returns Range standardized data set.
     Input: a numpy array, representing entity-to-feature matrix.
@@ -202,7 +205,7 @@ def zscore_standardizer_(x_test, x_train):
 
 def quantile_standardizer(x, out_dist):
 
-    QT =  QuantileTransformer(output_distribution=out_dist,)
+    QT = QuantileTransformer(output_distribution=out_dist,)
     x_q = QT.fit_transform(x)
 
     return x_q, QT
