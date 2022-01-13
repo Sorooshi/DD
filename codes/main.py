@@ -163,12 +163,15 @@ if __name__ == "__main__":
             assert learning_method is True
 
         if "nn" in alg_name.lower():
-            specifier = alg_name+", loss="+loss+", opt="+optimizer+", repeat="+repeat+", pp="+pp
+            specifier = alg_name+", loss="+loss+", opt="+optimizer + \
+                        ", repeat="+repeat+", pp="+pp+" target_is_org="+str(target_is_org)
 
         elif "rf" in alg_name.lower() or "gb" in alg_name.lower():
-            specifier = alg_name+", n_estimators="+str(n_estimators)+", repeat="+repeat+", pp="+pp
+            specifier = alg_name+", n_estimators="+str(n_estimators) + \
+                        ", repeat="+repeat+", pp="+pp+" target_is_org="+str(target_is_org)
         else:
-            specifier = alg_name+", repeat="+repeat+", pp="+pp
+            specifier = alg_name+", repeat="+repeat+", pp="+pp + \
+                        " target_is_org="+str(target_is_org)
 
         print("specifier:", specifier)
 
