@@ -17,12 +17,11 @@ class VNNRegression(tfk.Model):
         self.n_units = n_units
         self.input_dim = input_dim
         self.output_dim = output_dim
-        self.name = self.name
 
         self.dense_1 = tfkl.Dense(units=self.n_units,
                                   activation=tf.nn.relu,
                                   input_shape=(self.input_dim,),
-                                  name=self.name,
+                                  name=name,
                                   )
 
         self.dense_2 = tfkl.Dense(units=self.output_dim, )
@@ -40,12 +39,11 @@ class DNNRegression(tfk.Model):
         self.n_units = n_units
         self.input_dim = input_dim
         self.output_dim = output_dim
-        self.name = name
 
         self.dense_1 = tfkl.Dense(units=self.n_units,
                                   activation=tf.nn.relu,
                                   input_shape=(self.input_dim,),
-                                  name=self.name,
+                                  name=name,
                                   )
 
         self.dense_2 = tfkl.Dense(units=int(2*self.n_units),
@@ -98,17 +96,17 @@ class RBFKernelFn(tfkl.Layer):
 
 
 class VNNClassification(tfk.Model):
+
     def __init__(self, n_units, input_dim, output_dim, name="vnn_cls", **kwargs):
         super(VNNClassification, self).__init__()
         self.n_units = n_units
         self.input_dim = input_dim
         self.output_dim = output_dim
-        self.name = name
 
         self.dense_1 = tfkl.Dense(units=self.n_units,
                                   activation=tf.nn.relu,
                                   inpute_shape=(self.input_dim, 1),
-                                  name=self.name,
+                                  name=name,
                                   )
         if self.output_dim == 1:
             activation_fn = tf.nn.sigmoid
@@ -137,12 +135,11 @@ class DNNClassification(tfk.Model):
         self.n_units = n_units
         self.input_dim = input_dim
         self.output_dim = output_dim
-        self.name = name
 
         self.dense_1 = tfkl.Dense(units=self.n_units,
                                   activation=tf.nn.relu,
                                   input_shape=(self.input_dim,),
-                                  name=self.name,
+                                  name=name,
                                   )
 
         self.dense_2 = tfkl.Dense(units=int(2*self.n_units),
