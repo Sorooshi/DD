@@ -23,7 +23,7 @@ def instantiate_fit_clu_model(alg_name, n_clusters, x_train, y_train):
         model = AgglomerativeClustering(n_clusters=n_clusters)
 
     elif alg_name == "ms":
-        print("Mean Shift!")
+        print("Mean-Shift!")
         model = MeanShift(bandwidth=None, )
 
     # methods lead to multiclass clusters
@@ -50,5 +50,8 @@ def instantiate_fit_clu_model(alg_name, n_clusters, x_train, y_train):
     history = None
 
     return model, history
+
+
+
 
 
