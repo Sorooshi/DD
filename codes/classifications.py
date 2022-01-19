@@ -16,7 +16,7 @@ def apply_a_classifier(alg_name, n_estimators, x_train, y_train):
         print("Random Forest!")
 
         model = RandomForestClassifier(n_estimators=n_estimators,
-                                       criterion='mse',
+                                       criterion='gini',
                                        min_samples_leaf=1,
                                        verbose=1,
                                        n_jobs=-2,
