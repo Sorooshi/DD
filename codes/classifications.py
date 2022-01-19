@@ -26,23 +26,21 @@ def apply_a_classifier(alg_name, n_estimators, x_train, y_train):
     elif alg_name == "gpc":
         print("Gaussian Process!")
         kernel = DotProduct() + WhiteKernel()
-        model = GaussianProcessClassifier(kernel=kernel,
-                                          random_state=0)
+        model = GaussianProcessClassifier(kernel=kernel,)
 
     # Gradient Boosting Regressor
     elif alg_name == "gbc":   # does not support 2d y
         print("Gradient Boosting!")
         model = GradientBoostingClassifier(n_estimators=n_estimators,
                                            verbose=1,
-                                           loss='ls',
+                                           loss='deviance',
                                            )
 
     # Adaboost Regressor
     elif alg_name == "ac":  # does not support 2d y
         print("Adaboost!")
-        model = AdaBoostClassifier(n_estimators=n_estimators,
-                                   loss="linear",
-                                   )
+        model = AdaBoostClassifier(n_estimators=n_estimators,)
+
     else:
         print ("Undefined regression model.")
         f = True
