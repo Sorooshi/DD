@@ -1,5 +1,5 @@
 import flow as nf
-import nn_regressions as nnr
+import tf_neural_networks as tf_nn
 from sklearn.ensemble import AdaBoostRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
@@ -61,12 +61,12 @@ def instantiate_fit_reg_model(alg_name, loss, n_units, input_dim,
                               x_train, y_train, x_val, y_val, n_estimators, optimizer,):
 
     if alg_name.lower() == "vnn_reg":
-        loss_fn = nnr.determine_reg_tf_loss(loss=loss)
-        _model = nnr.VNNRegression(n_units=n_units, input_dim=input_dim, output_dim=output_dim)
+        loss_fn = tf_nn.determine_reg_tf_loss(loss=loss)
+        _model = tf_nn.VNNRegression(n_units=n_units, input_dim=input_dim, output_dim=output_dim)
 
     elif alg_name.lower() == "dnn_reg":
-        loss_fn = nnr.determine_reg_tf_loss(loss=loss)
-        _model = nnr.DNNRegression(n_units=n_units, input_dim=input_dim, output_dim=output_dim)
+        loss_fn = tf_nn.determine_reg_tf_loss(loss=loss)
+        _model = tf_nn.DNNRegression(n_units=n_units, input_dim=input_dim, output_dim=output_dim)
 
     elif alg_name.lower() == "nf_reg":
         model = nf.NFFitter(var_size=output_dim, cond_size=input_dim, batch_size=batch_size,
@@ -97,9 +97,10 @@ def instantiate_fit_reg_model(alg_name, loss, n_units, input_dim,
         assert f is True
 
     if alg_name.lower() == "vnn_reg" or alg_name.lower() == "dnn_reg":
-        model, history = nnr.compile_and_fit(model=_model, optimizer=optimizer,
-                                             loss=loss_fn, learning_rate=learning_rate,
-                                             batch_size=batch_size, n_epochs=n_epochs,
-                                             x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val, )
+        model, history = tf_nn.compile_and_fit(model=_model, optimizer=optimizer,
+                                               loss=loss_fn, learning_rate=learning_rate,
+                                               batch_size=batch_size, n_epochs=n_epochs,
+                                               x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val,
+                                               )
 
     return model, history
