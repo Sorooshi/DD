@@ -1,9 +1,11 @@
 import numpy as np
 
-regression = True
+regression = False
 
 
 def instantiate_fit_baseline_model(y_train, y_test, target_is_org):
+
+    # model and history are added for the compatibility issue
     history = None
     model = None
     mins = np.min(y_train, axis=0)

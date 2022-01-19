@@ -7,6 +7,8 @@ tfk = tf.keras
 tfkl = tf.keras.layers
 tf.keras.backend.set_floatx('float32')
 
+MULTILABLE = False
+
 
 class VNNRegression(tfk.Model):
     def __init__(self, n_units, input_dim, output_dim, name="vnn_reg", **kwargs):
@@ -15,10 +17,13 @@ class VNNRegression(tfk.Model):
         self.n_units = n_units
         self.input_dim = input_dim
         self.output_dim = output_dim
+        self.name = self.name
 
         self.dense_1 = tfkl.Dense(units=self.n_units,
                                   activation=tf.nn.relu,
-                                  input_shape=(self.input_dim, ))
+                                  input_shape=(self.input_dim,),
+                                  name=self.name,
+                                  )
 
         self.dense_2 = tfkl.Dense(units=self.output_dim, )
 
@@ -35,10 +40,13 @@ class DNNRegression(tfk.Model):
         self.n_units = n_units
         self.input_dim = input_dim
         self.output_dim = output_dim
+        self.name = name
 
         self.dense_1 = tfkl.Dense(units=self.n_units,
                                   activation=tf.nn.relu,
-                                  input_shape=(self.input_dim,))
+                                  input_shape=(self.input_dim,),
+                                  name=self.name,
+                                  )
 
         self.dense_2 = tfkl.Dense(units=int(2*self.n_units),
                                   activation=tf.nn.relu,)
@@ -89,6 +97,83 @@ class RBFKernelFn(tfkl.Layer):
         )
 
 
+class VNNClassification(tfk.Model):
+    def __init__(self, n_units, input_dim, output_dim, name="vnn_cls", **kwargs):
+        super(VNNClassification, self).__init__()
+        self.n_units = n_units
+        self.input_dim = input_dim
+        self.output_dim = output_dim
+        self.name = name
+
+        self.dense_1 = tfkl.Dense(units=self.n_units,
+                                  activation=tf.nn.relu,
+                                  inpute_shape=(self.input_dim, 1),
+                                  name=self.name,
+                                  )
+        if self.output_dim == 1:
+            activation_fn = tf.nn.sigmoid
+        elif self.output_dim > 1 and MULTILABLE is False:
+            activation_fn = tf.nn.softmax
+        else:
+            print("Multi-label classification is not supported yet!")
+            f = True
+            assert f is True
+
+        self.dense_2 = tfkl.Dense(units=self.output_dim,
+                                  activation=activation_fn,
+                                  name="predictions",
+                                  )
+
+    def __call__(self, inputs, ):  # training=None
+        x = self.dense_1(inputs)
+        x = self.dense_s(x)
+        return x
+
+
+class DNNClassification(tfk.Model):
+    def __init__(self, n_units, input_dim, output_dim, name="dnn_cls", **kwargs):
+        super(DNNClassification, self).__init__()
+
+        self.n_units = n_units
+        self.input_dim = input_dim
+        self.output_dim = output_dim
+        self.name = name
+
+        self.dense_1 = tfkl.Dense(units=self.n_units,
+                                  activation=tf.nn.relu,
+                                  input_shape=(self.input_dim,),
+                                  name=self.name,
+                                  )
+
+        self.dense_2 = tfkl.Dense(units=int(2*self.n_units),
+                                  activation=tf.nn.relu,)
+
+        self.dropout = tfkl.Dropout(0.3)
+
+        self.dense_3 = tfkl.Dense(units=int(self.n_units),
+                                  activation=tf.nn.relu,)
+
+        if self.output_dim == 1:
+            activation_fn = tf.nn.sigmoid
+        elif self.output_dim > 1 and MULTILABLE is False:
+            activation_fn = tf.nn.softmax
+        else:
+            print("Multi-label classification is not supported yet!")
+            f = True
+            assert f is True
+
+        self.dense_4 = tfkl.Dense(units=self.output_dim,
+                                  activation=activation_fn,)
+
+    def call(self, inputs, training):
+        x = self.dense_1(inputs)
+        x = self.dense_2(x)
+        x = self.dropout(x)
+        x = self.dense_3(x)
+        x = self.dense_4(x)
+        return x
+
+
 # TF loss function:
 def determine_reg_tf_loss(loss):
 
@@ -125,9 +210,10 @@ def determine_cls_tf_loss(loss):
 
     loss = loss.lower()
 
-    if loss == "mae":
-        loss_fn = tfk.losses.mean_absolute_error
-
+    if loss == "bce":
+        loss_fn = tfk.losses.binary_crossentropy
+    elif loss == "cce":
+        loss_fn = tfk.losses.categorical_crossentropy
     else:
         print("Loss function is not defined.")
 
