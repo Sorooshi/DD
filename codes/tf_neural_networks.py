@@ -26,7 +26,7 @@ class VNNRegression(tfk.Model):
 
         self.dense_2 = tfkl.Dense(units=self.output_dim, )
 
-    def call(self, inputs, training=None):
+    def call(self, inputs,):  # training=None
         x = self.dense_1(inputs)
         x = self.dense_2(x)
         return x
@@ -56,7 +56,7 @@ class DNNRegression(tfk.Model):
 
         self.dense_4 = tfkl.Dense(units=self.output_dim)
 
-    def call(self, inputs, training):
+    def call(self, inputs,):  # training
         x = self.dense_1(inputs)
         x = self.dense_2(x)
         x = self.dropout(x)
@@ -122,9 +122,9 @@ class VNNClassification(tfk.Model):
                                   name="predictions",
                                   )
 
-    def __call__(self, inputs, ):  # training=None
+    def call(self, inputs, ):  # training=None
         x = self.dense_1(inputs)
-        x = self.dense_s(x)
+        x = self.dense_2(x)
         return x
 
 
@@ -162,7 +162,7 @@ class DNNClassification(tfk.Model):
         self.dense_4 = tfkl.Dense(units=self.output_dim,
                                   activation=activation_fn,)
 
-    def call(self, inputs, training):
+    def call(self, inputs,):  # training
         x = self.dense_1(inputs)
         x = self.dense_2(x)
         x = self.dropout(x)
