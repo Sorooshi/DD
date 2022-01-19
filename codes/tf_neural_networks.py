@@ -105,7 +105,7 @@ class VNNClassification(tfk.Model):
 
         self.dense_1 = tfkl.Dense(units=self.n_units,
                                   activation=tf.nn.relu,
-                                  inpute_shape=(self.input_dim, 1),
+                                  input_shape=(self.input_dim, 1),
                                   name=name,
                                   )
         if self.output_dim == 1:
