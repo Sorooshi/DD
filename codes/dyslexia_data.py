@@ -45,7 +45,7 @@ def load_data(data_name, group):
         q_features = ['Age', 'IQ', 'Sound_detection', 'Sound_change', ]
         c_features = ['Sex', 'Grade', ]
 
-        if "regression" in group.lower():
+        if "regression" in group.lower():  # or "baseline" in group.lower()
             targets = ['Reading_speed', ]
         else:
             targets = ['Group', ]
@@ -54,6 +54,7 @@ def load_data(data_name, group):
 
     # ia_report data
     elif data_name == "dd_ia":
+        # print("Load IA report!")
 
         ia_report_xls = pd.ExcelFile("../data/IA_report.xlsx")
 
@@ -108,7 +109,7 @@ def load_data(data_name, group):
         q_features = ['FIX_X', 'FIX_Y', 'FIX_DURATION', ]
         c_features = []
 
-        if "regression" in group.lower():
+        if "regression" in group.lower():  # or "baseline" in group.lower():  # for rnd evaluation
             targets = ['Reading_speed', ]
         else:
             targets = ['Group', ]
@@ -132,10 +133,14 @@ def load_data(data_name, group):
     # I should modify here and after it
     x = data_org.loc[:, features].values
     y = data_org.loc[:, targets].values
+    
+    x = x.astype(float)
+    # y = y.astype(float)
 
     print("Check data for NaNs or Inf: \n",
           "x: ",  np.where(x == np.inf), np.where(x == np.nan), "\n",
-          "y: ", np.where(y == np.inf), np.where(y == np.nan),
+          "y: ", np.where(y == np.inf), np.where(y == np.nan), "\n",
+          "shapes:", x.shape, y.shape,
           )
 
     return data_org, x, y, features, targets, indicators
@@ -282,7 +287,7 @@ def preprocess_data(x, y, pp):
     return x, y
 
 
-def data_index_splitter(x, validation=False):
+def data_index_splitter(x, validation=False,):
 
     if not validation:
         all_idx = np.arange(len(x))
@@ -302,7 +307,7 @@ def data_index_splitter(x, validation=False):
         return train_idx, val_idx, test_idx
 
 
-def data_splitter(x, y, x_org, y_org, learning_method):
+def data_splitter(x, y, x_org, y_org, target_is_org):
 
     # train, validation and test split:
     train_idx, val_idx, test_idx = data_index_splitter(x=x, validation=True)
@@ -319,18 +324,18 @@ def data_splitter(x, y, x_org, y_org, learning_method):
     print("Data splits shape: \n",
           "\t Train:", x_train.shape, y_train.shape, "\n",
           "\t Val:", x_val.shape, y_val.shape, "\n",
-          "\t Test:", x_test.shape, y_test.shape)
+          "\t Test:", x_test.shape, y_test.shape,  "\n",
+          "*******************************************************************************************", "\n",
+          "x_train: \n", x_train[:5, :], "\n",
+          "*******************************************************************************************", "\n",
+          "y_train: \n", y_train[:5],  "\n",
+          "*******************************************************************************************",
+          )
 
-    print("************************************************************************")
-    print("x_train: \n", x_train[:5, :])
-    print("************************************************************************")
-    print("y_train: \n", y_train[:5])
-    print("************************************************************************")
-
-    # because labels for classification and clustering should not be standardized
-    if learning_method == "regression":
-        return x_train, y_train_org, x_val, y_val_org, x_test, y_test_org,
-    else:
+    if target_is_org == 1.:
         return x_train, y_train_org, x_val, y_val_org, x_test, y_test_org
+    else:
+        return x_train, y_train, x_val, y_val, x_test, y_test,
+
 
 
