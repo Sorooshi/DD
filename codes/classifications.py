@@ -56,11 +56,11 @@ def instantiate_fit_cls_model(alg_name, loss, n_units, input_dim,
                               x_train, y_train, x_val, y_val, n_estimators, optimizer,):
 
     if alg_name.lower() == "vnn_cls":
-        loss_fn = tf_nn.determine_reg_tf_loss(loss=loss)
+        loss_fn = tf_nn.determine_cls_tf_loss(loss=loss)
         _model = tf_nn.VNNClassification(n_units=n_units, input_dim=input_dim, output_dim=output_dim)
 
     elif alg_name.lower() == "dnn_cls":
-        loss_fn = tf_nn.determine_reg_tf_loss(loss=loss)
+        loss_fn = tf_nn.determine_cls_tf_loss(loss=loss)
         _model = tf_nn.DNNClassification(n_units=n_units, input_dim=input_dim, output_dim=output_dim)
 
     elif alg_name.lower() == "nf_cls":
