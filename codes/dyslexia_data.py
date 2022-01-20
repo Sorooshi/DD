@@ -135,7 +135,10 @@ def load_data(data_name, group):
     y = data_org.loc[:, targets].values
     
     x = x.astype(float)
-    # y = y.astype(float)
+    if "regression" in group.lower():
+        y = y.astype(float)
+    else:
+        y = y.astype(int)
 
     print("Check data for NaNs or Inf: \n",
           "x: ",  np.where(x == np.inf), np.where(x == np.nan), "\n",

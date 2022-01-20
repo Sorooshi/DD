@@ -238,10 +238,12 @@ if __name__ == "__main__":
                 except:
                     y_pred = model.fit_predict(x_test).ravel()
 
-            # to avoid 1) ill-defined situation in computing precision, recall, f1_score and roc_auc,
-            # 2) to avoid wrong computation in MEAPE, I labeled normal as 1 and abnormal as 2;
-            # thus y_pred should be compatible and to this end I added 1 to each of its entries.
-            y_pred = y_pred + 1
+            if learning_method != "regression":
+                # to avoid 1) ill-defined situation in computing precision, recall, f1_score and roc_auc,
+                # 2) to avoid wrong computation in MEAPE, I labeled normal as 1 and abnormal as 2;
+                # thus y_pred should be compatible and to this end I added 1 to each of its entries.
+                y_pred = y_pred + 1
+                y_pred = y_pred.astype(int)
 
             print("Shapes: \n",
                   "y_pred", y_pred.shape, "\n",

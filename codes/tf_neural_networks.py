@@ -108,7 +108,7 @@ class VNNClassification(tfk.Model):
                                   input_shape=(self.input_dim, 1),
                                   name=name,
                                   )
-        if self.output_dim == 1:
+        if self.output_dim == 1 and MULTILABLE is False:
             activation_fn = tf.nn.sigmoid
         elif self.output_dim > 1 and MULTILABLE is False:
             activation_fn = tf.nn.softmax
@@ -150,7 +150,7 @@ class DNNClassification(tfk.Model):
         self.dense_3 = tfkl.Dense(units=int(self.n_units),
                                   activation=tf.nn.relu,)
 
-        if self.output_dim == 1:
+        if self.output_dim == 1 and MULTILABLE is False:
             activation_fn = tf.nn.sigmoid
         elif self.output_dim > 1 and MULTILABLE is False:
             activation_fn = tf.nn.softmax
