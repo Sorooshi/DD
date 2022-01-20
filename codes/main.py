@@ -189,6 +189,17 @@ if __name__ == "__main__":
                 x=x, y=y, x_org=x_org, y_org=y_org, target_is_org=target_is_org,
             )
 
+            print("Data splits shape: \n",
+                  "\t Train:", x_train.shape, y_train.shape, "\n",
+                  "\t Val:", x_val.shape, y_val.shape, "\n",
+                  "\t Test:", x_test.shape, y_test.shape, "\n",
+                  "*******************************************************************************************", "\n",
+                  "x_train: \n", x_train[:5, :], "\n",
+                  "*******************************************************************************************", "\n",
+                  "y_train: \n", y_train[:5], "\n",
+                  "*******************************************************************************************",
+                  )
+
             # start of the program execution
             start = time.time()
 
@@ -242,7 +253,8 @@ if __name__ == "__main__":
                 # to avoid 1) ill-defined situation in computing precision, recall, f1_score and roc_auc,
                 # 2) to avoid wrong computation in MEAPE, I labeled normal as 1 and abnormal as 2;
                 # thus y_pred should be compatible and to this end I added 1 to each of its entries.
-                y_pred = y_pred + 1
+                if learning_method == "clustering":
+                    y_pred = y_pred + 1
                 y_pred = y_pred.astype(int)
 
             print("Shapes: \n",

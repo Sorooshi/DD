@@ -150,13 +150,13 @@ def load_data(data_name, group):
 
 
 def remove_missing_data(df):
-    for col in df.columns:
-        try:
-            df[col].replace({".": np.nan}, inplace=True)
-        except Exception as e:
-            print(e, "\n No missing values in", col)
+        for col in df.columns:
+            try:
+                df[col].replace({".": np.nan}, inplace=True)
+            except Exception as e:
+                print(e, "\n No missing values in", col)
 
-    return df.dropna()
+        return df.dropna()
 
 
 def range_standardizer(x):
@@ -323,17 +323,6 @@ def data_splitter(x, y, x_org, y_org, target_is_org):
     x_train_org, y_train_org = x_org[train_idx, :], y_org[train_idx, :].ravel()
     x_val_org, y_val_org = x_org[val_idx, :], y_org[val_idx, :].ravel()
     x_test_org, y_test_org = x_org[test_idx, :], y_org[test_idx, :].ravel()
-
-    print("Data splits shape: \n",
-          "\t Train:", x_train.shape, y_train.shape, "\n",
-          "\t Val:", x_val.shape, y_val.shape, "\n",
-          "\t Test:", x_test.shape, y_test.shape,  "\n",
-          "*******************************************************************************************", "\n",
-          "x_train: \n", x_train[:5, :], "\n",
-          "*******************************************************************************************", "\n",
-          "y_train: \n", y_train[:5],  "\n",
-          "*******************************************************************************************",
-          )
 
     if target_is_org == 1.:
         return x_train, y_train_org, x_val, y_val_org, x_test, y_test_org
