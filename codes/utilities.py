@@ -348,10 +348,10 @@ def plot_loss(run, history, name):
 
 def save_model(run, model, name, experiment_name):
 
-    if name == "rfr" or name == "gbr" or name == "gmm" or name == 'ar':
+    if "rf" in name or "gb" in name or "gp" in name or "ar" in name:
         dump(model, os.path.join(wandb.run.dir, name + experiment_name + ".joblib"))  #
 
-    elif name == "dnn_reg" or name=="vnn_reg":
+    elif "dnn" in name or "vnn" in name:
         model.save_weights(os.path.join(wandb.run.dir,
                                         name + experiment_name + ".h5"))
     # else:

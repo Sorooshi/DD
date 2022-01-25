@@ -277,24 +277,25 @@ if __name__ == "__main__":
 
             run = util.wandb_metrics(run=run, y_true=y_test, y_pred=y_pred, learning_method=learning_method)
 
-            # plot the predicted values and their std for the entire test set
-            run = util.wandb_true_pred_plots(run=run,
-                                             y_true=y_test, y_pred=y_pred,
-                                             specifier=specifier,
-                                             data_name=data_name,)
+            if repeat % 3 == 0:
+                # plot the predicted values and their std for the entire test set
+                run = util.wandb_true_pred_plots(run=run,
+                                                 y_true=y_test, y_pred=y_pred,
+                                                 specifier=specifier,
+                                                 data_name=data_name,)
 
-            run = util.wandb_true_pred_scatters(run=run,
-                                                y_test=y_test, y_pred=y_pred,
-                                                specifier=specifier,
-                                                data_name=data_name,)
+                run = util.wandb_true_pred_scatters(run=run,
+                                                    y_test=y_test, y_pred=y_pred,
+                                                    specifier=specifier,
+                                                    data_name=data_name,)
 
-            run = util.wandb_true_pred_histograms(run=run,
-                                                  y_test=y_test, y_pred=y_pred,
-                                                  specifier=specifier,
-                                                  data_name=data_name,
-                                                  )
+                run = util.wandb_true_pred_histograms(run=run,
+                                                      y_test=y_test, y_pred=y_pred,
+                                                      specifier=specifier,
+                                                      data_name=data_name,
+                                                      )
 
-            run = util.save_model(run=run, model=model, name=alg_name, experiment_name=specifier)
+                run = util.save_model(run=run, model=model, name=alg_name, experiment_name=specifier)
 
             run.finish()
 
