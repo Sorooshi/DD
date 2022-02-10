@@ -21,17 +21,21 @@ class DyslexiaData:
         self.names = names
         self.k_folds = k_folds
         self.xlsx_file = pd.ExcelFile
-        self.separated_datasets = defaultdict(pd.DataFrame)
-        self.separated_datasets_kfold = None
-        self.separated_datasets_kfold_ts = None
-        self.ia_datasets = defaultdict(list)
-        self.fix_datasets = defaultdict(list)
-        self.demo_datasets = defaultdict(list)
 
         self.xlsx_demo = pd.ExcelFile(os.path.join(self.path, "demo.xlsx"))
         self.xlsx_ia = pd.ExcelFile(os.path.join(self.path, "IA_report.xlsx"))
         self.xlsx_fix = pd.ExcelFile(os.path.join(self.path, "Fixation_report.xlsx"))
 
+        self.ia_datasets = defaultdict(list)
+        self.fix_datasets = defaultdict(list)
+        self.demo_datasets = defaultdict(list)
+
+        self.ia = pd.DataFrame
+        self.fix = pd.DataFrame
+        self.demo = pd.DataFrame
+
+        self.separated_datasets_kfold = None
+        self.separated_datasets_kfold_ts = None
 
     def get_demo_datasets(self, ):
 
@@ -116,7 +120,19 @@ class DyslexiaData:
 
             print(" ", sheet, tmp.shape)
 
-        return
+        return self.fix_datasets
+
+    def concat_classes_demo(self, ):
+        self.demo = pd.concat([v for k, v in self.demo_datasets.items()], axis=0)
+        return self.demo
+
+    def concat_classes_ia(self, ):
+        self.ia = pd.concat([v for k, v in self.ia_datasets.items()], axis=0)
+        return self.ia
+
+    def concat_classes_fix(self, ):
+        self.fix = pd.concat([v for k, v in self.fix_datasets.items()], axis=0)
+        return self.fix
 
     def _remove_missing_data(self, df):
         for col in df.columns:
