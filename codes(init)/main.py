@@ -137,7 +137,7 @@ if __name__ == "__main__":
 
         data_org, x, y, features, targets, indicators = data.load_data(data_name=data_name, group=group)
 
-        # Preprocessing tha data
+        # Preprocessing tha datasets
         x_org, y_org = x, y
         x, y = data.preprocess_data(x=x, y=y, pp=pp)
 
