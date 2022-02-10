@@ -5,7 +5,6 @@ from sklearn.preprocessing import MinMaxScaler, \
     StandardScaler, QuantileTransformer, RobustScaler
 
 
-
 def load_data(data_name, group):
 
     """
@@ -21,14 +20,14 @@ def load_data(data_name, group):
 
     """
 
-    # load the corresponding data
+    # load the corresponding datasets
     data = {}
-    # demographic data
+    # demographic datasets
     data_name = data_name.lower()
 
     if data_name == "dd_demo":
 
-        demo_xls = pd.ExcelFile("../data/demo.xlsx")
+        demo_xls = pd.ExcelFile("../datasets/demo.xlsx")
         indicators = ['SubjID', ]
 
         data["normal"] = remove_missing_data(
@@ -53,11 +52,11 @@ def load_data(data_name, group):
 
         all_targets = ['Reading_speed', 'Group']
 
-    # ia_report data
+    # ia_report datasets
     elif data_name == "dd_ia":
         # print("Load IA report!")
 
-        ia_report_xls = pd.ExcelFile("../data/IA_report.xlsx")
+        ia_report_xls = pd.ExcelFile("../datasets/IA_report.xlsx")
 
         indicators = ['SubjectID', 'Sentence_ID', 'Word_Number', ]
 
@@ -89,10 +88,10 @@ def load_data(data_name, group):
         targets = ['Group', ]
         all_targets = ['Group', ]
 
-    # fixation report data
+    # fixation report datasets
     elif data_name == "dd_fix":
 
-        fixation_xls = pd.ExcelFile("../data/Fixation_report.xlsx")
+        fixation_xls = pd.ExcelFile("../datasets/Fixation_report.xlsx")
         indicators = ['SubjectID', 'Sentence_ID', 'Word_Number', ]
 
         data["normal"] = remove_missing_data(
@@ -118,7 +117,7 @@ def load_data(data_name, group):
         all_targets = ['Reading_speed', 'Group']
 
     else:
-        print("Undefined data set, define it above!")
+        print("Undefined datasets set, define it above!")
 
     _data_org = pd.concat([data["normal"], data["abnormal"]])
     _data_org = _data_org.replace({"norm": 1, "dyslexia": 2}, )
@@ -141,7 +140,7 @@ def load_data(data_name, group):
     else:
         y = y.astype(int)
 
-    print("Check data for NaNs or Inf: \n",
+    print("Check datasets for NaNs or Inf: \n",
           "x: ",  np.where(x == np.inf), np.where(x == np.nan), "\n",
           "y: ", np.where(y == np.inf), np.where(y == np.nan), "\n",
           "shapes:", x.shape, y.shape,
@@ -161,7 +160,7 @@ def remove_missing_data(df):
 
 
 def range_standardizer(x):
-    """ Returns Range standardized data set.
+    """ Returns Range standardized datasets set.
     Input: a numpy array, representing entity-to-feature matrix.
     """
 
@@ -174,7 +173,7 @@ def range_standardizer(x):
 
 
 def range_standardizer_(x_test, x_train):
-    """ Returns Range standardized data set.
+    """ Returns Range standardized datasets set.
     Input: a numpy array, representing entity-to-feature matrix.
     """
 
@@ -187,7 +186,7 @@ def range_standardizer_(x_test, x_train):
 
 
 def zscore_standardizer(x):
-    """ Returns Z-scored standardized data set.
+    """ Returns Z-scored standardized datasets set.
     Input: a numpy array, representing entity-to-feature matrix.
     """
 
@@ -200,7 +199,7 @@ def zscore_standardizer(x):
 
 
 def zscore_standardizer_(x_test, x_train):
-    """ Returns Z-scored standardized data set.
+    """ Returns Z-scored standardized datasets set.
     Input: a numpy array, representing entity-to-feature matrix.
     """
 
@@ -320,7 +319,7 @@ def data_splitter(x, y, x_org, y_org, target_is_org):
     x_val, y_val = x[val_idx, :], y[val_idx, :].ravel()
     x_test, y_test = x[test_idx, :], y[test_idx, :].ravel()
 
-    # not preprocessed data
+    # not preprocessed datasets
     x_train_org, y_train_org = x_org[train_idx, :], y_org[train_idx, :].ravel()
     x_val_org, y_val_org = x_org[val_idx, :], y_org[val_idx, :].ravel()
     x_test_org, y_test_org = x_org[test_idx, :], y_org[test_idx, :].ravel()

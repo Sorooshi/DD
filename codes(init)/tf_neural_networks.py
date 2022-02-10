@@ -84,7 +84,7 @@ class RBFKernelFn(tfkl.Layer):
 
     def call(self, x):
         # never will be called:
-        # it just holds the data so that Keras will understand
+        # it just holds the datasets so that Keras will understand
         return x
 
     @property
