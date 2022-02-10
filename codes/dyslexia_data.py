@@ -5,8 +5,6 @@ from sklearn.preprocessing import MinMaxScaler, \
     StandardScaler, QuantileTransformer, RobustScaler
 
 
-print()
-
 
 def load_data(data_name, group):
 
