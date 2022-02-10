@@ -4,27 +4,27 @@ import numpy as np
 np.set_printoptions(suppress=True, precision=3, linewidth=140)
 
 
-def args_parser(args):
+def args_parser(arguments):
 
-    _pp = args.pp.lower()
-    _tag = args.tag.lower()
-    _run = args.run
-    _data_name = args.data_name  # .lower()
-    _note = args.note
-    _loss = args.loss.lower()
-    _alg_name = args.alg_name  # .lower()
-    _group = args.group
-    _project = args.project
-    _n_units = args.n_units
-    _n_epochs = args.n_epochs
-    _optimizer = args.optimizer.lower()
-    _batch_size = args.batch_size
-    _learning_rate = args.learning_rate
-    _n_estimators = args.n_estimators
-    _output_dim = args.output_dim
-    _n_clusters = args.n_clusters
-    _n_repeats = args.n_repeats
-    _target_is_org = args.target_is_org
+    _pp = arguments.pp.lower()
+    _tag = arguments.tag.lower()
+    _run = arguments.run
+    _data_name = arguments.data_name  # .lower()
+    _note = arguments.note
+    _loss = arguments.loss.lower()
+    _alg_name = arguments.alg_name  # .lower()
+    _group = arguments.group
+    _project = arguments.project
+    _n_units = arguments.n_units
+    _n_epochs = arguments.n_epochs
+    _optimizer = arguments.optimizer.lower()
+    _batch_size = arguments.batch_size
+    _learning_rate = arguments.learning_rate
+    _n_estimators = arguments.n_estimators
+    _output_dim = arguments.output_dim
+    _n_clusters = arguments.n_clusters
+    _n_repeats = arguments.n_repeats
+    _target_is_org = arguments.target_is_org
 
     return _pp, _tag, _run, _note, _data_name, _loss, _alg_name, \
            _group, _project, _n_units,_n_epochs, _optimizer, _batch_size, \
@@ -105,5 +105,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     pp, tag, run, note, data_name, loss, alg_name, group, \
-    project, n_units, n_epochs, optimizer, batch_size, \
-    learning_rate, n_estimators, output_dim, n_clusters, n_repeats, target_is_org = args_parser(args)
+        project, n_units, n_epochs, optimizer, batch_size, \
+        learning_rate, n_estimators, output_dim, n_clusters, \
+        n_repeats, target_is_org = args_parser(arguments=args)
+
+
