@@ -135,14 +135,14 @@ class DyslexiaData:
         return self.fix
 
     @staticmethod
-    def concat_dfs(demo, df2, subject_ids, features1, features2):
+    def concat_dfs(df1, df2, subject_ids, features1, features2):
 
-        """concatenates demo (dataframe) tp df2, that is it casts demo rows/columns to equal dimension of df2"""
+        """concatenates df1 tp df2, that is it casts df1 rows/columns to equal dimension of df2"""
 
         data = []
 
         for subject_id in subject_ids:
-            tmp1 = demo.loc[(demo.SubjectID == subject_id)]
+            tmp1 = df1.loc[(df1.SubjectID == subject_id)]
             tmp1 = tmp1.loc[:, features1]
             tmp2 = df2.loc[df2.SubjectID == subject_id]
             tmp2 = tmp2.loc[:, features2]
