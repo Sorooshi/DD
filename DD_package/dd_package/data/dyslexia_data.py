@@ -58,7 +58,7 @@ class DyslexiaData:
                 "Sound_change": float,
             })
 
-            self.demo_datasets[sheet] = tmp.sort_values(by=["SubjID"]).dropna()
+            self.demo_datasets[sheet] = tmp.sort_values(by=["SubjectID"]).dropna()
 
             print(" ", sheet, tmp.shape)
 
