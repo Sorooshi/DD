@@ -39,7 +39,7 @@ class DyslexiaData:
 
     def get_demo_datasets(self, ):
 
-        print("Loading Demo data.")
+        print("Loading Demo data: ")
 
         for sheet in  self.xlsx_demo.sheet_names:
             tmp = pd.read_excel( self.xlsx_demo, sheet)
@@ -66,7 +66,7 @@ class DyslexiaData:
 
     def get_ia_datasets(self, ):
 
-        print("Loading IA_report data.")
+        print("Loading IA_report data: ")
 
         for sheet in self.xlsx_ia.sheet_names:
             tmp = pd.read_excel(self.xlsx_ia, sheet)
@@ -100,7 +100,7 @@ class DyslexiaData:
 
     def get_fix_datasets(self, ):
 
-        print("Loading Fixation report data.")
+        print("Loading Fixation report data:")
 
         for sheet in self.xlsx_fix.sheet_names:
             tmp = pd.read_excel(self.xlsx_fix, sheet)
@@ -133,6 +133,42 @@ class DyslexiaData:
     def concat_classes_fix(self, ):
         self.fix = pd.concat([v for k, v in self.fix_datasets.items()], axis=0)
         return self.fix
+
+    @staticmethod
+    def concat_dfs(df1, df2, subject_ids, features1, features2):
+
+        """concatenates df1 tp df2, that is it casts df1 rows/columns to equal dimension of df2"""
+
+        data = []
+
+        for subject_id in subject_ids:
+            tmp1 = df1.loc[(df1.SubjID == subject_id)]
+            tmp1 = tmp1.loc[:, features1]
+            tmp2 = df2.loc[df2.SubjectID == subject_id]
+            tmp2 = tmp2.loc[:, features2]
+
+            n = tmp2.shape[0]
+            tmp1 = pd.concat([tmp1] * n, ignore_index=True)
+
+            # to check the dimension I copieed tmp2
+            _tmp2 = tmp2.copy(deep=True)
+            _tmp2[features1] = tmp1
+
+            if _tmp2.shape[0] != tmp1.shape[0]:
+                print(subject_id, "row")
+                print("tmp2.shape:", tmp2.shape, n)
+                print("tmp1.shape:", tmp1.shape)
+                print("concated tmp2.shape:", tmp2.shape, n)
+
+            if _tmp2.shape[1] != tmp1.shape[1] + tmp2.shape[1]:
+                print(subject_id, "col")
+                print("tmp2.shape:", tmp2.shape, n)
+                print("tmp1.shape:", tmp1.shape)
+                print("concated tmp2.shape:", tmp2.shape, n)
+
+            data.append(_tmp2)
+
+        return pd.concat(data)
 
     def _remove_missing_data(self, df):
         for col in df.columns:
