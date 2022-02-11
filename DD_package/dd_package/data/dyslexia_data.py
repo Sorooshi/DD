@@ -135,7 +135,7 @@ class DyslexiaData:
         return self.fix
 
     @staticmethod
-    def concat_demo_to_other(demo, df2, subject_ids, features1, features2):
+    def concat_dfs(demo, df2, subject_ids, features1, features2):
 
         """concatenates demo (dataframe) tp df2, that is it casts demo rows/columns to equal dimension of df2"""
 
@@ -148,7 +148,10 @@ class DyslexiaData:
             tmp2 = tmp2.loc[:, features2]
 
             n = tmp2.shape[0]
-            tmp1 = pd.concat([tmp1] * n, ignore_index=True)
+            if n == tmp1.shape[0]:
+                tmp1 = pd.concat([tmp1], ignore_index=True)
+            else:
+                tmp1 = pd.concat([tmp1] * n, ignore_index=True)
 
             # to check the dimension I copieed tmp2
             _tmp2 = tmp2.copy(deep=True)
