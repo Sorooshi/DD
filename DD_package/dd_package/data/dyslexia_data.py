@@ -48,7 +48,7 @@ class DyslexiaData:
             tmp.replace({"norm": 1, "risk": 2, "dyslexia": 3}, inplace=True)
             tmp = tmp.astype({
                 "Group": str,
-                "SubjID": str,
+                "SubjectID": str,
                 "Sex": int,
                 "Grade": int,
                 "Age": int,
@@ -142,7 +142,7 @@ class DyslexiaData:
         data = []
 
         for subject_id in subject_ids:
-            tmp1 = df1.loc[(df1.SubjID == subject_id)]
+            tmp1 = df1.loc[(df1.SubjectID == subject_id)]
             tmp1 = tmp1.loc[:, features1]
             tmp2 = df2.loc[df2.SubjectID == subject_id]
             tmp2 = tmp2.loc[:, features2]
