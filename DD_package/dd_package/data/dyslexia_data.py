@@ -158,13 +158,13 @@ class DyslexiaData:
                 print(subject_id, "row")
                 print("tmp2.shape:", tmp2.shape, n)
                 print("tmp1.shape:", tmp1.shape)
-                print("concated tmp2.shape:", tmp2.shape, n)
+                print("concat tmp2.shape:", tmp2.shape, n)
 
             if _tmp2.shape[1] != tmp1.shape[1] + tmp2.shape[1]:
                 print(subject_id, "col")
                 print("tmp2.shape:", tmp2.shape, n)
                 print("tmp1.shape:", tmp1.shape)
-                print("concated tmp2.shape:", tmp2.shape, n)
+                print("concat tmp2.shape:", tmp2.shape, n)
 
             data.append(_tmp2)
 
