@@ -147,7 +147,7 @@ class DyslexiaData:
         """concatenates df2 to df1, that is, it casts df2's dimensions df1"""
 
         data = []
-
+        subject_ids = df2.SubjectID
         for subject_id in subject_ids:
             tmp1 = df1.loc[(df1.SubjectID == subject_id)]
             tmp1 = tmp1.loc[:, features1].reset_index(drop=True)
