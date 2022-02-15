@@ -1,5 +1,6 @@
 import argparse
 import numpy as np
+from collections import defaultdict
 
 from dd_package.data.dyslexia_data import DyslexiaData
 from dd_package.models.regression_estimators import RegressionEstimators
@@ -135,8 +136,14 @@ if __name__ == "__main__":
                             features2=demo.columns[2:],
                             )
 
-    if learning_method = "regression":
+    learning_method = None
+
+    if learning_method == "regression":
         re = RegressionEstimators()
+        estimator, params = re.instantiate_an_estimator()
+        tuned_parameters = re.tune_hyper_parameters(estimator=estimator, params=params)
+        results = re.train_test_tuned_estimator(estimator=estimator, tuned_params=tuned_parameters)
+
 
 
 
