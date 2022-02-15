@@ -1,6 +1,10 @@
 import argparse
 import numpy as np
 
+from dd_package.data.dyslexia_data import DyslexiaData
+from dd_package.models.regression_estimators import RegressionEstimators
+
+
 np.set_printoptions(suppress=True, precision=3, linewidth=140)
 
 
@@ -108,5 +112,31 @@ if __name__ == "__main__":
         project, n_units, n_epochs, optimizer, batch_size, \
         learning_rate, n_estimators, output_dim, n_clusters, \
         n_repeats, target_is_org = args_parser(arguments=args)
+
+    dd = DyslexiaData(n_splits=2, n_repeats=2, )
+
+    demos = dd.get_demo_datasets()
+    ias = dd.get_ia_datasets()
+    fixs = dd.get_fix_datasets()
+
+    demo = dd.concat_classes_demo()
+    ia = dd.concat_classes_ia()
+    fix = dd.concat_classes_fix()
+
+    fix_demo = dd.concat_dfs(df1=fix,
+                             df2=demo,
+                             features1=fix.columns,
+                             features2=demo.columns[2:],
+                             )
+
+    ia_demo = dd.concat_dfs(df1=ia,
+                            df2=demo,
+                            features1=ia.columns,
+                            features2=demo.columns[2:],
+                            )
+
+    if learning_method = "regression":
+        re = RegressionEstimators()
+
 
 
