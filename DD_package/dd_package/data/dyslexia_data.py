@@ -142,7 +142,7 @@ class DyslexiaData:
         return self.fix
 
     @staticmethod
-    def concat_dfs(df1, df2, subject_ids, features1, features2):
+    def concat_dfs(df1, df2, features1, features2):
 
         """concatenates df2 to df1, that is, it casts df2's dimensions df1"""
 
