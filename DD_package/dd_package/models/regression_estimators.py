@@ -22,14 +22,18 @@ class RegressionEstimators:
         self.y = y  # target variables
 
         self.estimator = None
+        self.params = defaultdict()
 
         self.results = defaultdict(defaultdict)
 
-    def instantiate_an_estimator(self,):
+    def instantiate_an_estimator_and_parameters(self,):
 
         # Simplest learning method(s):
         if self.estimator_name == "lr":
             self.estimator = LinearRegression()
+
+            self.params = ??
+
             print ("Linear Regressor.")
 
         # Support Vector machine method(s):
@@ -67,7 +71,7 @@ class RegressionEstimators:
             f = True
             assert f is True
 
-        return self.estimator
+        return self.estimator, self.params
 
     def tune_hyper_parameters(self, estimator, params, ):
         """ estimator sklearn estimator, estimator dict of parameters. """
