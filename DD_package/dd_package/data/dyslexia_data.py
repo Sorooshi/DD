@@ -189,11 +189,8 @@ class DyslexiaData:
         else:
             data = data_org
 
-        features =
+        # features =
         self.x = data.loc[:, ]
-
-
-
 
 
     def get_stratified_train_test_splits(self, x, y, to_shuffle=True, test_size=0.2):
