@@ -123,7 +123,7 @@ class DyslexiaData:
                 "FIX_DURATION": float,
             })
 
-            self.fix_datasets[sheet] = tmp.sort_values(by=["SubjectID", "Sentence_ID", "Word_Number"]).dropna()
+            self.fix_datasets[sheet] = tmp.sort_values(by=["SubjectID", "Sentence_ID", ]).dropna()  # "Word_Number"
 
             print(" ", sheet, tmp.shape)
 
@@ -140,6 +140,44 @@ class DyslexiaData:
     def concat_classes_fix(self, ):
         self.fix = pd.concat([v for k, v in self.fix_datasets.items()], axis=0)
         return self.fix
+
+    def get_stratified_kfold_cv(self, to_shuffle, ):
+
+        """ Returns a CV object to be used in Bayesian/Grid/Random
+        search optimization to tune the estimator(s) hyper-parameters.
+        """
+        self.stratified_kFold_cv = StratifiedKFold(
+            n_splits=self.n_splits,
+            shuffle=to_shuffle
+        )
+        return self.stratified_kFold_cv
+
+    def get_stratified_train_test_splits(self, x, y, to_shuffle=True, test_size=0.2):
+        """ Returns dict containing repeated train and test splits.
+        Repeat numbers are separated from the rest of strinds in the key with a single dash "-".
+        """
+
+        for repeat in range(self.n_repeats):
+            x_train, x_test, y_train, y_test = train_test_split(
+                x, y, test_size=test_size,
+                shuffle=to_shuffle, stratify=y
+            )
+            k = str(repeat + 1)
+            self.stratified_train_test_splits["x_train-"+k] = x_train
+            self.stratified_train_test_splits["x_test-"+k] = x_test
+            self.stratified_train_test_splits["y_train-"+k] = y_train
+            self.stratified_train_test_splits["y_test-"+k] = y_test
+
+        return self.stratified_train_test_splits
+
+    def get_onehot_features_targets(self, data_org, q_features, c_features, indicators):
+        if c_features:
+            data = pd.get_dummies(data=data_org, columns=c_features)
+        else:
+            data = data_org
+
+        # features =
+        self.x = data.loc[:, ]
 
     @staticmethod
     def concat_dfs(df1, df2, features1, features2):
@@ -170,46 +208,6 @@ class DyslexiaData:
             data.append(tmp3)
 
         return pd.concat(data)
-
-    def get_stratified_kfold_cv(self, to_shuffle, ):
-
-        """ Returns a CV object to be used in Bayesian/Grid/Random
-        search optimization to tune the estimator(s) hyper-parameters.
-        """
-        self.stratified_kFold_cv = StratifiedKFold(
-            n_splits=self.n_splits,
-            shuffle=to_shuffle
-        )
-        return self.stratified_kFold_cv
-
-
-    def get_onehot_features_targets(self, data_org, q_features, c_features, indicators):
-        if c_features:
-            data = pd.get_dummies(data=data_org, columns=c_features)
-        else:
-            data = data_org
-
-        # features =
-        self.x = data.loc[:, ]
-
-
-    def get_stratified_train_test_splits(self, x, y, to_shuffle=True, test_size=0.2):
-        """ Returns dict containing repeated train and test splits.
-        Repeat numbers are separated from the rest of strinds in the key with a single dash "-".
-        """
-
-        for repeat in range(self.n_repeats):
-            x_train, x_test, y_train, y_test = train_test_split(
-                x, y, test_size=test_size,
-                shuffle=to_shuffle, stratify=y
-            )
-            k = str(repeat + 1)
-            self.stratified_train_test_splits["x_train-"+k] = x_train
-            self.stratified_train_test_splits["x_test-"+k] = x_test
-            self.stratified_train_test_splits["y_train-"+k] = y_train
-            self.stratified_train_test_splits["y_test-"+k] = y_test
-
-        return self.stratified_train_test_splits
 
     def _remove_missing_data(self, df):
         for col in df.columns:
