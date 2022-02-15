@@ -31,12 +31,12 @@ class DyslexiaData:
         self.fix_datasets = defaultdict(list)
         self.demo_datasets = defaultdict(list)
 
-        self.ia = pd.DataFrame
-        self.fix = pd.DataFrame
-        self.demo = pd.DataFrame
+        self.ia = pd.DataFrame()
+        self.fix = pd.DataFrame()
+        self.demo = pd.DataFrame()
 
-        self.x = pd.DataFrame(list)  # features/random variables (either shuffled or not)
-        self.y = pd.DataFrame(list)  # targets variables/predictions (in corresponding to x)
+        self.x = pd.DataFrame()  # features/random variables (either shuffled or not)
+        self.y = pd.DataFrame()  # targets variables/predictions (in corresponding to x)
 
         self.stratified_kFold_cv = None
         self.stratified_train_test_splits = defaultdict(defaultdict)
