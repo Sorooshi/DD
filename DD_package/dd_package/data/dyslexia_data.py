@@ -39,10 +39,8 @@ class DyslexiaData:
         self.stratified_kFold_cv = None
         self.stratified_train_test_splits = defaultdict(list)
 
-        self.x = np.array(list())  # features/random variables (either shuffled or not)
-        self.y = np.array(list())  # targets variables/predictions (in corresponding to x)
-        self.indicators = list()  # list of string: [subject_id, (sentence_id), (word_number), target_value, group]
-        self.target_var_name = str
+        self.x = pd.DataFrame(list())  # features/random variables (either shuffled or not)
+        self.y = pd.DataFrame(list())  # targets variables/predictions (in corresponding to x)
 
     def get_demo_datasets(self, ):
 
@@ -170,14 +168,23 @@ class DyslexiaData:
 
         return self.stratified_train_test_splits
 
-    def get_onehot_features_targets(self, data_org, q_features, c_features, indicators):
-        if c_features:
-            data = pd.get_dummies(data=data_org, columns=c_features)
-        else:
-            data = data_org
+    def get_onehot_features_targets(self, data, c_features, indicators=None, targets=None):
+        """ returns x, y, pd.DataFrames, of features and targets values respectively.
+        """
 
-        # features =
-        self.x = data.loc[:, ]
+        if c_features:
+            data = pd.get_dummies(data=data, columns=c_features)
+        if not indicators:
+            indicators = ["SubjectID", "Sentence_ID", "Word_Number", ]
+        if not targets:
+            targets = ["Group", "Reading_speed"]
+
+        features  = list(set(data.columns).difference(set(indicators).union(set(targets))))
+
+        self.x = data.loc[:, features]
+        self.y = data.loc[:, targets]
+
+        return self.x, self.y
 
     @staticmethod
     def concat_dfs(df1, df2, features1, features2):
