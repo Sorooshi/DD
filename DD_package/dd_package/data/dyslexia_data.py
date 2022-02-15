@@ -5,21 +5,23 @@ import pandas as pd
 from pathlib import Path
 from typing import List, Tuple
 from collections import defaultdict
-from sklearn.model_selection import KFold, TimeSeriesSplit
+from sklearn.model_selection import StratifiedKFold, train_test_split
 
 
 
 class DyslexiaData:
     """" various forms of dataset(s)  """
     def __init__(self,
-                 k_folds: int = 5,
+                 n_splits: int = 5,
+                 n_repeats: int = 10,
                  path: Path= Path("../datasets"),
                  names: list = ["demo", "IA_report", "Fixation_report",],
                  ):
 
         self.path = path
         self.names = names
-        self.k_folds = k_folds
+        self.n_splits = n_splits
+        self.n_repeats = n_repeats
         self.xlsx_file = pd.ExcelFile
 
         self.xlsx_demo = pd.ExcelFile(os.path.join(self.path, "demo.xlsx"))
@@ -34,8 +36,8 @@ class DyslexiaData:
         self.fix = pd.DataFrame
         self.demo = pd.DataFrame
 
-        self.separated_datasets_kfold = None
-        self.separated_datasets_kfold_ts = None
+        self.stratified_kFold_cv = None
+        self.stratified_train_test_splits = defaultdict(list)
 
     def get_demo_datasets(self, ):
 
@@ -172,6 +174,35 @@ class DyslexiaData:
             data.append(_tmp2)
 
         return pd.concat(data)
+
+    def get_stratified_kfold_cv(self, to_shuffle, ):
+
+        """ Returns a CV object to be used in Bayesian/Grid/Random
+        search optimization to tune the estimator(s) hyper-parameters.
+        """
+        self.stratified_kFold_cv = StratifiedKFold(
+            n_splits=self.n_splits,
+            shuffle=to_shuffle
+        )
+        return self.stratified_kFold_cv
+
+    def get_stratified_train_test_splits(self, x, y, to_shuffle=True, test_size=0.2):
+        """ Returns dict containing repeated train and test splits.
+        Repeat numbers are separated from the rest of strinds in the key with a single dash "-".
+        """
+
+        for repeat in range(self.n_repeats):
+            x_train, x_test, y_train, y_test = train_test_split(
+                x, y, test_size=test_size,
+                shuffle=to_shuffle, stratify=y
+            )
+            k = str(repeat + 1)
+            self.stratified_train_test_splits["x_train-"+k] = x_train
+            self.stratified_train_test_splits["x_test-"+k] = x_test
+            self.stratified_train_test_splits["y_train-"+k] = y_train
+            self.stratified_train_test_splits["y_test-"+k] = y_test
+
+        return self.stratified_train_test_splits
 
     def _remove_missing_data(self, df):
         for col in df.columns:
