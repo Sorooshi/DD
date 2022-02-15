@@ -39,6 +39,11 @@ class DyslexiaData:
         self.stratified_kFold_cv = None
         self.stratified_train_test_splits = defaultdict(list)
 
+        self.x = np.array(list())  # features/random variables (either shuffled or not)
+        self.y = np.array(list())  # targets variables/predictions (in corresponding to x)
+        self.indicators = list()  # list of string: [subject_id, (sentence_id), (word_number), target_value, group]
+        self.target_var_name = str
+
     def get_demo_datasets(self, ):
 
         print("Loading Demo data: ")
@@ -139,39 +144,30 @@ class DyslexiaData:
     @staticmethod
     def concat_dfs(df1, df2, subject_ids, features1, features2):
 
-        """concatenates df1 tp df2, that is it casts df1 rows/columns to equal dimension of df2"""
+        """concatenates df2 to df1, that is, it casts df2's dimensions df1"""
 
         data = []
 
         for subject_id in subject_ids:
             tmp1 = df1.loc[(df1.SubjectID == subject_id)]
-            tmp1 = tmp1.loc[:, features1]
+            tmp1 = tmp1.loc[:, features1].reset_index(drop=True)
             tmp2 = df2.loc[df2.SubjectID == subject_id]
             tmp2 = tmp2.loc[:, features2]
 
-            n = tmp2.shape[0]
-            if n == tmp1.shape[0]:
-                tmp1 = pd.concat([tmp1], ignore_index=True)
+            n = tmp1.shape[0]
+            if n == tmp2.shape[0]:
+                tmp2 = pd.concat([tmp1], ignore_index=True)
             else:
-                tmp1 = pd.concat([tmp1] * n, ignore_index=True)
+                tmp2 = pd.concat([tmp2] * n, ignore_index=True)  # .reset_index(drop=True)
 
-            # to check the dimension I copieed tmp2
-            _tmp2 = tmp2.copy(deep=True)
-            _tmp2[features1] = tmp1
+            tmp3 = pd.concat([tmp1, tmp2], axis=1, )
 
-            if _tmp2.shape[0] != tmp1.shape[0]:
-                print(subject_id, "row")
-                print("tmp2.shape:", tmp2.shape, n)
-                print("tmp1.shape:", tmp1.shape)
-                print("concat tmp2.shape:", tmp2.shape, n)
+            if tmp3.shape[0] != tmp1.shape[0] or tmp3.shape[0] != tmp2.shape[0]:
+                print(subject_id, "in consistencies in number of observations (rows)")
+            if tmp3.shape[1] != tmp1.shape[1] + tmp2.shape[1]:
+                print(subject_id, "inconsistencies in feature space (columns)")
 
-            if _tmp2.shape[1] != tmp1.shape[1] + tmp2.shape[1]:
-                print(subject_id, "col")
-                print("tmp2.shape:", tmp2.shape, n)
-                print("tmp1.shape:", tmp1.shape)
-                print("concat tmp2.shape:", tmp2.shape, n)
-
-            data.append(_tmp2)
+            data.append(tmp3)
 
         return pd.concat(data)
 
@@ -185,6 +181,20 @@ class DyslexiaData:
             shuffle=to_shuffle
         )
         return self.stratified_kFold_cv
+
+
+    def get_onehot_features_targets(self, data_org, q_features, c_features, indicators):
+        if c_features:
+            data = pd.get_dummies(data=data_org, columns=c_features)
+        else:
+            data = data_org
+
+        features =
+        self.x = data.loc[:, ]
+
+
+
+
 
     def get_stratified_train_test_splits(self, x, y, to_shuffle=True, test_size=0.2):
         """ Returns dict containing repeated train and test splits.
