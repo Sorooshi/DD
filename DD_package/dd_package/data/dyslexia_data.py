@@ -165,7 +165,7 @@ class DyslexiaData:
         )
         return self.stratified_kFold_cv
 
-    def get_stratified_train_test_splits(self, x, y, to_shuffle, test_size=0.2):
+    def get_stratified_train_test_splits(self, x, y, to_shuffle=True, test_size=0.2):
         """ Returns dict containing repeated train and test splits.
         Repeat numbers are separated from the rest of strinds in the key with a single dash "-".
         """
