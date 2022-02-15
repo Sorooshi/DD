@@ -35,11 +35,11 @@ class DyslexiaData:
         self.fix = pd.DataFrame
         self.demo = pd.DataFrame
 
-        self.stratified_kFold_cv = None
-        self.stratified_train_test_splits = defaultdict(list)
+        self.x = pd.DataFrame(list)  # features/random variables (either shuffled or not)
+        self.y = pd.DataFrame(list)  # targets variables/predictions (in corresponding to x)
 
-        self.x = pd.DataFrame(list())  # features/random variables (either shuffled or not)
-        self.y = pd.DataFrame(list())  # targets variables/predictions (in corresponding to x)
+        self.stratified_kFold_cv = None
+        self.stratified_train_test_splits = defaultdict(defaultdict)
 
     def get_demo_datasets(self, ):
 
@@ -138,6 +138,22 @@ class DyslexiaData:
         self.fix = pd.concat([v for k, v in self.fix_datasets.items()], axis=0)
         return self.fix
 
+    def get_onehot_features_targets(self, data, c_features, indicators=None, targets=None):
+        """ Returns x, y, pd.DataFrames, of features and targets values respectively. """
+        if c_features:
+            data = pd.get_dummies(data=data, columns=c_features)
+        if not indicators:
+            indicators = ["SubjectID", "Sentence_ID", "Word_Number", ]
+        if not targets:
+            targets = ["Group", "Reading_speed"]
+
+        features = list(set(data.columns).difference(set(indicators).union(set(targets))))
+
+        self.x = data.loc[:, features]
+        self.y = data.loc[:, targets]
+
+        return self.x, self.y
+
     def get_stratified_kfold_cv(self, to_shuffle, ):
 
         """ Returns a CV object to be used in Bayesian/Grid/Random
@@ -149,7 +165,7 @@ class DyslexiaData:
         )
         return self.stratified_kFold_cv
 
-    def get_stratified_train_test_splits(self, x, y, to_shuffle=True, test_size=0.2):
+    def get_stratified_train_test_splits(self, x, y, to_shuffle, test_size=0.2):
         """ Returns dict containing repeated train and test splits.
         Repeat numbers are separated from the rest of strinds in the key with a single dash "-".
         """
@@ -160,34 +176,18 @@ class DyslexiaData:
                 shuffle=to_shuffle, stratify=y
             )
             k = str(repeat + 1)
-            self.stratified_train_test_splits["x_train-"+k] = x_train
-            self.stratified_train_test_splits["x_test-"+k] = x_test
-            self.stratified_train_test_splits["y_train-"+k] = y_train
-            self.stratified_train_test_splits["y_test-"+k] = y_test
+            self.stratified_train_test_splits[k] = defaultdict(list)
+            self.stratified_train_test_splits[k]["x_train"] = x_train
+            self.stratified_train_test_splits[k]["x_test"] = x_test
+            self.stratified_train_test_splits[k]["y_train"] = y_train
+            self.stratified_train_test_splits[k]["y_test"] = y_test
 
         return self.stratified_train_test_splits
-
-    def get_onehot_features_targets(self, data, c_features, indicators=None, targets=None):
-        """ Returns x, y, pd.DataFrames, of features and targets values respectively.
-        """
-        if c_features:
-            data = pd.get_dummies(data=data, columns=c_features)
-        if not indicators:
-            indicators = ["SubjectID", "Sentence_ID", "Word_Number", ]
-        if not targets:
-            targets = ["Group", "Reading_speed"]
-
-        features  = list(set(data.columns).difference(set(indicators).union(set(targets))))
-
-        self.x = data.loc[:, features]
-        self.y = data.loc[:, targets]
-
-        return self.x, self.y
 
     @staticmethod
     def concat_dfs(df1, df2, features1, features2):
 
-        """concatenates df2 to df1, that is, it casts df2's dimensions df1"""
+        """ concatenates df2 to df1, that is, it casts df2's dimensions df1. """
 
         data = []
         subject_ids = df2.SubjectID
