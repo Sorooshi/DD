@@ -8,7 +8,6 @@ from collections import defaultdict
 from sklearn.model_selection import StratifiedKFold, train_test_split
 
 
-
 class DyslexiaData:
     """" various forms of dataset(s)  """
     def __init__(self,
@@ -169,9 +168,8 @@ class DyslexiaData:
         return self.stratified_train_test_splits
 
     def get_onehot_features_targets(self, data, c_features, indicators=None, targets=None):
-        """ returns x, y, pd.DataFrames, of features and targets values respectively.
+        """ Returns x, y, pd.DataFrames, of features and targets values respectively.
         """
-
         if c_features:
             data = pd.get_dummies(data=data, columns=c_features)
         if not indicators:
