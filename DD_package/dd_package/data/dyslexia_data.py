@@ -128,59 +128,68 @@ class DyslexiaData:
 
     def concat_classes_demo(self, ):
         self.demo = pd.concat([v for k, v in self.demo_datasets.items()], axis=0)
-        return self.demo
+        return self.demo.sort_values(by=["SubjectID",])
 
     def concat_classes_ia(self, ):
         self.ia = pd.concat([v for k, v in self.ia_datasets.items()], axis=0)
-        return self.ia
+        return self.ia.sort_values(by=["SubjectID", "Sentence_ID", "Word_Number"])
 
     def concat_classes_fix(self, ):
         self.fix = pd.concat([v for k, v in self.fix_datasets.items()], axis=0)
-        return self.fix
+        return self.fix.sort_values(by=["SubjectID", "Sentence_ID", ])
 
     def get_onehot_features_targets(self, data, c_features, indicators=None, targets=None):
         """ Returns x, y, pd.DataFrames, of features and targets values respectively. """
         if c_features:
-            data = pd.get_dummies(data=data, columns=c_features)
+            data = pd.get_dummies(
+                data=data, columns=c_features
+            )
+
         if not indicators:
             indicators = ["SubjectID", "Sentence_ID", "Word_Number", ]
         if not targets:
             targets = ["Group", "Reading_speed"]
 
-        features = list(set(data.columns).difference(set(indicators).union(set(targets))))
+        features = list(
+            set(data.columns).difference(set(indicators).union(set(targets)))
+        )
 
         self.x = data.loc[:, features]
         self.y = data.loc[:, targets]
 
         return self.x, self.y
 
-    def get_stratified_kfold_cv(self, to_shuffle, ):
+    def get_stratified_kfold_cv(self, to_shuffle, n_splits):
 
         """ Returns a CV object to be used in Bayesian/Grid/Random
         search optimization to tune the estimator(s) hyper-parameters.
         """
         self.stratified_kFold_cv = StratifiedKFold(
-            n_splits=self.n_splits,
+            n_splits=n_splits,
             shuffle=to_shuffle
         )
+
         return self.stratified_kFold_cv
 
-    def get_stratified_train_test_splits(self, x, y, to_shuffle=True, test_size=0.2):
+    def get_stratified_train_test_splits(self, x, y, to_shuffle=True, n_splits=10):
         """ Returns dict containing repeated train and test splits.
-        Repeat numbers are separated from the rest of strinds in the key with a single dash "-".
+                Repeat numbers are separated from the rest of strinds in the key with a single dash "-".
         """
+        skf =  StratifiedKFold(
+            n_splits=n_splits,
+            shuffle=to_shuffle
+        )
 
-        for repeat in range(self.n_repeats):
-            x_train, x_test, y_train, y_test = train_test_split(
-                x, y, test_size=test_size,
-                shuffle=to_shuffle, stratify=y
-            )
-            k = str(repeat + 1)
+        repeat = 0
+        for train_index, test_index in skf.split(x, y):
+            repeat += 1
+            k = str(repeat)
             self.stratified_train_test_splits[k] = defaultdict(list)
-            self.stratified_train_test_splits[k]["x_train"] = x_train
-            self.stratified_train_test_splits[k]["x_test"] = x_test
-            self.stratified_train_test_splits[k]["y_train"] = y_train
-            self.stratified_train_test_splits[k]["y_test"] = y_test
+            self.stratified_train_test_splits[k]["x_train"] = x[train_index]
+            self.stratified_train_test_splits[k]["x_test"] = x[test_index]
+            self.stratified_train_test_splits[k]["y_train"] = y[train_index]
+            self.stratified_train_test_splits[k]["y_test"] = y[test_index]
+
 
         return self.stratified_train_test_splits
 
@@ -206,9 +215,16 @@ class DyslexiaData:
             tmp3 = pd.concat([tmp1, tmp2], axis=1, )
 
             if tmp3.shape[0] != tmp1.shape[0] or tmp3.shape[0] != tmp2.shape[0]:
-                print(subject_id, "in consistencies in number of observations (rows)")
+                print(
+                    subject_id,
+                    "in consistencies in number of observations (rows)"
+                )
+
             if tmp3.shape[1] != tmp1.shape[1] + tmp2.shape[1]:
-                print(subject_id, "inconsistencies in feature space (columns)")
+                print(
+                    subject_id,
+                    "inconsistencies in feature space (columns)"
+                )
 
             data.append(tmp3)
 
