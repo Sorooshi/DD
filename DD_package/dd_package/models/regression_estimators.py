@@ -114,11 +114,12 @@ class RegressionEstimators:
 
             # define search space
             self.params = defaultdict()
-            self.params["hidden_layer_sizes"] = Categorical([(10)])
+            self.params["hidden_layer_sizes"] = Integer(2, 200)
             self.params["activation"] = Categorical(["identity", "logistic", "tanh", "relu"])
             self.params["solver"] = Categorical(["lbfgs", "sgd", "adam"])
             self.params["alpha"] = Real(1e-6, 1e-2, "uniform")
             self.params["learning_rate"] = Categorical(["constant", "invscaling", "adaptive"])
+            self.params["learning_rate_init"] = Real(1e-4, 1e-2, "uniform")
             self.params["max_iter"] = Real(100, 2000, "uniform")
 
             print("Multi Layer Perceptron Regressor.")
