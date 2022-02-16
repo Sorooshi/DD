@@ -141,7 +141,7 @@ class RegressionEstimators:
         search = BayesSearchCV(estimator=estimator,
                                search_spaces=params,
                                n_jobs=-2, cv=self.cv,
-                               scoring=r2_score(),
+                               scoring="r2",
                                optimizer_kwargs={'base_estimator': 'RF'}
                                )
         # perform the search
