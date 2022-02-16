@@ -138,7 +138,7 @@ class DyslexiaData:
         self.fix = pd.concat([v for k, v in self.fix_datasets.items()], axis=0)
         return self.fix.sort_values(by=["SubjectID", "Sentence_ID", ])
 
-    def get_onehot_features_targets(self, data, c_features, indicators=None, targets=None):
+    def get_onehot_features_targets(self, data, c_features=None, indicators=None, targets=None):
         """ Returns x, y, pd.DataFrames, of features and targets values respectively. """
         if c_features:
             data = pd.get_dummies(
