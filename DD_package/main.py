@@ -198,19 +198,22 @@ if __name__ == "__main__":
     )
 
     data = dd.get_stratified_train_test_splits(
-        x=x, y=y.Reading_speed,
+        x=x, y=y,
         to_shuffle=to_shuffle,
         n_splits=configs.n_repeats
     )
 
     if estimator_name.split("_")[-1] == "reg":
         learning_method = "regression"
+        y = y.Reading_speed
 
     elif estimator_name.split("_")[-1] == "cls":
         learning_method = "classification"
+        y = y.Group
 
     elif estimator_name.split("_")[-1] == "clt":
         learning_method = "clustering"
+        y = y.Group
 
     if to_shuffle == 1:
         to_shuffle = True
