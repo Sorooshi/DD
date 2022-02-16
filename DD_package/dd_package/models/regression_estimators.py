@@ -105,7 +105,7 @@ class RegressionEstimators:
             for kk, vv in v.items():
                 estimator.fit(vv["x_train"], vv["y_train"])
                 self.results[k]["y_pred"] = estimator.predict(vv["x_test"])
-                self.results[k]["y_true"] = vv["y_test"]
+                self.results[k]["y_true"] = vv["y_test"].Reading_speed
 
         return self.results
 
