@@ -51,7 +51,7 @@ class DyslexiaData:
             tmp.replace({"fem": 1, "f": 1, "masc": 2, "m": 2}, inplace=True)
             tmp.replace({"norm": 1, "risk": 2, "dyslexia": 3}, inplace=True)
             tmp = tmp.astype({
-                "Group": str,
+                "Group": int,
                 "SubjectID": str,
                 "Sex": int,
                 "Grade": int,
