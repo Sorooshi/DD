@@ -1,8 +1,11 @@
 import argparse
 import numpy as np
+from pathlib import Path
+from types import SimpleNamespace
 from collections import defaultdict
 
 from dd_package.data.dyslexia_data import DyslexiaData
+from dd_package.common.utils import save_a_dict, load_a_dict
 from dd_package.models.regression_estimators import RegressionEstimators
 
 
@@ -35,6 +38,17 @@ def args_parser(arguments):
            _group, _project, _n_units,_n_epochs, _optimizer, _batch_size, \
            _learning_rate, _n_estimators, _output_dim, _n_clusters, _n_repeats, _target_is_org
 
+
+configs = {
+    "models_path": Path("./Models"),
+    "results_path": Path("./Results"),
+    "figures_path": Path("./Figures"),
+    "params_path": Path("./Params"),
+    "n_repeats": 10,
+    "n_splits": 5,
+}
+
+configs = SimpleNamespace(**configs)
 
 if __name__ == "__main__":
 
@@ -144,7 +158,12 @@ if __name__ == "__main__":
         tuned_parameters = reg_est.tune_hyper_parameters(estimator=estimator, params=params)
         results = reg_est.train_test_tuned_estimator(estimator=estimator, tuned_params=tuned_parameters)
 
-        # save results and tuned_params
-        call a fn from common.utils
+        # save tuned_params
+        save_a_dict(a_dict=tuned_parameters, name="...", save_path=configs.params_path, )
+        # save results
+        save_a_dict(a_dict=results, name="...", save_path=configs.results_path, )
+
+
+
 
 
