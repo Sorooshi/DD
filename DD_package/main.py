@@ -205,15 +205,15 @@ if __name__ == "__main__":
 
     if estimator_name.split("_")[-1] == "reg":
         learning_method = "regression"
-        y = y.Reading_speed
+        y = y.Reading_speed.values
 
     elif estimator_name.split("_")[-1] == "cls":
         learning_method = "classification"
-        y = y.Group
+        y = y.Group.values
 
     elif estimator_name.split("_")[-1] == "clt":
         learning_method = "clustering"
-        y = y.Group
+        y = y.Group.values
 
     if to_shuffle == 1:
         to_shuffle = True
