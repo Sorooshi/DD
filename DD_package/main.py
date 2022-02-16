@@ -4,6 +4,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from collections import defaultdict
 
+from dd_package.data.preprocess import preprocess_data
 from dd_package.data.dyslexia_data import DyslexiaData
 from dd_package.common.utils import save_a_dict, load_a_dict
 from dd_package.models.regression_estimators import RegressionEstimators
@@ -17,26 +18,15 @@ def args_parser(arguments):
     _pp = arguments.pp.lower()
     _tag = arguments.tag.lower()
     _run = arguments.run
-    _data_name = arguments.data_name  # .lower()
-    _note = arguments.note
-    _loss = arguments.loss.lower()
-    _alg_name = arguments.alg_name  # .lower()
-    _group = arguments.group
+    _data_name = arguments.data_name.lower()
+    _estimator_name = arguments.estimator_name.lower()
     _project = arguments.project
-    _n_units = arguments.n_units
-    _n_epochs = arguments.n_epochs
-    _optimizer = arguments.optimizer.lower()
-    _batch_size = arguments.batch_size
-    _learning_rate = arguments.learning_rate
-    _n_estimators = arguments.n_estimators
-    _output_dim = arguments.output_dim
-    _n_clusters = arguments.n_clusters
-    _n_repeats = arguments.n_repeats
     _target_is_org = arguments.target_is_org
+    _to_shuffle = arguments.to_shuffle
+    _n_clusters = arguments.n_clusters
 
-    return _pp, _tag, _run, _note, _data_name, _loss, _alg_name, \
-           _group, _project, _n_units,_n_epochs, _optimizer, _batch_size, \
-           _learning_rate, _n_estimators, _output_dim, _n_clusters, _n_repeats, _target_is_org
+    return _pp, _tag, _run, _data_name, _estimator_name, \
+        _project, _target_is_org, _to_shuffle, _n_clusters
 
 
 configs = {
@@ -72,38 +62,28 @@ if __name__ == "__main__":
                         help="Project name for WandB project initialization.")
 
     parser.add_argument("--data_name", type=str, default="DD_Demo",
-                        help="Dataset's name, e.g.,"
-                             " Dyslexia Detection using: "
-                             "1) Demographic, 2) IA_report 3) Fixation_report.")
+                        help="Dataset's name, e.g., DD_Demo, or DD_Demo_IA"
+                             " The following (lowercase) strings are supported"
+                             "  1) Demographic = dd_demo, "
+                             "  2) IA_report = dd_ia, "
+                             "  3) Fixation_report = dd_fix, "
+                             "  4) Demographic + IA_report = dd_demo_ia, "
+                             "  5) Demographic + Fixation_report = dd_demo_fix.")
 
-    parser.add_argument("--alg_name", type=str, default="--",
-                        help="Name of the algorithm,"
-                             " e.g., vnn_reg/dnn_reg/rfr/...")
+    parser.add_argument("--estimator_name", type=str, default="--",
+                        help="None case sensitive first letter abbreviated name of an estimator proceeds "
+                             "  one of the three following suffixes separated with the underscore."
+                             "  Possible suffixes are: regression := reg, "
+                             "  classification := cls, clustering := clt"
+                             "      E.g., Random Forest Regressor := rf_reg, or "
+                             "      Random Forest Classifiers := rf_cls "
+                             "Note: First letter of the methods' name should be used for abbreviation.")
 
     parser.add_argument("--run", type=int, default=1,
                         help="Run the model or load the saved"
                              " weights and reproduce the results.")
 
-    parser.add_argument("--n_units", type=int, default=6,
-                        help="Number of neurons in the"
-                             " first hidden layer.")
-
-    parser.add_argument("--n_epochs", type=int, default=1000,
-                        help="Number of epochs.")
-
-    parser.add_argument("--batch_size", type=int, default=64,
-                        help="Batch size.")
-
-    parser.add_argument("--learning_rate", type=float, default=1e-4,
-                        help="Learning rate")
-
-    parser.add_argument("--optimizer", type=str, default="adam",
-                        help="Name of the optimizer.")
-
-    parser.add_argument("--loss", type=str, default="--",
-                        help="Name of the loss function.")
-
-    parser.add_argument("--pp", type=str, default=None,
+    parser.add_argument("--pp", type=str, default="mm",
                         help="Data preprocessing method:"
                              " MinMax/Z-Scoring/etc.")
 
@@ -114,67 +94,169 @@ if __name__ == "__main__":
     parser.add_argument("--note", type=str, default="--",
                         help="W&B note, e.g., clustering for DD: Demographic")
 
-    parser.add_argument("--group", type=str, default="FClustering",
-                        help="W&B group name, i.e., "
-                             "using Features: FClustering, FClassification, FRegression, "
-                             "or using Time-series: TClustering, TClassification, TRegression.")
-
-    parser.add_argument("--n_estimators", type=int, default=100,
-                        help="Number of estimators in ensemble regressor algorithms.")
-
-    parser.add_argument("--output_dim", type=int, default=1,
-                        help="The output dimension of a prediction algorithm.")
-
-    parser.add_argument("--n_clusters", type=int, default=2,
+    parser.add_argument("--n_clusters", type=int, default=3,
                         help="Number of clusters/classes/discrete target values.")
 
-    parser.add_argument("--n_repeats", type=int, default=10,
-                        help="Number of repeats in K-Fold cross validation.")
-
     parser.add_argument("--target_is_org", type=int, default=1,
-                        help="Weather to use not preprocessed target values or not.")
+                        help="Whether to use not preprocessed target values or not.")
+
+    parser.add_argument("--to_shuffle", type=int, default=1,
+                        help="Whether to shuffle data during CV or not.")
 
     args = parser.parse_args()
 
-    pp, tag, run, note, data_name, loss, alg_name, group, \
-        project, n_units, n_epochs, optimizer, batch_size, \
-        learning_rate, n_estimators, output_dim, n_clusters, \
-        n_repeats, target_is_org = args_parser(arguments=args)
+    pp, tag, run, data_name, estimator_name, project, \
+        target_is_org, to_shuffle, n_clusters = args_parser(arguments=args)
 
-    dd = DyslexiaData(n_splits=2, n_repeats=2, )
+    dd = DyslexiaData(
+        n_splits=configs.n_splits,
+        n_repeats=configs.n_repeats,
+    )
 
-    demos = dd.get_demo_datasets()
-    ias = dd.get_ia_datasets()
-    fixs = dd.get_fix_datasets()
+    # dict of dicts, s.t each dict contains pd.df of a class, e.g normal
+    _ = dd.get_demo_datasets()  # demos
+    _ = dd.get_ia_datasets()  # ias
+    _ = dd.get_fix_datasets()  # fixes
 
+    # concatenate pd.dfs to a pd.df
     demo = dd.concat_classes_demo()
     ia = dd.concat_classes_ia()
     fix = dd.concat_classes_fix()
 
-    fix_demo = dd.concat_dfs(df1=fix,
-                             df2=demo,
-                             features1=fix.columns,
-                             features2=demo.columns[2:],
-                             )
+    fix_demo = dd.concat_dfs(
+        df1=fix,
+        df2=demo,
+        features1=fix.columns,
+        features2=demo.columns[2:],
+    )
 
-    ia_demo = dd.concat_dfs(df1=ia,
-                            df2=demo,
-                            features1=ia.columns,
-                            features2=demo.columns[2:],
-                            )
+    ia_demo = dd.concat_dfs(
+        df1=ia,
+        df2=demo,
+        features1=ia.columns,
+        features2=demo.columns[2:],
+    )
 
-    learning_method = None
+    # Determine which dataset to use, e.g. demo dataset
+    # alone or concatenation of demo and IA_report, for instance.
+    if data_name == "dd_demo":
+        df_data_to_use = demo
+        c_features = ['Sex', 'Grade', ]
+        indicators = ['SubjID', ]
 
+    elif data_name == "dd_ia":
+        df_data_to_use = ia
+        c_features = [
+            'QUESTION_ACCURACY', 'SKIP', 'REGRESSION_IN',
+            'REGRESSION_OUT', 'REGRESSION_OUT_FULL',
+        ]
+
+        indicators = [
+            'SubjectID', 'Sentence_ID', 'Word_Number',
+        ]
+
+    elif data_name == "dd_fix":
+        df_data_to_use = fix
+        c_features = None
+        indicators = [
+            'SubjectID', 'Sentence_ID', 'Word_Number',
+        ]
+
+    elif data_name == "dd_fix_demo":
+        df_data_to_use = fix_demo
+        c_features = ['Sex', 'Grade', ]
+        indicators = [
+            'SubjectID', 'Sentence_ID', 'Word_Number',
+        ]
+
+    elif data_name == "dd_ia_demo":
+        df_data_to_use = ia_demo
+        c_features = [
+            'Sex', 'Grade', 'QUESTION_ACCURACY',
+            'SKIP', 'REGRESSION_IN', 'REGRESSION_OUT',
+            'REGRESSION_OUT_FULL',
+        ]
+
+        indicators = [
+            'SubjectID', 'Sentence_ID', 'Word_Number',
+        ]
+
+    else:
+        assert False, "Ill-defined data_name argument. Refer to help of data_name argument for more."
+
+    x_org, y = dd.get_onehot_features_targets(
+        data=df_data_to_use,
+        c_features=c_features,
+        indicators=indicators,
+    )
+
+    x = preprocess_data(x=x_org, pp=pp)  # only x is standardized
+
+    cv = dd.get_stratified_kfold_cv(
+        to_shuffle=to_shuffle,
+        n_splits=configs.n_splits
+    )
+
+    data = dd.get_stratified_train_test_splits(
+        x=x, y=y.Reading_speed,
+        to_shuffle=to_shuffle,
+        n_splits=configs.n_repeats
+    )
+
+    if estimator_name.split("_")[-1] == "reg":
+        learning_method = "regression"
+
+    elif estimator_name.split("_")[-1] == "cls":
+        learning_method = "classification"
+
+    elif estimator_name.split("_")[-1] == "clt":
+        learning_method = "clustering"
+
+    if to_shuffle == 1:
+        to_shuffle = True
+        group = learning_method + "-" + "shuffled"
+    else:
+        to_shuffle = False
+        group = learning_method + "-" + "not-shuffled"
+
+    specifier = estimator_name + "-" + str(to_shuffle)
+
+    # Regression methods:
     if learning_method == "regression":
-        reg_est = RegressionEstimators()
-        estimator, params = reg_est.instantiate_an_estimator()
-        tuned_parameters = reg_est.tune_hyper_parameters(estimator=estimator, params=params)
-        results = reg_est.train_test_tuned_estimator(estimator=estimator, tuned_params=tuned_parameters)
+
+        reg_est = RegressionEstimators(
+            x=x, y=y, cv=cv, data=data,
+            estimator_name=estimator_name,
+        )
+
+        estimator, params = reg_est.instantiate_an_estimator_and_parameters()
+
+        tuned_parameters = reg_est.tune_hyper_parameters(
+            estimator=estimator, params=params
+        )
+
+        results = reg_est.train_test_tuned_estimator(
+            estimator=estimator,
+            tuned_params=tuned_parameters
+        )
 
         # save tuned_params
-        save_a_dict(a_dict=tuned_parameters, name="...", save_path=configs.params_path, )
+        save_a_dict(
+            a_dict=tuned_parameters,
+            name=specifier,
+            save_path=configs.params_path,
+        )
+
         # save results
-        save_a_dict(a_dict=results, name="...", save_path=configs.results_path, )
+        save_a_dict(
+            a_dict=results,
+            name=specifier,
+            save_path=configs.results_path,
+        )
+
+    # Classification methods:
+    if learning_method == "classification":
+        print("classification to be completed")
 
 
 
