@@ -50,6 +50,19 @@ configs = {
 
 configs = SimpleNamespace(**configs)
 
+if not configs.models_path.exists():
+    configs.models_path.mkdir()
+
+if not configs.results_path.exists():
+    configs.results_path.mkdir()
+
+if not configs.figures_path.exists():
+    configs.figures_path.mkdir()
+
+if not configs.params_path.exists():
+    configs.params_path.mkdir()
+
+
 if __name__ == "__main__":
 
     # all the string inputs will be converted to lower case.
