@@ -57,7 +57,7 @@ class RegressionEstimators:
 
             # define search space
             self.params = defaultdict()
-            self.params["n_neighbors"] = Integer(1, 10, "uniform")
+            self.params["n_neighbors"] = Integer(1, 10,)
             self.params["p"] = Real(1, 5, "uniform")
 
             print("KNearest Neighbor Regressor.")
@@ -68,9 +68,9 @@ class RegressionEstimators:
 
             # define search space
             self.params = defaultdict()
-            self.params["n_estimators"] = Integer(10, 1000, "uniform")
-            self.params["min_samples_split"] = Integer(2, 10, "Uniform")
-            self.params["min_samples_leaf"] = Integer(1, 10, "Uniform")
+            self.params["n_estimators"] = Integer(10, 1000, )
+            self.params["min_samples_split"] = Integer(2, 10, )
+            self.params["min_samples_leaf"] = Integer(1, 10, )
 
             print("Random Forest Regressor.")
 
@@ -81,9 +81,9 @@ class RegressionEstimators:
             self.params = defaultdict()
             self.params["loss"] = Categorical(["squared_error", "absolute_error", "huber", "quantile"])
             self.params["learning_rate"] = Real(1e-3, 5e-1, "uniform")
-            self.params["n_estimators"] = Integer(10, 1000, "uniform")
-            self.params["min_samples_split"] = Integer(2, 10, "Uniform")
-            self.params["min_samples_leaf"] = Integer(1, 10, "Uniform")
+            self.params["n_estimators"] = Integer(10, 1000, )
+            self.params["min_samples_split"] = Integer(2, 10, )
+            self.params["min_samples_leaf"] = Integer(1, 10, )
             self.params["alpha"] = Real(1e-1, 9e-1, "Uniform")
 
             print("Gradient Boosting Regressor.")
@@ -93,7 +93,7 @@ class RegressionEstimators:
 
             # define search space
             self.params = defaultdict()
-            self.params["n_estimators"] = Integer(10, 1000, "uniform")
+            self.params["n_estimators"] = Integer(10, 1000,)
             self.params["learning_rate"] = Real(1e-3, 5e-1, "uniform")
 
             print("Adaboost Regressor.")
@@ -101,7 +101,8 @@ class RegressionEstimators:
         # Gaussian Process method(s):
         elif self.estimator_name == "gp_reg":
             self.estimator = GaussianProcessRegressor()
-            # Previously we faced some issue due to limits of GP due dataset size.
+            # Previously we faced some issue due to limits of
+            #   GP due dataset size, and thus for now I won't consider it
             print("Gaussian Process Regressor.")
 
         # Neural Networks method(s):
