@@ -159,7 +159,7 @@ class RegressionEstimators:
 
         print("Training and testing of " + self.estimator_name)
 
-        self.estimator = self.estimator(**self.tuned_params)
+        self.estimator(**self.tuned_params)
 
         for k, v in self.data.items():
             self.results[k] = defaultdict()
