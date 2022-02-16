@@ -184,11 +184,34 @@ if __name__ == "__main__":
     else:
         assert False, "Ill-defined data_name argument. Refer to help of data_name argument for more."
 
-    x_org, y = dd.get_onehot_features_targets(
+    x_org, y_org = dd.get_onehot_features_targets(
         data=df_data_to_use,
         c_features=c_features,
         indicators=indicators,
     )
+
+    if estimator_name.split("_")[-1] == "reg":
+        learning_method = "regression"
+        y = y_org.Reading_speed.values
+
+    elif estimator_name.split("_")[-1] == "cls":
+        learning_method = "classification"
+        y = y_org.Group.values
+
+    elif estimator_name.split("_")[-1] == "clt":
+        learning_method = "clustering"
+        y = y_org.Group.values
+    else:
+        assert False, "Undefined algorithm and thus undefined target values"
+
+    if to_shuffle == 1:
+        to_shuffle = True
+        group = learning_method + "-" + "shuffled"
+    else:
+        to_shuffle = False
+        group = learning_method + "-" + "not-shuffled"
+
+    specifier = estimator_name + "-" + str(to_shuffle)
 
     x = preprocess_data(x=x_org, pp=pp)  # only x is standardized
 
@@ -199,30 +222,10 @@ if __name__ == "__main__":
 
     data = dd.get_stratified_train_test_splits(
         x=x, y=y,
+        labels=y_org.Group.values,
         to_shuffle=to_shuffle,
         n_splits=configs.n_repeats
     )
-
-    if estimator_name.split("_")[-1] == "reg":
-        learning_method = "regression"
-        y = y.Reading_speed.values
-
-    elif estimator_name.split("_")[-1] == "cls":
-        learning_method = "classification"
-        y = y.Group.values
-
-    elif estimator_name.split("_")[-1] == "clt":
-        learning_method = "clustering"
-        y = y.Group.values
-
-    if to_shuffle == 1:
-        to_shuffle = True
-        group = learning_method + "-" + "shuffled"
-    else:
-        to_shuffle = False
-        group = learning_method + "-" + "not-shuffled"
-
-    specifier = estimator_name + "-" + str(to_shuffle)
 
     # Regression methods:
     if learning_method == "regression":
