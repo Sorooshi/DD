@@ -188,7 +188,7 @@ class DyslexiaData:
             self.stratified_train_test_splits[k]["x_train"] = x[train_index]
             self.stratified_train_test_splits[k]["x_test"] = x[test_index]
             self.stratified_train_test_splits[k]["y_train"] = y.loc[train_index]
-            self.stratified_train_test_splits[k]["y_test"] = y[test_index]
+            self.stratified_train_test_splits[k]["y_test"] = y.loc[test_index]
 
 
         return self.stratified_train_test_splits
