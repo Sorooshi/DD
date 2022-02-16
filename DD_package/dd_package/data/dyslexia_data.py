@@ -171,7 +171,7 @@ class DyslexiaData:
 
         return self.stratified_kFold_cv
 
-    def get_stratified_train_test_splits(self, x, y, to_shuffle=True, n_splits=10):
+    def get_stratified_train_test_splits(self, x, y,  to_shuffle=True, n_splits=10):
         """ Returns dict containing repeated train and test splits.
                 Repeat numbers are separated from the rest of strinds in the key with a single dash "-".
         """
@@ -179,9 +179,9 @@ class DyslexiaData:
             n_splits=n_splits,
             shuffle=to_shuffle
         )
-
+        labels = y.Group  # To provide correct stratified splits
         repeat = 0
-        for train_index, test_index in skf.split(x, y):
+        for train_index, test_index in skf.split(x, labels):
             repeat += 1
             k = str(repeat)
             self.stratified_train_test_splits[k] = defaultdict(list)
