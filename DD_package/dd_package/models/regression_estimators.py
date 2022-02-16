@@ -116,10 +116,10 @@ class RegressionEstimators:
             self.params = defaultdict()
             self.params["hidden_layer_sizes"] = (2, 200, )
             self.params["activation"] = Categorical(["identity", "logistic", "tanh", "relu"])
-            self.params["solver"] = Categorical(["sgd", "adam"])  # "lbfgs",
+            self.params["solver"] = Categorical(["lbfgs", "sgd", "adam"])
             self.params["alpha"] = Real(1e-6, 1e-2, "uniform")
             self.params["learning_rate"] = Categorical(["constant", "invscaling", "adaptive"])
-            self.params["learning_rate_init"] = Real(1e-4, 1e-2, "uniform")
+            self.params["learning_rate_init"] = Real(1e-4, 1e-1, "uniform")
             self.params["max_iter"] = Real(10, 10000, "uniform")
 
             print("Multi Layer Perceptron Regressor.")
