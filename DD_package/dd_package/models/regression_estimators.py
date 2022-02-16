@@ -1,25 +1,24 @@
+from sklearn.svm import SVR
 from skopt import BayesSearchCV
-from sklearn.svm import LinearSVR
 from collections import defaultdict
 from sklearn.ensemble import AdaBoostRegressor
 from sklearn.neural_network import MLPRegressor
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.linear_model import LinearRegression
+from skopt.space import Real, Categorical, Integer
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.gaussian_process import GaussianProcessRegressor
 
 
 class RegressionEstimators:
-    def __init__(self, run, group, cv, data, x, y, estimator_name, learning_method,):
-        self.run = run
-        self.group = group  # FCluster, TCluster, ... ?
-        self.estimator_name = estimator_name.lower()
-        self.learning_method = learning_method.lower()
-        self.cv = cv  # stratified KFolds Cross_Validation generator with/without shuffles
+    def __init__(self, x, y, cv, data, estimator_name, ):
+        self.x = x  # np.ndarray, a pre-processed matrix of features/random variables.
+        self.y = y  # np.ndarray, not pre-processed vector of target variables.
+        self.cv = cv  # CV sklearn instance, stratified KFolds Cross_Validation generator with/without shuffles.
         self.data = data  # Dict of dicts, containing repeated train and test splits, (x, y np arrays).
-        self.x = x  # features/random variables
-        self.y = y  # target variables
+        self.estimator_name = estimator_name.lower()  # str, name of estimator to select the method.
+
 
         self.estimator = None
         self.params = defaultdict()
@@ -29,43 +28,100 @@ class RegressionEstimators:
     def instantiate_an_estimator_and_parameters(self,):
 
         # Simplest learning method(s):
-        if self.estimator_name == "lr":
+        if self.estimator_name == "l_reg":
             self.estimator = LinearRegression()
 
-            self.params = ??
+            # define search space
+            self.params = defaultdict()
+            self.params["fit_intercept"] = Categorical([True, False])
 
             print ("Linear Regressor.")
 
         # Support Vector machine method(s):
-        elif self.estimator_name == "lsvr":
-            self.estimator = LinearSVR()
+        elif self.estimator_name == "sv_reg":
+            self.estimator = SVR()
+
+            # define search space
+            self.params = defaultdict()
+            self.params["kernel"] = Categorical(["linear", "poly", "rbf", "sigmoid", ])
+            self.params['degree'] = Integer(1, 3)
+            self.params['C'] = Real(1e-1, 4.0, 'log-uniform')
+            self.params['gamma'] = Real(1e-1, 2.0, 'log-uniform')
+            self.params["epsilon"] = Real(1e-1, 2.0, 'log-uniform')
+
             print("Linear Support Vector Regression.")
 
         # KNN method(s):
-        elif self.estimator_name == "knr":
+        elif self.estimator_name == "knn_reg":
             self.estimator = KNeighborsRegressor()
+
+            # define search space
+            self.params = defaultdict()
+            self.params["n_neighbors"] = Integer(1, 10, "uniform")
+            self.params["p"] = Real(1, 5, "uniform")
+
             print("KNearest Neighbor Regressor.")
 
         # Ensemble learning method(s):
-        elif self.estimator_name == "rfr":
+        elif self.estimator_name == "rf_reg":
             self.estimator = RandomForestRegressor(verbose=1,)
+
+            # define search space
+            self.params = defaultdict()
+            self.params["n_estimators"] = Integer(10, 1000, "uniform")
+            self.params["min_samples_split"] = Integer(2, 10, "Uniform")
+            self.params["min_samples_leaf"] = Integer(1, 10, "Uniform")
+
             print("Random Forest Regressor.")
-        elif self.estimator_name == "gbr":
+
+        elif self.estimator_name == "gb_reg":
             self.estimator = GradientBoostingRegressor(verbose=1, )
+
+            # define search space
+            self.params = defaultdict()
+            self.params["loss"] = Categorical(["squared_error", "absolute_error", "huber", "quantile"])
+            self.params["learning_rate"] = Real(1e-3, 5e-1, "uniform")
+            self.params["n_estimators"] = Integer(10, 1000, "uniform")
+            self.params["min_samples_split"] = Integer(2, 10, "Uniform")
+            self.params["min_samples_leaf"] = Integer(1, 10, "Uniform")
+            self.params["alpha"] = Real(1e-1, 9e-1, "Uniform")
+
             print("Gradient Boosting Regressor.")
-        elif self.estimator_name == "ar":  # does not support 2d y
+
+        elif self.estimator_name == "a_reg":  # does not support 2d y
             self.estimator = AdaBoostRegressor()
+
+            # define search space
+            self.params = defaultdict()
+            self.params["n_estimators"] = Integer(10, 1000, "uniform")
+            self.params["learning_rate"] = Real(1e-3, 5e-1, "uniform")
+
             print("Adaboost Regressor.")
 
         # Gaussian Process method(s):
-        elif self.estimator_name == "gpr":
+        elif self.estimator_name == "gp_reg":
             self.estimator = GaussianProcessRegressor()
+            # Previously we faced some issue due to limits of GP due dataset size.
             print("Gaussian Process Regressor.")
 
         # Neural Networks method(s):
-        elif self.estimator_name == "mlpr":
-            self.estimator = MLPRegressor()
+        elif self.estimator_name == "mlp_reg":
+            self.estimator = MLPRegressor(
+                shuffle=False,
+                verbose=True,
+            )
+
+            # define search space
+            self.params = defaultdict()
+            self.params["hidden_layer_sizes"] = Categorical([(10)])
+            self.params["activation"] = Categorical(["identity", "logistic", "tanh", "relu"])
+            self.params["solver"] = Categorical(["lbfgs", "sgd", "adam"])
+            self.params["alpha"] = Real(1e-6, 1e-2, "uniform")
+            self.params["learning_rate"] = Categorical(["constant", "invscaling", "adaptive"])
+            self.params["max_iter"] = Real(100, 2000, "uniform")
+
             print("Multi Layer Perceptron Regressor.")
+
         else:
             print ("Undefined regression model.")
             f = True
@@ -84,7 +140,7 @@ class RegressionEstimators:
                                n_jobs=-2, cv=self.cv,
                                )
         # perform the search
-        search.fit(X=self.x.values, y=self.y["Reading_speed"].values, )
+        search.fit(X=self.x, y=self.y, )
 
         # report the best result
         print("best score:", search.best_score_)
@@ -105,7 +161,7 @@ class RegressionEstimators:
             for kk, vv in v.items():
                 estimator.fit(vv["x_train"], vv["y_train"])
                 self.results[k]["y_pred"] = estimator.predict(vv["x_test"])
-                self.results[k]["y_true"] = vv["y_test"].Reading_speed
+                self.results[k]["y_true"] = vv["y_test"]
 
         return self.results
 
