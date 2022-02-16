@@ -139,11 +139,12 @@ if __name__ == "__main__":
     learning_method = None
 
     if learning_method == "regression":
-        re = RegressionEstimators()
-        estimator, params = re.instantiate_an_estimator()
-        tuned_parameters = re.tune_hyper_parameters(estimator=estimator, params=params)
-        results = re.train_test_tuned_estimator(estimator=estimator, tuned_params=tuned_parameters)
+        reg_est = RegressionEstimators()
+        estimator, params = reg_est.instantiate_an_estimator()
+        tuned_parameters = reg_est.tune_hyper_parameters(estimator=estimator, params=params)
+        results = reg_est.train_test_tuned_estimator(estimator=estimator, tuned_params=tuned_parameters)
 
-
+        # save results and tuned_params
+        call a fn from common.utils
 
 
