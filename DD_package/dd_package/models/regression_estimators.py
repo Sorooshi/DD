@@ -159,13 +159,13 @@ class RegressionEstimators:
 
         print("Training and testing of " + self.estimator_name)
 
-        self.estimator(**self.tuned_params)
+        estimator = self.estimator(**self.tuned_params)
 
         for k, v in self.data.items():
             self.results[k] = defaultdict()
             for kk, vv in v.items():
-                self.estimator.fit(vv["x_train"], vv["y_train"])
-                self.results[k]["y_pred"] = self.estimator.predict(vv["x_test"])
+                estimator.fit(vv["x_train"], vv["y_train"])
+                self.results[k]["y_pred"] = estimator.predict(vv["x_test"])
                 self.results[k]["y_true"] = vv["y_test"]
 
         return self.results
