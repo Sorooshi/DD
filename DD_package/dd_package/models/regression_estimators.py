@@ -135,7 +135,7 @@ class RegressionEstimators:
     def tune_hyper_parameters(self, estimator, params, ):
         """ estimator sklearn estimator, estimator dict of parameters. """
 
-        print("CV hyperparameters tuning for " + self.estimator_name)
+        print("CV hyper-parameters tuning for " + self.estimator_name)
 
         # define the search
         search = BayesSearchCV(estimator=estimator,
@@ -158,7 +158,7 @@ class RegressionEstimators:
 
         """ returns of dict of dicts, containing y_test and y_pred per each repeat. """
 
-        print("Training and testing" + self.estimator_name)
+        print("Training and testing of" + self.estimator_name)
         estimator = estimator(**tuned_params)
 
         for k, v in self.data.items():
