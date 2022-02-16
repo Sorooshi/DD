@@ -110,7 +110,7 @@ class RegressionEstimators:
         elif self.estimator_name == "mlp_reg":
             self.estimator = MLPRegressor(
                 shuffle=False,
-                verbose=False,
+                verbose=True,
             )
 
             # define search space
