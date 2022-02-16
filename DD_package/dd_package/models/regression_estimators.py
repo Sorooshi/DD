@@ -1,6 +1,7 @@
 from sklearn.svm import SVR
 from skopt import BayesSearchCV
 from collections import defaultdict
+from sklearn.metrics import r2_score
 from sklearn.ensemble import AdaBoostRegressor
 from sklearn.neural_network import MLPRegressor
 from sklearn.neighbors import KNeighborsRegressor
@@ -120,7 +121,7 @@ class RegressionEstimators:
             self.params["alpha"] = Real(1e-6, 1e-2, "uniform")
             self.params["learning_rate"] = Categorical(["constant", "invscaling", "adaptive"])
             self.params["learning_rate_init"] = Real(1e-4, 1e-1, "uniform")
-            self.params["max_iter"] = Real(10, 10000, "uniform")
+            self.params["max_iter"] = Real(100, 10000, "uniform")
 
             print("Multi Layer Perceptron Regressor.")
 
@@ -140,6 +141,8 @@ class RegressionEstimators:
         search = BayesSearchCV(estimator=estimator,
                                search_spaces=params,
                                n_jobs=-2, cv=self.cv,
+                               scoring=r2_score,
+                               optimizer_kwargs={'base_estimator': 'RF'}
                                )
         # perform the search
         search.fit(X=self.x, y=self.y, )
