@@ -146,7 +146,7 @@ def preprocess_data(x, pp):
     else:
         print("Undefined pre-processing")
 
-    return x, y
+    return x
 
 
 
