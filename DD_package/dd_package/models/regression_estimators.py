@@ -1,7 +1,6 @@
 from sklearn.svm import SVR
 from skopt import BayesSearchCV
 from collections import defaultdict
-from sklearn.metrics import r2_score
 from sklearn.ensemble import AdaBoostRegressor
 from sklearn.neural_network import MLPRegressor
 from sklearn.neighbors import KNeighborsRegressor
@@ -20,9 +19,9 @@ class RegressionEstimators:
         self.data = data  # Dict of dicts, containing repeated train and test splits, (x, y np arrays).
         self.estimator_name = estimator_name.lower()  # str, name of estimator to select the method.
 
-
         self.estimator = None
         self.params = defaultdict()
+        self.tuned_params = defaultdict()
 
         self.results = defaultdict(defaultdict)
 
@@ -130,16 +129,16 @@ class RegressionEstimators:
             f = True
             assert f is True
 
-        return self.estimator, self.params
+        return None  # self.estimator, self.params
 
-    def tune_hyper_parameters(self, estimator, params, ):
+    def tune_hyper_parameters(self, ):
         """ estimator sklearn estimator, estimator dict of parameters. """
 
         print("CV hyper-parameters tuning for " + self.estimator_name)
 
         # define the search
-        search = BayesSearchCV(estimator=estimator,
-                               search_spaces=params,
+        search = BayesSearchCV(estimator=self.estimator,
+                               search_spaces=self.params,
                                n_jobs=-2, cv=self.cv,
                                scoring="r2",
                                optimizer_kwargs={'base_estimator': 'RF'}
@@ -150,22 +149,23 @@ class RegressionEstimators:
         # report the best result
         print("best score:", search.best_score_)
         print("best params:", search.best_params_)
-        tuned_params = search.best_params_
+        self.tuned_params = search.best_params_
 
-        return tuned_params
+        return None  # self.tuned_params, self.estimator
 
-    def train_test_tuned_estimator(self, estimator, tuned_params):
+    def train_test_tuned_estimator(self, ):  # estimator, tuned_params
 
         """ returns of dict of dicts, containing y_test and y_pred per each repeat. """
 
-        print("Training and testing of" + self.estimator_name)
-        estimator = estimator(**tuned_params)
+        print("Training and testing of " + self.estimator_name)
+
+        self.estimator = self.estimator(**self.tuned_params)
 
         for k, v in self.data.items():
             self.results[k] = defaultdict()
             for kk, vv in v.items():
-                estimator.fit(vv["x_train"], vv["y_train"])
-                self.results[k]["y_pred"] = estimator.predict(vv["x_test"])
+                self.estimator.fit(vv["x_train"], vv["y_train"])
+                self.results[k]["y_pred"] = self.estimator.predict(vv["x_test"])
                 self.results[k]["y_true"] = vv["y_test"]
 
         return self.results
