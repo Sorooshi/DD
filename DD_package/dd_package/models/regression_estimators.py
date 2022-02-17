@@ -1,6 +1,7 @@
 from sklearn.svm import SVR
 from skopt import BayesSearchCV
 from collections import defaultdict
+from sklearn.metrics import r2_score
 import dd_package.common.utils as util
 from sklearn.ensemble import AdaBoostRegressor
 from sklearn.neural_network import MLPRegressor
@@ -232,6 +233,8 @@ class RegressionEstimators:
             "Training and testing of " + self.estimator_name
         )
 
+        old_score = -np.inf
+
         for k, v in self.data.items():
             self.results[k] = defaultdict()
 
@@ -257,7 +260,11 @@ class RegressionEstimators:
                 learning_method=self.configs.learning_method,
             )
 
-            if int(k) % 5 == 0:
+            # to save the best results model and plots
+            score = r2_score(y_test, y_pred)
+
+            if score > old_score:
+                old_score = score
 
                 run = util.wandb_true_pred_plots(
                     run=run, y_true=y_test, y_pred=y_pred,
