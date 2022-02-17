@@ -13,6 +13,10 @@ class BaseLineModel:
         self.test_size = test_size
         self.configs = configs
 
+        self.y_test = np.random.randint(
+            0, self.y_train.shape[0], size=self.test_size
+        )
+
     def repeat_random_pred(self, ):
 
         for repeat in range(self.configs.n_repeats):
@@ -59,6 +63,7 @@ class BaseLineModel:
         mins = np.min(self.y_train, axis=0)
         maxs = np.max(self.y_train, axis=0)
 
+
         if self.learning_method == "regression":
 
             t = np.arange(mins, maxs, 1)
@@ -66,4 +71,4 @@ class BaseLineModel:
         else:
             self.y_pred = np.random.randint(low=1, high=4, size=self.test_size)
 
-        return self.y_pred
+        return self.y_pred,
