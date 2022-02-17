@@ -279,13 +279,13 @@ class RegressionEstimators:
                     data_name=self.configs.data_name,
                 )
 
-            run = util.save_model(
-                path=self.configs.models_path,
-                model=self.estimator,
-                specifier=self.configs.specifier,
-            )
+        run = util.save_model(
+            path=self.configs.models_path,
+            model=self.estimator,
+            specifier=self.configs.specifier,
+        )
 
-            run.finish()
+        run.finish()
 
         return None  # self.results
 
