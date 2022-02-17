@@ -234,10 +234,9 @@ class RegressionEstimators:
 
         for k, v in self.data.items():
             self.results[k] = defaultdict()
-            for kk, vv in v.items():
-                self.estimator.fit(vv["x_train"], vv["y_train"])
-                self.results[k]["y_pred"] = self.estimator.predict(vv["x_test"])
-                self.results[k]["y_true"] = vv["y_test"]
+            self.estimator.fit(v["x_train"], v["y_train"])
+            self.results[k]["y_pred"] = self.estimator.predict(v["x_test"])
+            self.results[k]["y_true"] = v["y_test"]
 
         return None  # self.results
 
