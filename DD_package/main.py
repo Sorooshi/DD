@@ -6,7 +6,6 @@ from collections import defaultdict
 
 from dd_package.data.preprocess import preprocess_data
 from dd_package.data.dyslexia_data import DyslexiaData
-from dd_package.common.utils import save_a_dict, load_a_dict
 from dd_package.models.regression_estimators import RegressionEstimators
 
 
@@ -250,30 +249,15 @@ if __name__ == "__main__":
             estimator_name=estimator_name,
         )
 
-        estimator, params = reg_est.instantiate_an_estimator_and_parameters()
+        reg_est.instantiate_tuning_estimator_and_parameters()
 
-        tuned_parameters = reg_est.tune_hyper_parameters(
-            estimator=estimator, params=params
-        )
+        reg_est.tune_hyper_parameters()
 
-        results = reg_est.train_test_tuned_estimator(
-            estimator=estimator,
-            tuned_params=tuned_parameters
-        )
+        reg_est.instantiate_train_test_estimator()
 
-        # save tuned_params
-        save_a_dict(
-            a_dict=tuned_parameters,
-            name=specifier,
-            save_path=configs.params_path,
-        )
+        reg_est.train_test_tuned_estimator()
 
-        # save results
-        save_a_dict(
-            a_dict=results,
-            name=specifier,
-            save_path=configs.results_path,
-        )
+        reg_est.save_params_results(specifier=specifier)
 
     # Classification methods:
     if learning_method == "classification":
