@@ -85,7 +85,7 @@ class RegressionEstimators:
             self.params["alpha_2"] = Real(1e-8, 1e-2, "uniform")
             self.params["lambda_1"] = Real(1e-8, 1e-2, "uniform")
             self.params["lambda_2"] = Real(1e-8, 1e-2, "uniform")
-            self.params["fit_intercept"] = Categorical(True, False)
+            self.params["fit_intercept"] = Categorical([True, False])
 
             print(
                 "Instantiate Bayesian Ridge Regressor."
