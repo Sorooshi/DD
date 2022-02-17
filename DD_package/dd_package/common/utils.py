@@ -451,7 +451,7 @@ def print_the_evaluated_results(results, learning_method, ):
         meape_ave = np.mean(MEAPE_mu, axis=0)
         meape_std = np.std(MEAPE_mu, axis=0)
 
-        print("   mae ", " \t rmse ", "\t mrae",
+        print("   mae ", "   rmse ", "\t mrae",
               "\t r2_score ", "\t meape ", "\t jsd ",
               )
 
