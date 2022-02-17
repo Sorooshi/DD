@@ -101,7 +101,8 @@ if __name__ == "__main__":
                         help="Whether to use not preprocessed target values or not.")
 
     parser.add_argument("--to_shuffle", type=int, default=1,
-                        help="Whether to shuffle data during CV or not.")
+                        help="Whether to shuffle data during CV or not."
+                             " Setting shuffle=1 will shuffle data, and other integers will not.")
 
     args = parser.parse_args()
 
@@ -189,6 +190,8 @@ if __name__ == "__main__":
         c_features=c_features,
         indicators=indicators,
     )
+
+    print("x_org:", x_org.shape, "\n", x_org.head())
 
     if estimator_name.split("_")[-1] == "reg":
         learning_method = "regression"
