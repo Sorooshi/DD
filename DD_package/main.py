@@ -2,7 +2,6 @@ import argparse
 import numpy as np
 from pathlib import Path
 from types import SimpleNamespace
-from collections import defaultdict
 
 from dd_package.data.preprocess import preprocess_data
 from dd_package.data.dyslexia_data import DyslexiaData
@@ -225,7 +224,16 @@ if __name__ == "__main__":
         to_shuffle = False
         group = learning_method + "-" + "not-shuffled"
 
-    specifier = estimator_name + "-" + str(to_shuffle)
+    # Adding some details for the sake of clarity in storing and visualization
+    configs.run = run
+    configs.project = project
+    configs.group = group
+    configs.tag = tag
+    specifier = data_name+"-"+estimator_name+"-"+str(to_shuffle)
+    configs.specifier = specifier
+    configs.data_name = data_name
+    configs.name_wb = data_name+": "+specifier
+    configs.learning_method = learning_method
 
     x = preprocess_data(x=x_org, pp=pp)  # only x is standardized
 
@@ -258,13 +266,19 @@ if __name__ == "__main__":
 
         reg_est.train_test_tuned_estimator()
 
-        reg_est.save_params_results(specifier=specifier)
+        reg_est.save_params_results()
+
+        reg_est.print_results()
 
     # Classification methods:
     if learning_method == "classification":
-        print("classification to be completed")
+        print(
+            "classification to be completed"
+        )
 
-
-
+    print(
+        "Hyper-parameters tuning and train-test evaluation are finished. \n",
+        "  The corresponding results, parameters, models, and figures of" + estimator_name + " are stored."
+    )
 
 
