@@ -252,7 +252,9 @@ if __name__ == "__main__":
     )
 
     # Baseline models (random prediction)
-    if estimator_name == "base_reg":
+    if estimator_name == "base_reg" or \
+            estimator_name == "base_cls" or \
+            estimator_name == "base_clt":
         blm = BaseLineModel(
             y_train=y,
             learning_method=learning_method,
