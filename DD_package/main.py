@@ -193,7 +193,8 @@ if __name__ == "__main__":
         ]
 
     else:
-        assert False, "Ill-defined data_name argument. Refer to help of data_name argument for more."
+        assert False, "Ill-defined data_name argument. " \
+                      "Refer to help of data_name argument for more."
 
     x_org, y_org = dd.get_onehot_features_targets(
         data=df_data_to_use,
