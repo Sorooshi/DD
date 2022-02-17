@@ -250,7 +250,8 @@ class RegressionEstimators:
             self.results[k]["y_true"] = y_test
 
             run = util.wandb_metrics(
-                run=run, y_true=y_test,
+                run=run,
+                y_true=y_test,
                 y_pred=y_pred,
                 learning_method=self.configs.learning_method,
             )
@@ -259,18 +260,21 @@ class RegressionEstimators:
                 # plot the predicted values and their std for the entire test set
                 run = util.wandb_true_pred_plots(
                     run=run, y_true=y_test, y_pred=y_pred,
+                    path=self.configs.figures_path,
                     specifier=self.configs.specifier,
                     data_name=self.configs.data_name,
                 )
 
                 run = util.wandb_true_pred_scatters(
                     run=run, y_test=y_test, y_pred=y_pred,
+                    path=self.configs.figures_path,
                     specifier=self.configs.specifier,
                     data_name=self.configs.data_name,
                 )
 
                 run = util.wandb_true_pred_histograms(
                     run=run, y_test=y_test, y_pred=y_pred,
+                    path=self.configs.figures_path,
                     specifier=self.configs.specifier,
                     data_name=self.configs.data_name,
                 )
