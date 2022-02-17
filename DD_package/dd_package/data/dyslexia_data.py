@@ -151,11 +151,13 @@ class DyslexiaData:
             targets = ["Group", "Reading_speed"]
 
         features = list(
-            set(data.columns).difference(set(indicators).union(set(targets)))
+            set(data.columns).difference(
+                set(indicators).union(set(targets))
+            )
         )
 
-        self.x = data.loc[indicators, features]
-        self.y = data.loc[indicators:, targets]
+        self.x = data.loc[:, features]
+        self.y = data.loc[:, targets]
 
         return self.x, self.y
 
