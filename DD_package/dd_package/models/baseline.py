@@ -15,7 +15,7 @@ class BaseLineModel:
 
         self.y_test = np.random.randint(
             0, self.y_train.shape[0], size=self.test_size
-        )
+        ).ravel()
 
     def repeat_random_pred(self, ):
 
