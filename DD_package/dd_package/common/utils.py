@@ -242,7 +242,7 @@ def wandb_features_importance(run, values_features_importance,
     return run
 
 
-def wandb_true_pred_plots(run, y_true, y_pred, path, specifier, data_name):
+def wandb_true_pred_plots(run, y_true, y_pred, path, specifier):
 
     t = np.arange(len(y_true))
     fig, ax = plt.subplots(1, figsize=(12, 5))
@@ -264,7 +264,7 @@ def wandb_true_pred_plots(run, y_true, y_pred, path, specifier, data_name):
     plt.legend(loc="best")
 
     plt.title(
-        "Plots: target vs predicted value of " + specifier + " on: " + data_name
+        "Plots: target vs predicted value of " + specifier
     )
 
     # subdirectory
@@ -274,18 +274,18 @@ def wandb_true_pred_plots(run, y_true, y_pred, path, specifier, data_name):
 
     plt.savefig(
         os.path.join(
-            p, specifier + "-" + data_name + ".png"
+            p, specifier + ".png"
         )
     )
 
     run.log(
-        {"Plots: target vs predicted value of " + specifier + " on: " + data_name + str(r2): ax}
+        {"Plots: target vs predicted value of " + specifier + str(r2): ax}
     )
 
     return run
 
 
-def wandb_true_pred_scatters(run, y_test, y_pred, path, specifier, data_name):
+def wandb_true_pred_scatters(run, y_test, y_pred, path, specifier,):
 
     _ = plt.figure(figsize=(12, 5))
 
@@ -300,7 +300,7 @@ def wandb_true_pred_scatters(run, y_test, y_pred, path, specifier, data_name):
     plt.legend(loc="best")
 
     plt.title(
-        "Scatters: target vs predicted values of "+specifier+" on: "+data_name
+        "Scatters: target vs predicted values of " + specifier
     )
 
     # subdirectory
@@ -309,19 +309,17 @@ def wandb_true_pred_scatters(run, y_test, y_pred, path, specifier, data_name):
         p.mkdir()
 
     plt.savefig(
-        os.path.join(
-            p, data_name + "-" + specifier + ".png"
-        )
+        os.path.join(p, specifier + ".png")
     )
 
     run.log(
-        {"Scatters: target vs predicted values of "+specifier+" on: "+data_name: plt}
+        {"Scatters: target vs predicted values of " + specifier: plt}
     )
 
     return run
 
 
-def wandb_true_pred_histograms(run, y_test, y_pred, path, specifier, data_name):
+def wandb_true_pred_histograms(run, y_test, y_pred, path, specifier):
 
     plt.figure(figsize=(12, 5))
     plt.subplot(131)
@@ -349,7 +347,7 @@ def wandb_true_pred_histograms(run, y_test, y_pred, path, specifier, data_name):
     plt.legend(loc="best")
 
     plt.title(
-        "Histograms: " + specifier + " on: " + data_name,
+        "Histograms: " + specifier
     )
 
     # subdirectory
@@ -360,12 +358,12 @@ def wandb_true_pred_histograms(run, y_test, y_pred, path, specifier, data_name):
 
     plt.savefig(
         os.path.join(
-            p, data_name + "-" + specifier + ".png"
+            p, specifier + ".png"
         )
     )
 
     run.log(
-        {"Histograms: target vs predicted of " + specifier + " on: " + data_name: plt}
+        {"Histograms: target vs predicted of " + specifier : plt}
     )
 
     plt.show()
