@@ -371,22 +371,6 @@ def wandb_true_pred_histograms(run, y_test, y_pred, path, specifier):
     return run
 
 
-def plot_loss(run, history, name):
-
-    fig, ax = plt.subplots(1, figsize=(12, 5))
-    ax.plot(history.history['loss'], label='Train Loss-' + name)
-    ax.plot(history.history['val_loss'], label='Valid. Loss-' + name)
-    plt.ylabel("Error")
-    plt.xlabel("Epochs")
-    plt.title("Train-Validation Errors for " + name)
-    ax.legend(loc="best")
-    run.log({"Train-Validation Errors for" + name: ax})
-    # plt.savefig("../figures/"+name+".png")
-    # plt.show()
-
-    return run
-
-
 def save_model(path, model, specifier, ):
 
     dump(

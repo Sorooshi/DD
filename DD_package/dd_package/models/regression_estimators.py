@@ -248,7 +248,7 @@ class RegressionEstimators:
             y_test = v["y_test"]
             y_pred = self.estimator.predict(v["x_test"])
             self.results[k]["y_pred"] = y_pred
-            self.results[k]["y_true"] = y_test
+            self.results[k]["y_test"] = y_test
 
             run = util.wandb_metrics(
                 run=run,
