@@ -297,7 +297,7 @@ if __name__ == "__main__":
 
     print(
         "\n Hyper-parameters tuning and train-test evaluation are finished. \n",
-        "  The corresponding results, parameters, models, and figures of" + estimator_name + " are stored."
+        "  The corresponding results, parameters, models, and figures of " + estimator_name + " are stored."
     )
 
 
