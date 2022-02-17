@@ -1,10 +1,19 @@
 import os
-import sys
+import wandb
 import pickle
+import numpy as np
+from sklearn import metrics
+from joblib import dump, load
+import matplotlib.pyplot as plt
+from sklearn.utils import resample
+from scipy.spatial import distance
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 
-# ?? import sklearn.metrics.mean_absolute_error as mae
-#
-# ?? import sklearn.metrics.mean_squared_error as mse
+np.set_printoptions(suppress=True, precision=3)
 
 
 def save_a_dict(a_dict, name, save_path, ):
@@ -19,10 +28,351 @@ def load_a_dict(name, save_path, ):
     return a_dict
 
 
-def print_the_evaluated_results(specifier, learning_method, ):
+def mae(y_true, y_pred):
+    if not isinstance(y_true, np.ndarray):
+        y_true = np.asarray(y_true)
 
-    with open("../results/" + specifier, "rb") as fp:
-        results = pickle.load(fp)
+    if not isinstance(y_pred, np.ndarray):
+        y_pred = np.asarray(y_pred)
+
+    return np.mean(np.abs(y_true-y_pred))
+
+
+def rmse(y_true, y_pred):
+    if not isinstance(y_true, np.ndarray):
+        y_true = np.asarray(y_true)
+
+    if not isinstance(y_pred, np.ndarray):
+        y_pred = np.asarray(y_pred)
+
+    return np.sqrt(np.mean(np.power(y_true-y_pred, 2)))
+
+
+def mrae(y_true, y_pred):
+    if not isinstance(y_true, np.ndarray):
+        y_true = np.asarray(y_true)
+    if not isinstance(y_pred, np.ndarray):
+        y_pred = np.asarray(y_pred)
+    return np.mean(np.abs(np.divide(y_true - y_pred, y_true)))
+
+
+def jsd(y_true, y_pred):
+    return np.asarray(distance.jensenshannon(y_true, y_pred))
+
+
+def mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100):
+    errors = []
+    inds = np.arange(len(y_true))
+
+    for i in range(n_iters):
+        inds_boot = resample(inds)
+
+        y_true_boot = y_true[inds_boot]
+        y_pred_boot = y_pred[inds_boot]
+
+        y_true_mean = y_true_boot.mean(axis=0)
+        y_pred_mean = y_pred_boot.mean(axis=0)
+
+        ierr = np.abs((y_true_mean - y_pred_mean) / y_true_mean) * 100
+        errors.append(ierr)
+
+    errors = np.array(errors)
+    return errors
+
+
+def discrepancy_score(observations, forecasts, model='QDA', n_iters=1):
+
+    """
+    Parameters:
+    -----------
+    observations : numpy.ndarray, shape=(n_samples, n_features)
+        True values.
+        Example: [[1, 2], [3, 4], [4, 5], ...]
+    forecasts : numpy.ndarray, shape=(n_samples, n_features)
+        Predicted values.
+        Example: [[1, 2], [3, 4], [4, 5], ...]
+    model : sklearn binary classifier
+        Possible values: RF, DT, LR, QDA, GBDT
+    n_iters : int
+        Number of iteration per one forecast.
+
+    Returns:
+    --------
+    mean : float
+        Mean value of discrepancy score.
+    std : float
+        Standard deviation of the mean discrepancy score.
+
+    """
+
+    scores = []
+
+    X0 = observations
+    y0 = np.zeros(len(observations))
+
+    X1 = forecasts
+    y1 = np.ones(len(forecasts))
+
+    X = np.concatenate((X0, X1), axis=0)
+    y = np.concatenate((y0, y1), axis=0)
+
+    for it in range(n_iters):
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, shuffle=True)
+        if model == 'RF':
+            clf = RandomForestClassifier(n_estimators=100, max_depth=10, max_features=None)
+        elif model == 'GDBT':
+            clf = GradientBoostingClassifier(max_depth=6, subsample=0.7)
+        elif model == 'DT':
+            clf = DecisionTreeClassifier(max_depth=10)
+        elif model == 'LR':
+            clf = LogisticRegression()
+        elif model == 'QDA':
+            clf = QuadraticDiscriminantAnalysis()
+        clf.fit(X_train, y_train)
+        y_pred_test = clf.predict_proba(X_test)[:, 1]
+        auc = 2 * metrics.roc_auc_score(y_test, y_pred_test) - 1
+        scores.append(auc)
+
+    scores = np.array(scores)
+    mean = scores.mean()
+    std = scores.std() / np.sqrt(len(scores))
+
+    return mean, std
+
+
+def init_a_wandb(name, project, notes, group, tag, config):
+
+    """ name := the within the project name, e.g., RF-reg-1
+        project := the project name, e.g., Non-sequential Regressions
+        notes := Description, e.g., Non-sequential Regressions Comparison for SuperOX
+        group := name of experiment or the algorithm under consideration, e.g., RF-1
+        config := model and training configuration
+        tag := tag of an experiment, e.g. run number of same experiments to compute ave. and std.
+    """
+
+    run = wandb.init(name=name,
+                     project=project,
+                     notes=notes,
+                     entity='sorooshi',
+                     group=group,
+                     tags=tag,
+                     config=config,
+                     )
+
+    return run
+
+
+def wandb_metrics(run, y_true, y_pred, learning_method):
+
+    meape_errors = mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100)
+
+    if learning_method == "regression":
+        run.log({
+            "MAE": mae(y_true=y_true, y_pred=y_pred),
+            "RMSE": rmse(y_true=y_true, y_pred=y_pred),
+            "MRAE": mrae(y_true=y_true, y_pred=y_pred),
+            "JSD": jsd(y_true=y_true, y_pred=y_pred).mean(),
+            "R^2-Score": metrics.r2_score(y_true, y_pred),
+            "MEAPE-mu": meape_errors.mean(axis=0),
+            "MEAPE-std": meape_errors.std(axis=0)
+
+        })
+
+    elif learning_method == "classification":
+
+        run.log({
+            "ARI": metrics.adjusted_rand_score(y_true, y_pred),
+            "NMI": metrics.normalized_mutual_info_score(y_true, y_pred),
+            "JSD": jsd(y_true=y_true, y_pred=y_pred).mean(),
+            "Precision": metrics.precision_score(y_true, y_pred, average='weighted'),
+            "Recall": metrics.recall_score(y_true, y_pred, average='weighted'),
+            "F1-Score": metrics.f1_score(y_true, y_pred, average='weighted'),
+            "ROC AUC": metrics.roc_auc_score(y_true, y_pred, average='weighted'),
+            "MEAPE-mu": meape_errors.mean(axis=0),
+            "MEAPE-std": meape_errors.std(axis=0)
+        })
+
+    # for future applications I separate cls and clu
+    elif learning_method == "clustering":
+
+        run.log({
+            "ARI": metrics.adjusted_rand_score(y_true, y_pred),
+            "NMI": metrics.normalized_mutual_info_score(y_true, y_pred),
+            "JSD": jsd(y_true=y_true, y_pred=y_pred).mean(),
+            "Precision": metrics.precision_score(y_true, y_pred, average='weighted'),
+            "Recall": metrics.recall_score(y_true, y_pred, average='weighted'),
+            "F1-Score": metrics.f1_score(y_true, y_pred, average='weighted'),
+            "ROC AUC": metrics.roc_auc_score(y_true, y_pred, average='weighted'),
+            "MEAPE-mu": meape_errors.mean(axis=0),
+            "MEAPE-std": meape_errors.std(axis=0)
+        })
+
+    return run
+
+
+def evaluate_a_x_test(y_true, y_pred,):
+
+    # MEAPE >> Mean Estimation Absolute Percentage Error
+    meape_mu, meape_std = mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100)
+
+    # gb >> Gradient Decent Boosting Classifier
+    gb_mu, gb_std = discrepancy_score(y_true, y_pred, model='GDBT', n_iters=10)
+
+    # qda >> Quadratic Discriminant Analysis
+    qda_mu, qda_std = discrepancy_score(y_true, y_pred, model='QDA', n_iters=10)
+
+    return meape_mu, gb_mu, qda_mu
+
+
+def _wandb_metrics_(run, meape_iops_mu, meape_lat_mu,  gb_mu, qda_mu,):
+
+    """
+    meape >> Mean Estimation Absolute Percentage Error
+    gb >> Gradient Decent Boosting Classifier
+    qda >> Quadratic Discriminant Analysis
+    """
+
+    run.log({
+        "IOPS: MEAPE [mu, std]": ["%.3f" % meape_iops_mu.mean(), "%.3f" % meape_iops_mu.std()],
+        "LAT : MEAPE [mu, std]": ["%.3f" % meape_lat_mu.mean(), "%.3f" % meape_lat_mu.std()],
+        "DS_GBDT: [mu, std]": ["%.3f" % gb_mu.mean(), "%.3f" % gb_mu.std()],
+        "DS_QDA: [mu, std]": ["%.3f" % qda_mu.mean(), "%.3f" % qda_mu.std()],
+    })
+
+    return run
+
+
+def wandb_features_importance(run, values_features_importance,
+                              name_important_features,
+                              indices_important_features,
+                              importance_method):
+    counter = 0
+    for i in range(len(indices_important_features)):
+        if counter < 5:
+            run.log({
+                importance_method +
+                "-" + name_important_features[indices_important_features[i]] +
+                "-" + str(i + 1): values_features_importance[0][indices_important_features[i]],
+            })
+            counter += 1
+
+    return run
+
+
+def wandb_true_pred_plots(run, y_true, y_pred, specifier, data_name):
+
+    t = np.arange(len(y_true))
+    fig, ax = plt.subplots(1, figsize=(12, 5))
+    ax.plot(t, y_true, lw=1.5, c='g', label="y_true", alpha=1.)
+    ax.plot(t, y_pred, lw=2., c='m', label="y_pred", alpha=1.)
+
+    ax.fill_between(t, y_pred + y_pred.std(),
+                    y_pred - y_pred.std(),
+                    facecolor='yellow',
+                    alpha=.5,
+                    label="Std",
+                    )
+
+    ax.legend(loc="best")
+    r2 = metrics.r2_score(y_true, y_pred)
+
+    plt.xlabel("Index")
+    plt.ylabel("True/Pred Values")
+    plt.legend(loc="best")
+
+    plt.title("Plots: target vs predicted value of " + specifier + " on: " + data_name)
+    plt.savefig("../figures/Plots:" + specifier + "on" + data_name + ".png")
+    run.log({"Plots: target vs predicted value of " + specifier + " on: " + data_name + str(r2): ax})
+
+    return run
+
+
+def wandb_true_pred_scatters(run, y_test, y_pred, specifier, data_name):
+
+    _ = plt.figure(figsize=(12, 5))
+
+    plt.scatter(np.arange(len(y_test)), y_test,
+                alpha=0.7, marker='+', label='True')
+
+    plt.scatter(np.arange(len(y_pred)), y_pred,
+                alpha=0.8, marker='o', label='Prediction')
+
+    plt.xlabel("Index")
+    plt.ylabel("True/Pred Values ")
+    plt.legend(loc="best")
+    plt.title("Scatters: target vs predicted values of "+specifier+" on: "+data_name)
+    plt.savefig("../figures/Scatters: " + data_name + "-" + specifier + ".png")
+    run.log({"Scatters: target vs predicted values of "+specifier+" on: "+data_name: plt})
+
+    return run
+
+
+def wandb_true_pred_histograms(run, y_test, y_pred, specifier, data_name):
+
+    plt.figure(figsize=(12, 5))
+    plt.subplot(131)
+    n_bins = np.linspace(y_test.min()-5, y_test.max()+5, 50)
+
+    plt.hist(y_test, color="g",
+             bins=n_bins, label="y_true",
+             histtype='step', alpha=.7,
+             linewidth=2,
+             )
+
+    # n_bins = np.linspace(y_pred.min()-20, y_pred.max()+20, 50)
+
+    plt.hist(y_pred, color="m",
+             bins=n_bins, label="y_pred",
+             histtype='step',
+             alpha=1.,
+             )
+
+    _max = max(y_test.max(), y_pred.max()) + 20
+
+    plt.xlim([-_max, _max])
+    plt.xlabel("True and Pred. values ")
+    plt.ylabel('Count')
+    plt.legend(loc="best")
+    plt.title("Histograms: " + specifier + " on: " + data_name, )  # , font_size=12
+    plt.savefig("../figures/Histograms: " + data_name + "-" + specifier + ".png")
+    run.log({"Histograms: target vs predicted of " + specifier + " on: " + data_name: plt})
+    plt.show()
+
+    return run
+
+
+def plot_loss(run, history, name):
+
+    fig, ax = plt.subplots(1, figsize=(12, 5))
+    ax.plot(history.history['loss'], label='Train Loss-' + name)
+    ax.plot(history.history['val_loss'], label='Valid. Loss-' + name)
+    plt.ylabel("Error")
+    plt.xlabel("Epochs")
+    plt.title("Train-Validation Errors for " + name)
+    ax.legend(loc="best")
+    run.log({"Train-Validation Errors for" + name: ax})
+    # plt.savefig("../figures/"+name+".png")
+    # plt.show()
+
+    return run
+
+
+def save_model(path, model, specifier, ):
+
+    dump(
+        model, os.path.join(
+            path, specifier+".joblib"
+        )
+    )
+
+    return None
+
+
+def print_the_evaluated_results(results, learning_method, ):
+
+    """ results: dict, containing results of each repeat, key:= repeat number.
+            learning_method: string, specifing which metrics should be used.
+    """
 
     # Regression metrics
     MEA, RMSE, MRAE, JSD, R2_Score, MEAPE_mu, MEAPE_std = [], [], [], [], [], [], []
@@ -163,3 +513,8 @@ def print_the_evaluated_results(specifier, learning_method, ):
               )
 
     return None
+
+
+
+
+
