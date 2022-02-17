@@ -266,6 +266,8 @@ if __name__ == "__main__":
         blm.save_results()
         blm.print_results()
 
+        assert False, "Random prediction is done, no need to proceed further"
+
     # Regression methods:
     if learning_method == "regression":
 
