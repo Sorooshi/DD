@@ -1,6 +1,7 @@
 from sklearn.svm import SVR
 from skopt import BayesSearchCV
 from collections import defaultdict
+import dd_package.common.utils as util
 from sklearn.ensemble import AdaBoostRegressor
 from sklearn.neural_network import MLPRegressor
 from sklearn.neighbors import KNeighborsRegressor
@@ -10,10 +11,9 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.gaussian_process import GaussianProcessRegressor
 
-from dd_package.common.utils import save_a_dict, load_a_dict
-
 
 class RegressionEstimators:
+
     def __init__(self, x, y, cv, data, estimator_name, configs, ):
         self.x = x  # np.ndarray, a pre-processed matrix of features/random variables.
         self.y = y  # np.ndarray, not pre-processed vector of target variables.
@@ -232,28 +232,99 @@ class RegressionEstimators:
                 "Training and testing of " + self.estimator_name
         )
 
+        run = util.init_a_wandb(
+            name=self.configs.name_wb,
+            project=self.configs.project,
+            notes="--",
+            group=self.configs.group,
+            tag=[self.configs.data_name],
+            config=self.tuned_params,
+        )
+
         for k, v in self.data.items():
             self.results[k] = defaultdict()
             self.estimator.fit(v["x_train"], v["y_train"])
-            self.results[k]["y_pred"] = self.estimator.predict(v["x_test"])
-            self.results[k]["y_true"] = v["y_test"]
+            y_test = v["y_test"]
+            y_pred = self.estimator.predict(v["x_test"])
+            self.results[k]["y_pred"] = y_pred
+            self.results[k]["y_true"] = y_test
+
+            run = util.wandb_metrics(
+                run=run, y_true=y_test,
+                y_pred=y_pred,
+                learning_method=self.configs.learning_method,
+            )
+
+            if k % 5 == 0:
+                # plot the predicted values and their std for the entire test set
+                run = util.wandb_true_pred_plots(
+                    run=run, y_true=y_test, y_pred=y_pred,
+                    specifier=self.configs.specifier,
+                    data_name=self.configs.data_name,
+                )
+
+                run = util.wandb_true_pred_scatters(
+                    run=run, y_test=y_test, y_pred=y_pred,
+                    specifier=self.configs.specifier,
+                    data_name=self.configs.data_name,
+                )
+
+                run = util.wandb_true_pred_histograms(
+                    run=run, y_test=y_test, y_pred=y_pred,
+                    specifier=self.configs.specifier,
+                    data_name=self.configs.data_name,
+                )
+
+            run = util.save_model(
+                path=self.configs.models_path,
+                model=self.estimator,
+                specifier=self.configs.specifier,
+            )
+
+            run.finish()
 
         return None  # self.results
 
-    def save_params_results(self, specifier):
+    def save_params_results(self,):
         # save tuned_params
-        save_a_dict(
+        util.save_a_dict(
             a_dict=self.tuned_params,
-            name=specifier,
+            name=self.configs.specifier,
             save_path=self.configs.params_path,
         )
 
         # save results
-        save_a_dict(
+        util.save_a_dict(
             a_dict=self.results,
-            name=specifier,
+            name=self.configs.specifier,
             save_path=self.configs.results_path,
         )
+
+        return None
+
+    def print_results(self, ):
+
+        # no tuning or training has been executed
+        if len(self.results.values()) != 0:
+
+            util.print_the_evaluated_results(
+                self.results, self.configs.learning_method,
+            )
+
+        else:
+
+            results = util.load_a_dict(
+                name=self.configs.specifier,
+                save_path=self.configs.results_path,
+            )
+
+            util.print_the_evaluated_results(
+                results, self.configs.learning_method,
+            )
+
+        return None
+
+
 
 
 
