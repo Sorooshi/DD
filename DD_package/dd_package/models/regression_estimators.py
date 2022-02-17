@@ -154,13 +154,13 @@ class RegressionEstimators:
 
         return self.tuned_params, self.estimator
 
-    def train_test_tuned_estimator(self, ):  # estimator, tuned_params
+    def train_test_tuned_estimator(self, estimator, tuned_params):
 
         """ returns of dict of dicts, containing y_test and y_pred per each repeat. """
 
         print("Training and testing of " + self.estimator_name)
 
-        estimator = self.estimator(**self.tuned_params)
+        estimator = estimator(tuned_params)
 
         for k, v in self.data.items():
             self.results[k] = defaultdict()
