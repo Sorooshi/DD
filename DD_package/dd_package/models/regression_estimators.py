@@ -115,7 +115,7 @@ class RegressionEstimators:
             self.params["n_estimators"] = Integer(10, 1000, )
             self.params["min_samples_split"] = Integer(2, 10, )
             self.params["min_samples_leaf"] = Integer(1, 10, )
-            self.params["alpha"] = Real(1e-1, 9e-1, "Uniform")
+            self.params["alpha"] = Real(1e-1, 9e-1, "uniform")
 
             print(
                 "Gradient Boosting Regressor."
