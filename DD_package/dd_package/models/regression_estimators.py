@@ -257,7 +257,7 @@ class RegressionEstimators:
             )
 
             if int(k) % 5 == 0:
-                # plot the predicted values and their std for the entire test set
+
                 run = util.wandb_true_pred_plots(
                     run=run, y_true=y_test, y_pred=y_pred,
                     path=self.configs.figures_path,
@@ -276,13 +276,15 @@ class RegressionEstimators:
                     specifier=self.configs.specifier+k,
                 )
 
-        run = util.save_model(
-            path=self.configs.models_path,
-            model=self.estimator,
-            specifier=self.configs.specifier,
-        )
+                run = util.save_model(
+                    path=self.configs.models_path,
+                    model=self.estimator,
+                    specifier=self.configs.specifier,
+                )
 
-        run.finish()
+                run.finish()
+
+            run.finish()
 
         return None  # self.results
 
