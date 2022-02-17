@@ -17,7 +17,8 @@ class BaseLineModel:
 
         for repeat in range(self.configs.n_repeats):
             k = str(repeat+1)
-            self.results[k] = self._pred_randomly()
+            self.results[k] = defaultdict()
+            self.results[k]["y_test"] = self._pred_randomly()
 
         return self.results
 
