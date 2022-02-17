@@ -232,17 +232,18 @@ class RegressionEstimators:
             "Training and testing of " + self.estimator_name
         )
 
-        run = util.init_a_wandb(
-            name=self.configs.name_wb,
-            project=self.configs.project,
-            notes="--",
-            group=self.configs.group,
-            tag=[self.configs.data_name],
-            config=self.tuned_params,
-        )
-
         for k, v in self.data.items():
             self.results[k] = defaultdict()
+
+            run = util.init_a_wandb(
+                name=self.configs.name_wb,
+                project=self.configs.project,
+                notes="--",
+                group=self.configs.group,
+                tag=[self.configs.data_name],
+                config=self.tuned_params,
+            )
+
             self.estimator.fit(v["x_train"], v["y_train"])
             y_test = v["y_test"]
             y_pred = self.estimator.predict(v["x_test"])
@@ -276,13 +277,11 @@ class RegressionEstimators:
                     specifier=self.configs.specifier+"-"+k,
                 )
 
-                run = util.save_model(
+                _ = util.save_model(
                     path=self.configs.models_path,
                     model=self.estimator,
                     specifier=self.configs.specifier,
                 )
-
-                run.finish()
 
             run.finish()
 
