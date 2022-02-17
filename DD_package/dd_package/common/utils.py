@@ -2,6 +2,7 @@ import os
 import wandb
 import pickle
 import numpy as np
+from pathlib import Path
 from sklearn import metrics
 from joblib import dump, load
 import matplotlib.pyplot as plt
@@ -266,9 +267,14 @@ def wandb_true_pred_plots(run, y_true, y_pred, path, specifier, data_name):
         "Plots: target vs predicted value of " + specifier + " on: " + data_name
     )
 
+    # subdirectory
+    p = Path(os.path.join(path, "Plots"))
+    if not p.exists():
+        p.mkdir()
+
     plt.savefig(
         os.path.join(
-            path, "Plots", specifier + "-" + data_name + ".png"
+            p, specifier + "-" + data_name + ".png"
         )
     )
 
@@ -297,9 +303,14 @@ def wandb_true_pred_scatters(run, y_test, y_pred, path, specifier, data_name):
         "Scatters: target vs predicted values of "+specifier+" on: "+data_name
     )
 
+    # subdirectory
+    p = Path(os.path.join(path, "Scatters"))
+    if not p.exists():
+        p.mkdir()
+
     plt.savefig(
         os.path.join(
-            path, "Scatters", data_name + "-" + specifier + ".png"
+            p, data_name + "-" + specifier + ".png"
         )
     )
 
@@ -341,9 +352,15 @@ def wandb_true_pred_histograms(run, y_test, y_pred, path, specifier, data_name):
         "Histograms: " + specifier + " on: " + data_name,
     )
 
+    # subdirectory
+    p = Path(os.path.join(path, "Histograms"))
+
+    if not p.exists():
+        p.mkdir()
+
     plt.savefig(
         os.path.join(
-            path, "Histograms", data_name + "-" + specifier + ".png"
+            p, data_name + "-" + specifier + ".png"
         )
     )
 
