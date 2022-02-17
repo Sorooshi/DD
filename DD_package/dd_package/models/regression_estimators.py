@@ -129,7 +129,7 @@ class RegressionEstimators:
             f = True
             assert f is True
 
-        return None  # self.estimator, self.params
+        return self.estimator, self.params
 
     def tune_hyper_parameters(self, ):
         """ estimator sklearn estimator, estimator dict of parameters. """
@@ -151,7 +151,7 @@ class RegressionEstimators:
         print("best params:", search.best_params_)
         self.tuned_params = search.best_params_
 
-        return None  # self.tuned_params, self.estimator
+        return self.tuned_params, self.estimator
 
     def train_test_tuned_estimator(self, ):  # estimator, tuned_params
 
