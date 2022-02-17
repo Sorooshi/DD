@@ -65,6 +65,7 @@ class DyslexiaData:
             self.demo_datasets[sheet] = tmp.sort_values(by=["SubjectID"]).dropna()
 
             print(" ", sheet, tmp.shape)
+        print(" ")
 
         return self.demo_datasets
 
@@ -99,6 +100,7 @@ class DyslexiaData:
             self.ia_datasets[sheet] = tmp.sort_values(by=["SubjectID", "Sentence_ID", "Word_Number"]).dropna()
 
             print(" ", sheet, tmp.shape)
+        print(" ")
 
         return self.ia_datasets
 
@@ -123,6 +125,7 @@ class DyslexiaData:
             self.fix_datasets[sheet] = tmp.sort_values(by=["SubjectID", "Sentence_ID", ]).dropna()  # "Word_Number"
 
             print(" ", sheet, tmp.shape)
+        print(" ")
 
         return self.fix_datasets
 
