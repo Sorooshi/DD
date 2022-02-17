@@ -256,7 +256,7 @@ class RegressionEstimators:
                 learning_method=self.configs.learning_method,
             )
 
-            if k % 5 == 0:
+            if int(k) % 5 == 0:
                 # plot the predicted values and their std for the entire test set
                 run = util.wandb_true_pred_plots(
                     run=run, y_true=y_test, y_pred=y_pred,
