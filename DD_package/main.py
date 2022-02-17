@@ -6,6 +6,7 @@ from types import SimpleNamespace
 from dd_package.data.preprocess import preprocess_data
 from dd_package.data.dyslexia_data import DyslexiaData
 from dd_package.models.regression_estimators import RegressionEstimators
+from dd_package.models.baseline import BaseLineModel
 
 
 np.set_printoptions(suppress=True, precision=3, linewidth=140)
@@ -68,7 +69,7 @@ if __name__ == "__main__":
                              "  4) Demographic + IA_report = dd_demo_ia, "
                              "  5) Demographic + Fixation_report = dd_demo_fix.")
 
-    parser.add_argument("--estimator_name", type=str, default="--",
+    parser.add_argument("--estimator_name", type=str, default="base_reg",
                         help="None case sensitive first letter abbreviated name of an estimator proceeds "
                              "  one of the three following suffixes separated with the underscore."
                              "  Possible suffixes are: regression := reg, "
@@ -249,6 +250,19 @@ if __name__ == "__main__":
         to_shuffle=to_shuffle,
         n_splits=configs.n_repeats
     )
+
+    # Baseline models (random prediction)
+    if estimator_name == "base_reg":
+        blm = BaseLineModel(
+            y_train=y,
+            learning_method=learning_method,
+            n_repeats=configs.n_repeats,
+            test_size=200
+        )
+
+        blm.repeat_random_pred()
+        blm.save_results()
+        blm.print_results()
 
     # Regression methods:
     if learning_method == "regression":
