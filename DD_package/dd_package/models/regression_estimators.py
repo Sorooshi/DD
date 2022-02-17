@@ -1,3 +1,4 @@
+import numpy as np
 from sklearn.svm import SVR
 from skopt import BayesSearchCV
 from collections import defaultdict
@@ -233,7 +234,7 @@ class RegressionEstimators:
             "Training and testing of " + self.estimator_name
         )
 
-        old_score = -np.inf
+        old_score = - np.inf
 
         for k, v in self.data.items():
             self.results[k] = defaultdict()
