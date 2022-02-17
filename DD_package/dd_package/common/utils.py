@@ -245,7 +245,7 @@ def wandb_features_importance(run, values_features_importance,
 def wandb_true_pred_plots(run, y_true, y_pred, path, specifier):
 
     t = np.arange(len(y_true))
-    fig, ax = plt.subplots(1, figsize=(12, 5))
+    fig, ax = plt.subplots(1, figsize=(14, 7))
     ax.plot(t, y_true, lw=1.5, c='g', label="y_true", alpha=1.)
     ax.plot(t, y_pred, lw=2., c='m', label="y_pred", alpha=1.)
 
@@ -287,7 +287,7 @@ def wandb_true_pred_plots(run, y_true, y_pred, path, specifier):
 
 def wandb_true_pred_scatters(run, y_test, y_pred, path, specifier,):
 
-    _ = plt.figure(figsize=(12, 5))
+    _ = plt.figure(figsize=(14, 7))
 
     plt.scatter(np.arange(len(y_test)), y_test,
                 alpha=0.7, marker='+', label='True')
@@ -321,7 +321,7 @@ def wandb_true_pred_scatters(run, y_test, y_pred, path, specifier,):
 
 def wandb_true_pred_histograms(run, y_test, y_pred, path, specifier):
 
-    plt.figure(figsize=(12, 5))
+    plt.figure(figsize=(15, 7))
     plt.subplot(131)
     n_bins = np.linspace(y_test.min()-5, y_test.max()+5, 50)
 
