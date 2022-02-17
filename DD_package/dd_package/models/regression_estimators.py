@@ -141,7 +141,8 @@ class RegressionEstimators:
                                search_spaces=self.params,
                                n_jobs=-2, cv=self.cv,
                                scoring="r2",
-                               optimizer_kwargs={'base_estimator': 'RF'}
+                               optimizer_kwargs={'base_estimator': 'RF'},
+                               verbose=1,
                                )
         # perform the search
         search.fit(X=self.x, y=self.y, )
