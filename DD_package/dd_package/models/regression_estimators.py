@@ -7,11 +7,11 @@ import dd_package.common.utils as util
 from sklearn.ensemble import AdaBoostRegressor
 from sklearn.neural_network import MLPRegressor
 from sklearn.neighbors import KNeighborsRegressor
-from sklearn.linear_model import LinearRegression
 from skopt.space import Real, Categorical, Integer
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.gaussian_process import GaussianProcessRegressor
+from sklearn.linear_model import LinearRegression, BayesianRidge
 
 
 class RegressionEstimators:
@@ -33,8 +33,6 @@ class RegressionEstimators:
 
     def instantiate_tuning_estimator_and_parameters(self, ):
 
-        # Baseline, random selection:
-
         # Simplest learning method(s):
         if self.estimator_name == "l_reg":
             self.tuning_estimator = LinearRegression()
@@ -43,7 +41,9 @@ class RegressionEstimators:
             self.params = defaultdict()
             self.params["fit_intercept"] = Categorical([True, False])
 
-            print ("Linear Regressor.")
+            print (
+                "Linear Regressor."
+            )
 
         # Support Vector machine method(s):
         elif self.estimator_name == "sv_reg":
@@ -57,7 +57,9 @@ class RegressionEstimators:
             self.params['gamma'] = Real(1e-1, 2.0, 'log-uniform')
             self.params["epsilon"] = Real(1e-1, 2.0, 'log-uniform')
 
-            print("Linear Support Vector Regression.")
+            print(
+                "Linear Support Vector Regression."
+            )
 
         # KNN method(s):
         elif self.estimator_name == "knn_reg":
@@ -68,7 +70,26 @@ class RegressionEstimators:
             self.params["n_neighbors"] = Integer(1, 10, )
             self.params["p"] = Real(1, 5, "uniform")
 
-            print("KNearest Neighbor Regressor.")
+            print(
+                "KNearest Neighbor Regressor."
+            )
+
+        # Bayesian Ridge:
+        elif self.estimator_name == "br_reg":
+            self.tuning_estimator = BayesianRidge()
+
+            # define search space
+            self.params = defaultdict()
+            self.params["n_iter"] = Integer(1e2, 2e4, "uniform")
+            self.params["alpha_1"] = Real(1e-8, 1e-2, "uniform")
+            self.params["alpha_2"] = Real(1e-8, 1e-2, "uniform")
+            self.params["lambda_1"] = Real(1e-8, 1e-2, "uniform")
+            self.params["lambda_2"] = Real(1e-8, 1e-2, "uniform")
+            self.params["fit_intercept"] = Categorical(True, False)
+
+            print(
+                "Instantiate Bayesian Ridge Regressor."
+            )
 
         # Ensemble learning method(s):
         elif self.estimator_name == "rf_reg":
@@ -80,7 +101,9 @@ class RegressionEstimators:
             self.params["min_samples_split"] = Integer(2, 10, )
             self.params["min_samples_leaf"] = Integer(1, 10, )
 
-            print("Random Forest Regressor.")
+            print(
+                "Random Forest Regressor."
+            )
 
         elif self.estimator_name == "gb_reg":
             self.tuning_estimator = GradientBoostingRegressor(verbose=1, )
@@ -94,9 +117,11 @@ class RegressionEstimators:
             self.params["min_samples_leaf"] = Integer(1, 10, )
             self.params["alpha"] = Real(1e-1, 9e-1, "Uniform")
 
-            print("Gradient Boosting Regressor.")
+            print(
+                "Gradient Boosting Regressor."
+            )
 
-        elif self.estimator_name == "ab_reg":  # does not support 2d y
+        elif self.estimator_name == "ab_reg":
             self.tuning_estimator = AdaBoostRegressor()
 
             # define search space
@@ -104,14 +129,18 @@ class RegressionEstimators:
             self.params["n_estimators"] = Integer(10, 1000, )
             self.params["learning_rate"] = Real(1e-3, 5e-1, "uniform")
 
-            print("Adaboost Regressor.")
+            print(
+                "Adaboost Regressor."
+            )
 
         # Gaussian Process method(s):
         elif self.estimator_name == "gp_reg":
             self.tuning_estimator = GaussianProcessRegressor()
             # Previously we faced some issue due to limits of
             #   GP due dataset size, and thus for now I won't consider it
-            print("Gaussian Process Regressor.")
+            print(
+                "Gaussian Process Regressor."
+            )
 
         # Neural Networks method(s):
         elif self.estimator_name == "mlp_reg":
@@ -130,7 +159,9 @@ class RegressionEstimators:
             self.params["learning_rate_init"] = Real(1e-4, 1e-1, "uniform")
             self.params["max_iter"] = Real(100, 10000, "uniform")
 
-            print("Multi Layer Perceptron Regressor.")
+            print(
+                "Multi Layer Perceptron Regressor."
+            )
 
         else:
             assert False, "Undefined regression model."
@@ -138,8 +169,6 @@ class RegressionEstimators:
         return None  # self.tuning_estimator, self.params
 
     def instantiate_train_test_estimator(self, ):
-
-        # Baseline, random selection:
 
         # Simplest learning method(s):
         if self.estimator_name == "l_reg":
@@ -160,6 +189,13 @@ class RegressionEstimators:
             self.estimator = KNeighborsRegressor(**self.tuned_params)
             print(
                 "Instantiate KNearest Neighbor Regressor."
+            )
+
+        # Bayesian Ridge:
+        elif self.estimator_name == "br_reg":
+            self.estimator = BayesianRidge(**self.tuned_params)
+            print(
+                "Instantiate Bayesian Ridge Regressor."
             )
 
         # Ensemble learning method(s):
