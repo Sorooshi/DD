@@ -109,6 +109,15 @@ if __name__ == "__main__":
     pp, tag, run, data_name, estimator_name, project, \
         target_is_org, to_shuffle, n_clusters = args_parser(arguments=args)
 
+    print(
+        "configuration: \n",
+        "  estimator:", estimator_name, "\n",
+        "  data_name:", data_name, "\n",
+        "  shuffle_data:", to_shuffle, "\n",
+        "  pre-processing:", pp, "\n",
+        "  run:", run, "\n",
+    )
+
     dd = DyslexiaData(
         n_splits=configs.n_splits,
         n_repeats=configs.n_repeats,
