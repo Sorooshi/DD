@@ -168,6 +168,7 @@ def wandb_metrics(run, y_true, y_pred, learning_method):
     meape_errors = mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100)
 
     if learning_method == "regression":
+
         run.log({
             "MAE": mae(y_true=y_true, y_pred=y_pred),
             "RMSE": rmse(y_true=y_true, y_pred=y_pred),
@@ -176,7 +177,6 @@ def wandb_metrics(run, y_true, y_pred, learning_method):
             "R^2-Score": metrics.r2_score(y_true, y_pred),
             "MEAPE-mu": meape_errors.mean(axis=0),
             "MEAPE-std": meape_errors.std(axis=0)
-
         })
 
     elif learning_method == "classification":
