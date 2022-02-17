@@ -247,6 +247,7 @@ if __name__ == "__main__":
         reg_est = RegressionEstimators(
             x=x, y=y, cv=cv, data=data,
             estimator_name=estimator_name,
+            configs=configs,
         )
 
         reg_est.instantiate_tuning_estimator_and_parameters()
