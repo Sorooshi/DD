@@ -13,9 +13,11 @@ class BaseLineModel:
         self.test_size = test_size
         self.configs = configs
 
-        self.y_test = np.random.randint(
-            0, self.y_train.shape[0], size=self.test_size
-        ).ravel()
+        self.y_test = self.y_train[
+            np.random.randint(
+                0, self.y_train.shape[0], size=self.test_size
+            )
+        ]
 
     def repeat_random_pred(self, ):
 
@@ -23,7 +25,7 @@ class BaseLineModel:
             k = str(repeat+1)
             self.results[k] = defaultdict()
             self.results[k]["y_pred"] = self._pred_randomly()
-            self.results[k]["y_test"] = self.y_test
+            self.results[k]["y_test"] = self.y_test.reshape(-1, 1)
 
         return self.results
 
@@ -64,12 +66,11 @@ class BaseLineModel:
         mins = np.min(self.y_train, axis=0)
         maxs = np.max(self.y_train, axis=0)
 
-
         if self.learning_method == "regression":
 
-            t = np.arange(mins, maxs, 1)
+            t = np.arange(mins, maxs, 1e3)
             self.y_pred = np.random.choice(t, self.test_size)
         else:
             self.y_pred = np.random.randint(low=1, high=4, size=self.test_size)
 
-        return self.y_pred,
+        return self.y_pred.reshape(-1, 1)
