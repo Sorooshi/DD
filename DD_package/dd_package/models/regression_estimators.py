@@ -306,20 +306,20 @@ class RegressionEstimators:
 
         # no tuning or training has been executed
         if len(self.results.values()) != 0:
-
             util.print_the_evaluated_results(
-                self.results, self.configs.learning_method,
+                self.results,
+                self.configs.learning_method,
             )
 
         else:
-
             results = util.load_a_dict(
                 name=self.configs.specifier,
                 save_path=self.configs.results_path,
             )
 
             util.print_the_evaluated_results(
-                results, self.configs.learning_method,
+                results,
+                self.configs.learning_method,
             )
 
         return None
