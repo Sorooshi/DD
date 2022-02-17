@@ -27,6 +27,8 @@ class RegressionEstimators:
 
     def instantiate_an_estimator_and_parameters(self,):
 
+        # Baseline, random selection:
+
         # Simplest learning method(s):
         if self.estimator_name == "l_reg":
             self.estimator = LinearRegression()
@@ -125,20 +127,18 @@ class RegressionEstimators:
             print("Multi Layer Perceptron Regressor.")
 
         else:
-            print ("Undefined regression model.")
-            f = True
-            assert f is True
+            assert False, "Undefined regression model."
 
         return self.estimator, self.params
 
-    def tune_hyper_parameters(self, ):
+    def tune_hyper_parameters(self, estimator, params):
         """ estimator sklearn estimator, estimator dict of parameters. """
 
         print("CV hyper-parameters tuning for " + self.estimator_name)
 
         # define the search
-        search = BayesSearchCV(estimator=self.estimator,
-                               search_spaces=self.params,
+        search = BayesSearchCV(estimator=estimator,
+                               search_spaces=params,
                                n_jobs=-2, cv=self.cv,
                                scoring="r2",
                                optimizer_kwargs={'base_estimator': 'RF'},

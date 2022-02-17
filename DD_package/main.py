@@ -119,6 +119,9 @@ if __name__ == "__main__":
     _ = dd.get_ia_datasets()  # ias
     _ = dd.get_fix_datasets()  # fixes
 
+    # The three below lines can be move to
+    #   if data_names == ... for less memory consumption, if it needed.
+
     # concatenate pd.dfs to a pd.df
     demo = dd.concat_classes_demo()
     ia = dd.concat_classes_ia()
