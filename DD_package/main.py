@@ -143,7 +143,7 @@ if __name__ == "__main__":
     if data_name == "dd_demo":
         df_data_to_use = demo
         c_features = ['Sex', 'Grade', ]
-        indicators = ['SubjID', ]
+        indicators = ['SubjectID', ]
 
     elif data_name == "dd_ia":
         df_data_to_use = ia
