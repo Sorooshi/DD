@@ -96,7 +96,7 @@ class RegressionEstimators:
 
             print("Gradient Boosting Regressor.")
 
-        elif self.estimator_name == "a_reg":  # does not support 2d y
+        elif self.estimator_name == "ab_reg":  # does not support 2d y
             self.tuning_estimator = AdaBoostRegressor()
 
             # define search space
@@ -176,7 +176,7 @@ class RegressionEstimators:
                 "Instantiate Gradient Boosting Regressor."
             )
 
-        elif self.estimator_name == "a_reg":  # does not support 2d y
+        elif self.estimator_name == "ab_reg":  # does not support 2d y
             self.estimator = AdaBoostRegressor(**self.tuned_params)
             print(
                 "Instantiate Adaboost Regressor."
