@@ -110,7 +110,7 @@ class RegressionEstimators:
 
             # define search space
             self.params = defaultdict()
-            self.params["loss"] = Categorical(["squared_error", "absolute_error", "huber", "quantile"])
+            # self.params["loss"] = Categorical(["squared_error", "absolute_error", "huber", "quantile"])
             self.params["learning_rate"] = Real(1e-3, 5e-1, "uniform")
             self.params["n_estimators"] = Integer(10, 1000, )
             self.params["min_samples_split"] = Integer(2, 10, )
