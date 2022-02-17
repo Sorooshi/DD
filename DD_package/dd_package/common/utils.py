@@ -117,7 +117,7 @@ def discrepancy_score(observations, forecasts, model='QDA', n_iters=1):
     y = np.concatenate((y0, y1), axis=0)
 
     for it in range(n_iters):
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, shuffle=True)
+        x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.5, shuffle=True)
         if model == 'RF':
             clf = RandomForestClassifier(n_estimators=100, max_depth=10, max_features=None)
         elif model == 'GDBT':
@@ -128,8 +128,8 @@ def discrepancy_score(observations, forecasts, model='QDA', n_iters=1):
             clf = LogisticRegression()
         elif model == 'QDA':
             clf = QuadraticDiscriminantAnalysis()
-        clf.fit(X_train, y_train)
-        y_pred_test = clf.predict_proba(X_test)[:, 1]
+        clf.fit(x_train, y_train)
+        y_pred_test = clf.predict_proba(x_test)[:, 1]
         auc = 2 * metrics.roc_auc_score(y_test, y_pred_test) - 1
         scores.append(auc)
 
@@ -224,24 +224,6 @@ def evaluate_a_x_test(y_true, y_pred,):
     return meape_mu, gb_mu, qda_mu
 
 
-def _wandb_metrics_(run, meape_iops_mu, meape_lat_mu,  gb_mu, qda_mu,):
-
-    """
-    meape >> Mean Estimation Absolute Percentage Error
-    gb >> Gradient Decent Boosting Classifier
-    qda >> Quadratic Discriminant Analysis
-    """
-
-    run.log({
-        "IOPS: MEAPE [mu, std]": ["%.3f" % meape_iops_mu.mean(), "%.3f" % meape_iops_mu.std()],
-        "LAT : MEAPE [mu, std]": ["%.3f" % meape_lat_mu.mean(), "%.3f" % meape_lat_mu.std()],
-        "DS_GBDT: [mu, std]": ["%.3f" % gb_mu.mean(), "%.3f" % gb_mu.std()],
-        "DS_QDA: [mu, std]": ["%.3f" % qda_mu.mean(), "%.3f" % qda_mu.std()],
-    })
-
-    return run
-
-
 def wandb_features_importance(run, values_features_importance,
                               name_important_features,
                               indices_important_features,
@@ -259,7 +241,7 @@ def wandb_features_importance(run, values_features_importance,
     return run
 
 
-def wandb_true_pred_plots(run, y_true, y_pred, specifier, data_name):
+def wandb_true_pred_plots(run, y_true, y_pred, path, specifier, data_name):
 
     t = np.arange(len(y_true))
     fig, ax = plt.subplots(1, figsize=(12, 5))
@@ -280,14 +262,24 @@ def wandb_true_pred_plots(run, y_true, y_pred, specifier, data_name):
     plt.ylabel("True/Pred Values")
     plt.legend(loc="best")
 
-    plt.title("Plots: target vs predicted value of " + specifier + " on: " + data_name)
-    plt.savefig("../figures/Plots:" + specifier + "on" + data_name + ".png")
-    run.log({"Plots: target vs predicted value of " + specifier + " on: " + data_name + str(r2): ax})
+    plt.title(
+        "Plots: target vs predicted value of " + specifier + " on: " + data_name
+    )
+
+    plt.savefig(
+        os.path.join(
+            path, "Plots", specifier + "-" + data_name + ".png"
+        )
+    )
+
+    run.log(
+        {"Plots: target vs predicted value of " + specifier + " on: " + data_name + str(r2): ax}
+    )
 
     return run
 
 
-def wandb_true_pred_scatters(run, y_test, y_pred, specifier, data_name):
+def wandb_true_pred_scatters(run, y_test, y_pred, path, specifier, data_name):
 
     _ = plt.figure(figsize=(12, 5))
 
@@ -300,14 +292,25 @@ def wandb_true_pred_scatters(run, y_test, y_pred, specifier, data_name):
     plt.xlabel("Index")
     plt.ylabel("True/Pred Values ")
     plt.legend(loc="best")
-    plt.title("Scatters: target vs predicted values of "+specifier+" on: "+data_name)
-    plt.savefig("../figures/Scatters: " + data_name + "-" + specifier + ".png")
-    run.log({"Scatters: target vs predicted values of "+specifier+" on: "+data_name: plt})
+
+    plt.title(
+        "Scatters: target vs predicted values of "+specifier+" on: "+data_name
+    )
+
+    plt.savefig(
+        os.path.join(
+            path, "Scatters", data_name + "-" + specifier + ".png"
+        )
+    )
+
+    run.log(
+        {"Scatters: target vs predicted values of "+specifier+" on: "+data_name: plt}
+    )
 
     return run
 
 
-def wandb_true_pred_histograms(run, y_test, y_pred, specifier, data_name):
+def wandb_true_pred_histograms(run, y_test, y_pred, path, specifier, data_name):
 
     plt.figure(figsize=(12, 5))
     plt.subplot(131)
@@ -333,9 +336,21 @@ def wandb_true_pred_histograms(run, y_test, y_pred, specifier, data_name):
     plt.xlabel("True and Pred. values ")
     plt.ylabel('Count')
     plt.legend(loc="best")
-    plt.title("Histograms: " + specifier + " on: " + data_name, )  # , font_size=12
-    plt.savefig("../figures/Histograms: " + data_name + "-" + specifier + ".png")
-    run.log({"Histograms: target vs predicted of " + specifier + " on: " + data_name: plt})
+
+    plt.title(
+        "Histograms: " + specifier + " on: " + data_name,
+    )
+
+    plt.savefig(
+        os.path.join(
+            path, "Histograms", data_name + "-" + specifier + ".png"
+        )
+    )
+
+    run.log(
+        {"Histograms: target vs predicted of " + specifier + " on: " + data_name: plt}
+    )
+
     plt.show()
 
     return run
