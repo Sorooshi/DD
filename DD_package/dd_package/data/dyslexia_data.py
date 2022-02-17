@@ -154,8 +154,8 @@ class DyslexiaData:
             set(data.columns).difference(set(indicators).union(set(targets)))
         )
 
-        self.x = data.loc[:, features]
-        self.y = data.loc[:, targets]
+        self.x = data.loc[indicators, features]
+        self.y = data.loc[indicators:, targets]
 
         return self.x, self.y
 
