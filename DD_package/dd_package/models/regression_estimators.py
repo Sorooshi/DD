@@ -229,7 +229,7 @@ class RegressionEstimators:
         """ returns of dict of dicts, containing y_test and y_pred per each repeat. """
 
         print(
-                "Training and testing of " + self.estimator_name
+            "Training and testing of " + self.estimator_name
         )
 
         run = util.init_a_wandb(
@@ -262,21 +262,18 @@ class RegressionEstimators:
                     run=run, y_true=y_test, y_pred=y_pred,
                     path=self.configs.figures_path,
                     specifier=self.configs.specifier+k,
-                    data_name=self.configs.data_name,
                 )
 
                 run = util.wandb_true_pred_scatters(
                     run=run, y_test=y_test, y_pred=y_pred,
                     path=self.configs.figures_path,
                     specifier=self.configs.specifier+k,
-                    data_name=self.configs.data_name,
                 )
 
                 run = util.wandb_true_pred_histograms(
                     run=run, y_test=y_test, y_pred=y_pred,
                     path=self.configs.figures_path,
                     specifier=self.configs.specifier+k,
-                    data_name=self.configs.data_name,
                 )
 
         run = util.save_model(
