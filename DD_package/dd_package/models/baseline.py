@@ -5,18 +5,17 @@ import dd_package.common.utils as util
 
 class BaseLineModel:
 
-    def __init__(self, y_train, learning_method, n_repeats, configs, test_size=100):
+    def __init__(self, y_train, learning_method, configs, test_size=100):
         self.y_train = y_train
         self.y_pred = np.array([])
         self.results = defaultdict()
         self.learning_method = learning_method
-        self.n_repeats = n_repeats
         self.test_size = test_size
         self.configs = configs
 
     def repeat_random_pred(self, ):
 
-        for repeat in range(self.n_repeats):
+        for repeat in range(self.configs.n_repeats):
             k = str(repeat+1)
             self.results[k] = self._pred_randomly()
 

@@ -258,7 +258,7 @@ if __name__ == "__main__":
         blm = BaseLineModel(
             y_train=y,
             learning_method=learning_method,
-            n_repeats=configs.n_repeats,
+            configs=configs,
             test_size=200
         )
 
