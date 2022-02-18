@@ -139,15 +139,15 @@ class RegressionEstimators:
             # Previously we faced some issue due to limits of
             #   GP due dataset size, and thus for now I won't consider it
 
-            kernel_rbf = 1.0 * RBF(
+            kernel_rbf = RBF(
                 length_scale=1.0, length_scale_bounds=(1e-1, 10.0)
             )
 
-            kernel_rational_quadratic = 1.0 * RationalQuadratic(
+            kernel_rational_quadratic = RationalQuadratic(
                 length_scale=1.0, alpha=0.1, alpha_bounds=(1e-5, 1e15)
             )
 
-            kernel_exp_sin_squared = 1.0 * ExpSineSquared(
+            kernel_exp_sin_squared = ExpSineSquared(
                 length_scale=1.0,
                 periodicity=3.0,
                 length_scale_bounds=(0.1, 10.0),
