@@ -25,7 +25,7 @@ class BaseLineModel:
             k = str(repeat+1)
             self.results[k] = defaultdict()
             self.results[k]["y_pred"] = self._pred_randomly()
-            self.results[k]["y_test"] = self.y_test.reshape(-1, 1)
+            self.results[k]["y_test"] = self.y_test
 
         return self.results
 
@@ -73,4 +73,4 @@ class BaseLineModel:
         else:
             self.y_pred = np.random.randint(low=1, high=4, size=self.test_size)
 
-        return self.y_pred.reshape(-1, 1)
+        return self.y_pred.ravel()
