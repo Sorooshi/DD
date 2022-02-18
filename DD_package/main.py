@@ -23,9 +23,10 @@ def args_parser(arguments):
     _target_is_org = arguments.target_is_org
     _to_shuffle = arguments.to_shuffle
     _n_clusters = arguments.n_clusters
+    _to_exclude_at_risk = arguments.to_exclude_at_risk
 
-    return _pp, _tag, _run, _data_name, _estimator_name, \
-        _project, _target_is_org, _to_shuffle, _n_clusters
+    return _pp, _tag, _run, _data_name, _estimator_name, _project,\
+           _target_is_org, _to_shuffle, _n_clusters, _to_exclude_at_risk
 
 
 configs = {
@@ -122,19 +123,19 @@ if __name__ == "__main__":
     parser.add_argument(
         "--to_shuffle", type=int, default=1,
         help="Whether to shuffle data during CV or not."
-             "  Only setting shuffle=1 will shuffle data, and other integers will not."
+             "  Only setting it to one (shuffle=1) will shuffle data."
     )
 
     parser.add_argument(
         "--to_exclude_at_risk", type=int, default=0,
         help="Whether to exclude at-risk class from experiments or not."
-             "  Only setting to_exclude_at_risk=1 will exclude this class. "
+             "  Only setting it to one (to_exclude_at_risk=1) will exclude this class. "
     )
 
     args = parser.parse_args()
 
     pp, tag, run, data_name, estimator_name, project, \
-        target_is_org, to_shuffle, n_clusters = args_parser(arguments=args)
+        target_is_org, to_shuffle, n_clusters, to_exclude_at_risk = args_parser(arguments=args)
 
     print(
         "configuration: \n",
@@ -163,8 +164,12 @@ if __name__ == "__main__":
     ia = dd.concat_classes_ia()
     fix = dd.concat_classes_fix()
 
-    if to_exclude_at_risk:
-
+    # The optimize way to exclude at-risk class
+    if to_exclude_at_risk == 1:
+        to_exclude_at_risk = True
+        ia = ia.loc[ia.Group != 2]
+        fix = fix.loc[fix.Group != 2]
+        demo = demo.loc[demo.Group != 2]
 
     # Determine which dataset to use, e.g. demo dataset
     # alone or concatenation of demo and IA_report, for instance.
@@ -313,7 +318,9 @@ if __name__ == "__main__":
     configs.project = project
     configs.group = group
     configs.tag = tag
-    specifier = data_name+"-"+estimator_name+"-"+str(to_shuffle)
+    specifier = data_name + "-" + estimator_name + \
+                "--shuffled:" + str(to_shuffle) + \
+                "--exclude at risk:" + str(to_exclude_at_risk)
     configs.specifier = specifier
     configs.data_name = data_name
     configs.name_wb = data_name+": "+specifier
