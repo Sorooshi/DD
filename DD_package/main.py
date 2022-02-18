@@ -167,12 +167,16 @@ if __name__ == "__main__":
             'SubjectID', 'Sentence_ID', 'Word_Number',
         ]
 
+        targets = ["Group", ]
+
     elif data_name == "dd_fix":
         df_data_to_use = fix
         c_features = None
         indicators = [
             'SubjectID', 'Sentence_ID', 'Word_Number',
         ]
+
+        targets = ["Group", ]
 
     elif data_name == "dd_fix_demo":
         df_data_to_use = fix_demo
