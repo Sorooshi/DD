@@ -98,9 +98,9 @@ class RegressionEstimators:
 
             # define search space
             self.params = defaultdict()
-            self.params["n_estimators"] = Integer(10, 10000, )
-            self.params["min_samples_split"] = Integer(2, 100, )
-            self.params["min_samples_leaf"] = Integer(1, 100, )
+            self.params["n_estimators"] = Integer(10, 1000, )
+            self.params["min_samples_split"] = Integer(2, 10, )
+            self.params["min_samples_leaf"] = Integer(1, 10, )
 
             print(
                 "Random Forest Regressor."
