@@ -9,10 +9,13 @@ import matplotlib.pyplot as plt
 from sklearn.utils import resample
 from scipy.spatial import distance
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.preprocessing import OneHotEncoder
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+
+
 
 np.set_printoptions(suppress=True, precision=3)
 
@@ -167,6 +170,14 @@ def wandb_metrics(run, y_true, y_pred, learning_method):
 
     meape_errors = mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100)
 
+    # to compute ROC_AUC
+    try:
+        y_pred.shape[1]
+        y_pred_ = y_pred
+    except:
+        enc = OneHotEncoder(sparse=False)
+        y_pred_ = enc.fit_transform(y_pred)
+
     if learning_method == "regression":
 
         run.log({
@@ -188,7 +199,7 @@ def wandb_metrics(run, y_true, y_pred, learning_method):
             "Precision": metrics.precision_score(y_true, y_pred, average='weighted'),
             "Recall": metrics.recall_score(y_true, y_pred, average='weighted'),
             "F1-Score": metrics.f1_score(y_true, y_pred, average='weighted'),
-            "ROC AUC": metrics.roc_auc_score(y_true, y_pred, average='weighted'),
+            "ROC AUC": metrics.roc_auc_score(y_true, y_pred_, average='weighted', multi_class="ovr"),
             "MEAPE-mu": meape_errors.mean(axis=0),
             "MEAPE-std": meape_errors.std(axis=0)
         })
@@ -203,7 +214,7 @@ def wandb_metrics(run, y_true, y_pred, learning_method):
             "Precision": metrics.precision_score(y_true, y_pred, average='weighted'),
             "Recall": metrics.recall_score(y_true, y_pred, average='weighted'),
             "F1-Score": metrics.f1_score(y_true, y_pred, average='weighted'),
-            "ROC AUC": metrics.roc_auc_score(y_true, y_pred, average='weighted'),
+            "ROC AUC": metrics.roc_auc_score(y_true, y_pred_, average='weighted', multi_class="ovr"),
             "MEAPE-mu": meape_errors.mean(axis=0),
             "MEAPE-std": meape_errors.std(axis=0)
         })
@@ -397,6 +408,14 @@ def print_the_evaluated_results(results, learning_method, ):
         y_true = result["y_test"]
         y_pred = result["y_pred"]
 
+        # to compute ROC_AUC
+        try:
+            y_pred.shape[1]
+            y_pred_ = y_pred
+        except:
+            enc = OneHotEncoder(sparse=False)
+            y_pred_ = enc.fit_transform(y_pred)
+
         if learning_method == "regression":  # or learning_method == "baseline":
 
             MEA.append(mae(y_true=y_true, y_pred=y_pred))
@@ -417,7 +436,7 @@ def print_the_evaluated_results(results, learning_method, ):
             Precision.append(metrics.precision_score(y_true, y_pred, average='weighted'))
             Recall.append(metrics.recall_score(y_true, y_pred, average='weighted'))
             F1_Score.append(metrics.f1_score(y_true, y_pred, average='weighted'))
-            ROC_AUC.append(metrics.roc_auc_score(y_true, y_pred, average='weighted'))
+            ROC_AUC.append(metrics.roc_auc_score(y_true, y_pred_, average='weighted', multi_class="ovr"),)
             meape_errors = mean_estimation_absolute_percentage_error(
                 y_true=y_true, y_pred=y_pred, n_iters=100)
 
