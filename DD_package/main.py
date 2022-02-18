@@ -135,20 +135,6 @@ if __name__ == "__main__":
     ia = dd.concat_classes_ia()
     fix = dd.concat_classes_fix()
 
-    fix_demo = dd.concat_dfs(
-        df1=fix,
-        df2=demo,
-        features1=fix.columns,
-        features2=demo.columns[2:],
-    )
-
-    ia_demo = dd.concat_dfs(
-        df1=ia,
-        df2=demo,
-        features1=ia.columns,
-        features2=demo.columns[2:],
-    )
-
     # Determine which dataset to use, e.g. demo dataset
     # alone or concatenation of demo and IA_report, for instance.
     if data_name == "dd_demo":
@@ -179,16 +165,15 @@ if __name__ == "__main__":
 
         targets = ["Group", ]
 
-    elif data_name == "dd_fix_demo":
-        df_data_to_use = fix_demo
-        c_features = ['Sex', 'Grade', ]
-        indicators = [
-            'SubjectID', 'Sentence_ID', 'Word_Number',
-        ]
-
-        targets = ["Group", "Reading_speed"]
-
     elif data_name == "dd_ia_demo":
+
+        ia_demo = dd.concat_dfs(
+            df1=ia,
+            df2=demo,
+            features1=ia.columns,
+            features2=demo.columns[2:],
+        )
+
         df_data_to_use = ia_demo
         c_features = [
             'Sex', 'Grade', 'QUESTION_ACCURACY',
@@ -201,6 +186,60 @@ if __name__ == "__main__":
         ]
 
         targets = ["Group", "Reading_speed"]
+
+    elif data_name == "dd_ia_reg":
+
+        ia_demo = dd.concat_dfs(
+            df1=ia,
+            df2=demo,
+            features1=ia.columns,
+            features2=["Reading_speed", ],
+        )
+
+        c_features = [
+            'QUESTION_ACCURACY', 'SKIP', 'REGRESSION_IN',
+            'REGRESSION_OUT', 'REGRESSION_OUT_FULL',
+        ]
+
+        indicators = [
+            'SubjectID', 'Sentence_ID', 'Word_Number',
+        ]
+
+        targets = ["Reading_speed", ]
+
+    elif data_name == "dd_fix_demo":
+
+        fix_demo = dd.concat_dfs(
+            df1=fix,
+            df2=demo,
+            features1=fix.columns,
+            features2=demo.columns[2:],
+        )
+
+        df_data_to_use = fix_demo
+        c_features = ['Sex', 'Grade', ]
+        indicators = [
+            'SubjectID', 'Sentence_ID', 'Word_Number',
+        ]
+
+        targets = ["Group", "Reading_speed"]
+
+    elif data_name == "dd_fix_reg":
+
+        fix_demo = dd.concat_dfs(
+            df1=fix,
+            df2=demo,
+            features1=fix.columns,
+            features2=["Reading_speed"],
+        )
+
+        df_data_to_use = fix_demo
+        c_features = None
+        indicators = [
+            'SubjectID', 'Sentence_ID', 'Word_Number',
+        ]
+
+        targets = ["Reading_speed"]
 
     else:
         assert False, "Ill-defined data_name argument. " \
