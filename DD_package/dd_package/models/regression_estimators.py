@@ -1,4 +1,5 @@
 import numpy as np
+import xgboost as xgb
 from sklearn.svm import SVR
 from skopt import BayesSearchCV
 from collections import defaultdict
@@ -128,9 +129,20 @@ class RegressionEstimators:
             self.params = defaultdict()
             self.params["n_estimators"] = Integer(10, 1000, )
             self.params["learning_rate"] = Real(1e-3, 5e-1, "uniform")
-
             print(
                 "Adaboost Regressor."
+            )
+
+        elif self.estimator_name == "xgb_reg":
+            self.tuning_estimator = xgb.XGBRegressor()
+
+            # define search space
+            self.params = defaultdict()
+            self.params["n_estimators"] = Integer(10, 1000, )
+            self.params["learning_rate"] = Real(1e-3, 5e-1, "uniform")
+            self.params["max_depth"] = Integer(1, 100, "uniform")
+            print(
+                "XGBoost Regressor."
             )
 
         # Gaussian Process method(s):
@@ -236,6 +248,12 @@ class RegressionEstimators:
             self.estimator = AdaBoostRegressor(**self.tuned_params)
             print(
                 "Instantiate Adaboost Regressor."
+            )
+
+        elif self.estimator_name == "xgb_reg":
+            self.estimator = xgb.XGBRegressor(**self.tuned_params)
+            print(
+                "Instantiate XGBoost Regressor."
             )
 
         # Gaussian Process method(s):
