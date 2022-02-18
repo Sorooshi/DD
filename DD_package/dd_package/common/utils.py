@@ -176,7 +176,8 @@ def wandb_metrics(run, y_true, y_pred, learning_method):
         y_pred_ = y_pred
     except:
         enc = OneHotEncoder(sparse=False)
-        y_pred_ = enc.fit_transform(y_pred)
+        y_pred_ = y_pred.reshape(-1, 1)
+        y_pred_ = enc.fit_transform(y_pred_)
 
     if learning_method == "regression":
 
@@ -414,7 +415,8 @@ def print_the_evaluated_results(results, learning_method, ):
             y_pred_ = y_pred
         except:
             enc = OneHotEncoder(sparse=False)
-            y_pred_ = enc.fit_transform(y_pred)
+            y_pred_ = y_pred.reshape(-1, 1)
+            y_pred_ = enc.fit_transform(y_pred_)
 
         if learning_method == "regression":  # or learning_method == "baseline":
 
