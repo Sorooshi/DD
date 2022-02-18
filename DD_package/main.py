@@ -73,7 +73,7 @@ if __name__ == "__main__":
                         help="None case sensitive first letter abbreviated name of an estimator proceeds "
                              "  one of the three following suffixes separated with the underscore."
                              "  Possible suffixes are: regression := reg, "
-                             "  classification := cls, clustering := clt"
+                             "  classification := cls, clustering := clu"
                              "      E.g., Random Forest Regressor := rf_reg, or "
                              "      Random Forest Classifiers := rf_cls "
                              "Note: First letter of the methods' name should be used for abbreviation.")
@@ -223,7 +223,7 @@ if __name__ == "__main__":
         learning_method = "classification"
         y = y_org.Group.values
 
-    elif estimator_name.split("_")[-1] == "clt":
+    elif estimator_name.split("_")[-1] == "clu":
         learning_method = "clustering"
         y = y_org.Group.values
     else:
@@ -264,7 +264,7 @@ if __name__ == "__main__":
     # Baseline models (random prediction)
     if estimator_name == "base_reg" or \
             estimator_name == "base_cls" or \
-            estimator_name == "base_clt":
+            estimator_name == "base_clu":
         blm = BaseLineModel(
             y_train=y,
             learning_method=learning_method,
