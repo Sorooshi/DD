@@ -12,6 +12,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.linear_model import LinearRegression, BayesianRidge
+from sklearn.gaussian_process.kernels import RBF, RationalQuadratic, ExpSineSquared
 
 
 class RegressionEstimators:
@@ -137,6 +138,25 @@ class RegressionEstimators:
             self.tuning_estimator = GaussianProcessRegressor()
             # Previously we faced some issue due to limits of
             #   GP due dataset size, and thus for now I won't consider it
+
+            kernel_rbf = 1.0 * RBF(
+                length_scale=1.0, length_scale_bounds=(1e-1, 10.0)
+            )
+
+            kernel_rational_quadratic = 1.0 * RationalQuadratic(
+                length_scale=1.0, alpha=0.1, alpha_bounds=(1e-5, 1e15)
+            )
+
+            kernel_exp_sin_squared = 1.0 * ExpSineSquared(
+                length_scale=1.0,
+                periodicity=3.0,
+                length_scale_bounds=(0.1, 10.0),
+                periodicity_bounds=(1.0, 10.0),
+            )
+
+            # define search space
+            self.params = defaultdict()
+            self.params["kernel"] = Categorical([kernel_rbf, kernel_rational_quadratic, kernel_exp_sin_squared])
             print(
                 "Gaussian Process Regressor."
             )
