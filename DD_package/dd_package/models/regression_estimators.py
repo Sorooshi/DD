@@ -156,7 +156,8 @@ class RegressionEstimators:
 
             # define search space
             self.params = defaultdict()
-            self.params["kernel"] = Categorical([kernel_rbf, kernel_rational_quadratic, kernel_exp_sin_squared])
+            self.params["kernel"] = Categorical(["RBF", "RationalQuadratic", "ExpSineSquared", ])
+            # Categorical([kernel_rbf, kernel_rational_quadratic, kernel_exp_sin_squared])
             print(
                 "Gaussian Process Regressor."
             )
