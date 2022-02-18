@@ -57,11 +57,14 @@ if __name__ == "__main__":
     # all the string inputs will be converted to lower case.
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--project", type=str, default="DD",
-                        help="Project name for WandB project initialization.")
+    parser.add_argument(
+        "--project", type=str, default="DD",
+        help="Project name for WandB project initialization."
+    )
 
-    parser.add_argument("--data_name", type=str, default="DD_Demo",
-                        help="Dataset's name, e.g., DD_Demo, or DD_Demo_IA"
+    parser.add_argument(
+        "--data_name", type=str, default="DD_Demo",
+        help="Dataset's name, e.g., DD_Demo, or DD_Demo_IA"
                              " The following (lowercase) strings are supported"
                              "  1) Demographic = dd_demo, "
                              "  2) IA_report = dd_ia, "
@@ -70,34 +73,46 @@ if __name__ == "__main__":
                              "  5) Demographic + Fixation_report = dd_demo_fix,"
                              "  6) IA_report + demo.Reading_speed = dd_ia_reg,"
                              "  7) Fix_report + demo.Reading_speed = dd_fix_reg"
-                        )
+    )
 
-    parser.add_argument("--estimator_name", type=str, default="base_reg",
-                        help="None case sensitive first letter abbreviated name of an estimator proceeds "
+    parser.add_argument(
+        "--estimator_name", type=str, default="base_reg",
+        help="None case sensitive first letter abbreviated name of an estimator proceeds "
                              "  one of the three following suffixes separated with the underscore."
                              "  Possible suffixes are: regression := reg, "
                              "  classification := cls, clustering := clu"
                              "      E.g., Random Forest Regressor := rf_reg, or "
                              "      Random Forest Classifiers := rf_cls "
-                             "Note: First letter of the methods' name should be used for abbreviation.")
+                             "Note: First letter of the methods' name should be used for abbreviation."
+    )
 
-    parser.add_argument("--run", type=int, default=1,
-                        help="Run the model or load the saved"
-                             " weights and reproduce the results.")
+    parser.add_argument(
+        "--run", type=int, default=1,
+        help="Run the model or load the saved"
+             " weights and reproduce the results."
+    )
 
-    parser.add_argument("--pp", type=str, default="mm",
-                        help="Data preprocessing method:"
-                             " MinMax/Z-Scoring/etc.")
+    parser.add_argument(
+        "--pp", type=str, default="mm",
+        help="Data preprocessing method:"
+             " MinMax/Z-Scoring/etc."
+    )
 
-    parser.add_argument("--tag", type=str, default="warmup",
-                        help="W&B tag will be used to filter some of runs"
-                             "of the same set of experiments if needed.")
+    parser.add_argument(
+        "--tag", type=str, default="warmup",
+        help="W&B tag will be used to filter some of runs"
+             "of the same set of experiments if needed."
+    )
 
-    parser.add_argument("--note", type=str, default="--",
-                        help="W&B note, e.g., clustering for DD: Demographic")
+    parser.add_argument(
+        "--note", type=str, default="--",
+        help="W&B note, e.g., clustering for DD: Demographic"
+    )
 
-    parser.add_argument("--n_clusters", type=int, default=3,
-                        help="Number of clusters/classes/discrete target values.")
+    parser.add_argument(
+        "--n_clusters", type=int, default=3,
+        help="Number of clusters/classes/discrete target values."
+    )
 
     parser.add_argument(
         "--target_is_org", type=int, default=1,
