@@ -99,12 +99,22 @@ if __name__ == "__main__":
     parser.add_argument("--n_clusters", type=int, default=3,
                         help="Number of clusters/classes/discrete target values.")
 
-    parser.add_argument("--target_is_org", type=int, default=1,
-                        help="Whether to use not preprocessed target values or not.")
+    parser.add_argument(
+        "--target_is_org", type=int, default=1,
+        help="Whether to use not preprocessed target values or not."
+    )
 
-    parser.add_argument("--to_shuffle", type=int, default=1,
-                        help="Whether to shuffle data during CV or not."
-                             " Setting shuffle=1 will shuffle data, and other integers will not.")
+    parser.add_argument(
+        "--to_shuffle", type=int, default=1,
+        help="Whether to shuffle data during CV or not."
+             "  Only setting shuffle=1 will shuffle data, and other integers will not."
+    )
+
+    parser.add_argument(
+        "--to_exclude_at_risk", type=int, default=0,
+        help="Whether to exclude at-risk class from experiments or not."
+             "  Only setting to_exclude_at_risk=1 will exclude this class. "
+    )
 
     args = parser.parse_args()
 
@@ -137,6 +147,9 @@ if __name__ == "__main__":
     demo = dd.concat_classes_demo()
     ia = dd.concat_classes_ia()
     fix = dd.concat_classes_fix()
+
+    if to_exclude_at_risk:
+
 
     # Determine which dataset to use, e.g. demo dataset
     # alone or concatenation of demo and IA_report, for instance.
