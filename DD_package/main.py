@@ -155,6 +155,7 @@ if __name__ == "__main__":
         df_data_to_use = demo
         c_features = ['Sex', 'Grade', ]
         indicators = ['SubjectID', ]
+        targets = ["Group", "Reading_speed", ]
 
     elif data_name == "dd_ia":
         df_data_to_use = ia
@@ -185,6 +186,8 @@ if __name__ == "__main__":
             'SubjectID', 'Sentence_ID', 'Word_Number',
         ]
 
+        targets = ["Group", "Reading_speed"]
+
     elif data_name == "dd_ia_demo":
         df_data_to_use = ia_demo
         c_features = [
@@ -197,6 +200,8 @@ if __name__ == "__main__":
             'SubjectID', 'Sentence_ID', 'Word_Number',
         ]
 
+        targets = ["Group", "Reading_speed"]
+
     else:
         assert False, "Ill-defined data_name argument. " \
                       "Refer to help of data_name argument for more."
@@ -205,6 +210,7 @@ if __name__ == "__main__":
         data=df_data_to_use,
         c_features=c_features,
         indicators=indicators,
+        targets=targets,
     )
 
     print("x_org:", x_org.shape, "\n", x_org.head())
