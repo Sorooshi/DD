@@ -3,10 +3,11 @@ import numpy as np
 from pathlib import Path
 from types import SimpleNamespace
 
+from dd_package.models.baseline import BaseLineModel
 from dd_package.data.preprocess import preprocess_data
 from dd_package.data.dyslexia_data import DyslexiaData
 from dd_package.models.regression_estimators import RegressionEstimators
-from dd_package.models.baseline import BaseLineModel
+from dd_package.models.classification_estimators import ClassificationEstimators
 
 
 np.set_printoptions(suppress=True, precision=3, linewidth=140)
@@ -382,6 +383,29 @@ if __name__ == "__main__":
     if learning_method == "classification":
         print(
             "classification to be completed"
+        )
+
+        cls_est = ClassificationEstimators(
+            x=x, y=y, cv=cv, data=data,
+            estimator_name=estimator_name,
+            configs=configs,
+        )
+
+        cls_est.instantiate_tuning_estimator_and_parameters()
+
+        cls_est.tune_hyper_parameters()
+
+        cls_est.instantiate_train_test_estimator()
+
+        cls_est.train_test_tuned_estimator()
+
+        cls_est.save_params_results()
+
+        cls_est.print_results()
+
+    if learning_method == "clustering":
+        print(
+            "clustering to be completed"
         )
 
     print(
