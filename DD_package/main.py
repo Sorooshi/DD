@@ -67,7 +67,10 @@ if __name__ == "__main__":
                              "  2) IA_report = dd_ia, "
                              "  3) Fixation_report = dd_fix, "
                              "  4) Demographic + IA_report = dd_demo_ia, "
-                             "  5) Demographic + Fixation_report = dd_demo_fix.")
+                             "  5) Demographic + Fixation_report = dd_demo_fix,"
+                             "  6) IA_report + demo.Reading_speed = dd_ia_reg,"
+                             "  7) Fix_report + demo.Reading_speed = dd_fix_reg"
+                        )
 
     parser.add_argument("--estimator_name", type=str, default="base_reg",
                         help="None case sensitive first letter abbreviated name of an estimator proceeds "
@@ -242,8 +245,8 @@ if __name__ == "__main__":
         targets = ["Reading_speed"]
 
     else:
-        assert False, "Ill-defined data_name argument. " \
-                      "Refer to help of data_name argument for more."
+        print("data_name argument:", data_name)
+        assert False, "Ill-defined data_name argument. Refer to help of data_name argument for more."
 
     x_org, y_org = dd.get_onehot_features_targets(
         data=df_data_to_use,
