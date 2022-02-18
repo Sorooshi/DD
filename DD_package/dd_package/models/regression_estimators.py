@@ -344,19 +344,19 @@ class RegressionEstimators:
                 run = util.wandb_true_pred_plots(
                     run=run, y_true=y_test, y_pred=y_pred,
                     path=self.configs.figures_path,
-                    specifier=self.configs.specifier+"-"+k,
+                    specifier=self.configs.specifier,
                 )
 
                 run = util.wandb_true_pred_scatters(
                     run=run, y_test=y_test, y_pred=y_pred,
                     path=self.configs.figures_path,
-                    specifier=self.configs.specifier+"-"+k,
+                    specifier=self.configs.specifier,
                 )
 
                 run = util.wandb_true_pred_histograms(
                     run=run, y_test=y_test, y_pred=y_pred,
                     path=self.configs.figures_path,
-                    specifier=self.configs.specifier+"-"+k,
+                    specifier=self.configs.specifier,
                 )
 
                 _ = util.save_model(
