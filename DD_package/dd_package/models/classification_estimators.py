@@ -99,7 +99,7 @@ class ClassificationEstimators:
 
             # define search space
             self.params = defaultdict()
-            self.params["n_estimators"] = Integer(10, 1000, )
+            self.params["n_estimators"] = Integer(10, 10000, )
             self.params["min_samples_split"] = Integer(2, 10, )
             self.params["min_samples_leaf"] = Integer(1, 10, )
 
@@ -113,7 +113,7 @@ class ClassificationEstimators:
             # define search space
             self.params = defaultdict()
             self.params["learning_rate"] = Real(1e-3, 5e-1, "uniform")
-            self.params["n_estimators"] = Integer(10, 1000, )
+            self.params["n_estimators"] = Integer(10, 10000, )
             self.params["min_samples_split"] = Integer(2, 10, )
             self.params["min_samples_leaf"] = Integer(1, 10, )
             self.params["alpha"] = Real(1e-1, 9e-1, "uniform")
@@ -127,7 +127,7 @@ class ClassificationEstimators:
 
             # define search space
             self.params = defaultdict()
-            self.params["n_estimators"] = Integer(10, 1000, )
+            self.params["n_estimators"] = Integer(10, 10000, )
             self.params["learning_rate"] = Real(1e-3, 5e-1, "uniform")
             print(
                 "Adaboost Classifier."
@@ -138,7 +138,7 @@ class ClassificationEstimators:
 
             # define search space
             self.params = defaultdict()
-            self.params["n_estimators"] = Integer(10, 1000, )
+            self.params["n_estimators"] = Integer(10, 10000, )
             self.params["learning_rate"] = Real(1e-3, 5e-1, "uniform")
             self.params["max_depth"] = Integer(1, 100, "uniform")
             print(
