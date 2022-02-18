@@ -192,12 +192,14 @@ if __name__ == "__main__":
 
     elif data_name == "dd_ia_reg":
 
-        ia_demo = dd.concat_dfs(
+        ia_reg = dd.concat_dfs(
             df1=ia,
             df2=demo,
             features1=ia.columns,
             features2=["Reading_speed", ],
         )
+
+        df_data_to_use = ia_reg
 
         c_features = [
             'QUESTION_ACCURACY', 'SKIP', 'REGRESSION_IN',
@@ -229,20 +231,20 @@ if __name__ == "__main__":
 
     elif data_name == "dd_fix_reg":
 
-        fix_demo = dd.concat_dfs(
+        fix_reg = dd.concat_dfs(
             df1=fix,
             df2=demo,
             features1=fix.columns,
             features2=["Reading_speed"],
         )
 
-        df_data_to_use = fix_demo
+        df_data_to_use = fix_reg
         c_features = None
         indicators = [
             'SubjectID', 'Sentence_ID', 'Word_Number',
         ]
 
-        targets = ["Reading_speed"]
+        targets = ["Reading_speed", ]
 
     else:
         print("data_name argument:", data_name)
