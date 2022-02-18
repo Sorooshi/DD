@@ -146,7 +146,7 @@ class ClassificationEstimators:
             )
 
         # Gaussian Process method(s):
-        elif self.estimator_name == "_gp_reg_":
+        elif self.estimator_name == "_gp_reg_+":
             self.tuning_estimator = GaussianProcessClassifier()
             # Previously we faced some issue due to limits of
             #   GP due the dataset size, and thus for now I won't consider it.
