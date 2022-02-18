@@ -188,7 +188,7 @@ if __name__ == "__main__":
             'SubjectID', 'Sentence_ID', 'Word_Number',
         ]
 
-        targets = ["Group", "Reading_speed"]
+        targets = ["Group", "Reading_speed", ]
 
     elif data_name == "dd_ia_reg":
 
@@ -210,7 +210,7 @@ if __name__ == "__main__":
             'SubjectID', 'Sentence_ID', 'Word_Number',
         ]
 
-        targets = ["Reading_speed", ]
+        targets = ["Group", "Reading_speed", ]
 
     elif data_name == "dd_fix_demo":
 
@@ -227,7 +227,7 @@ if __name__ == "__main__":
             'SubjectID', 'Sentence_ID', 'Word_Number',
         ]
 
-        targets = ["Group", "Reading_speed"]
+        targets = ["Group", "Reading_speed", ]
 
     elif data_name == "dd_fix_reg":
 
@@ -244,7 +244,7 @@ if __name__ == "__main__":
             'SubjectID', 'Sentence_ID', 'Word_Number',
         ]
 
-        targets = ["Reading_speed", ]
+        targets = ["Group", "Reading_speed", ]
 
     else:
         print("data_name argument:", data_name)
