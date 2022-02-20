@@ -47,13 +47,6 @@ class DyslexiaData:
         for sheet in self.sheet_names:
             tmp = pd.read_excel(self.xlsx_demo, sheet,)
             tmp = self._remove_missing_data(df=tmp)
-            tmp = tmp.replace(
-                to_replace={"Sex": {"fem": 10, "f": 10, "masc": 20, "m": 20}},
-            )
-            tmp = tmp.replace(
-                to_replace={"Group": {"norm": 10, "risk":20, "dyslexia": 30}},
-            )
-
             tmp = tmp.astype({
                 "Group": int,
                 "SubjectID": str,
@@ -133,14 +126,31 @@ class DyslexiaData:
 
     def concat_classes_demo(self, ):
         self.demo = pd.concat([v for k, v in self.demo_datasets.items()], axis=0)
+        self.demo.replace(
+            to_replace={"Sex": {"fem": 1, "f": 1, "masc": 2, "m": 2}},
+            inplace=True,
+        )
+        self.demo.replace(
+            to_replace={"Group": {1:1 , 3: 2, 2: 3}},
+            inplace=True,
+        )
         return self.demo.sort_values(by=["SubjectID",])
 
     def concat_classes_ia(self, ):
         self.ia = pd.concat([v for k, v in self.ia_datasets.items()], axis=0)
+
+        self.ia.replace(
+            to_replace={"Sex": {"fem": 1, "f": 1, "masc": 2, "m": 2}},
+            inplace=True,
+        )
         return self.ia.sort_values(by=["SubjectID", "Sentence_ID", "Word_Number"])
 
     def concat_classes_fix(self, ):
         self.fix = pd.concat([v for k, v in self.fix_datasets.items()], axis=0)
+        self.fix.replace(
+            to_replace={"Sex": {"fem": 1, "f": 1, "masc": 2, "m": 2}},
+            inplace=True,
+        )
         return self.fix.sort_values(by=["SubjectID", "Sentence_ID", ])
 
     def get_onehot_features_targets(self, data, c_features=None, indicators=None, targets=None):
