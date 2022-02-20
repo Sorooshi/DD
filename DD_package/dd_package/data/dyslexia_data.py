@@ -130,6 +130,11 @@ class DyslexiaData:
             to_replace={"Sex": {"fem": 1, "f": 1, "masc": 2, "m": 2}},
             inplace=True,
         )
+        """ 
+        There are some inconsistencies between the groups' labels in the demo files and the others.
+        More precisely, in demo files, dyslexia is denoted with 2, while in the other files it is denoted with 3. 
+        Similarly, in demo files, at-risk, is denoted with 3 while in the remaining files it is denoted with 2. 
+        """
         self.demo.replace(
             to_replace={"Group": {1:1 , 3: 2, 2: 3}},
             inplace=True,
