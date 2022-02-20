@@ -50,7 +50,7 @@ class DyslexiaData:
             tmp = self._remove_missing_data(df=tmp)
             tmp.replace({"fem": 1, "f": 1, "masc": 2, "m": 2}, inplace=True)
             tmp = tmp.astype({
-                "Group": str,
+                "Group": int,
                 "SubjectID": str,
                 "Sex": int,
                 "Grade": int,
@@ -76,7 +76,7 @@ class DyslexiaData:
             tmp = pd.read_excel(self.xlsx_ia, sheet)
             tmp = self._remove_missing_data(df=tmp)
             tmp = tmp.astype({
-                "Group": str,
+                "Group": int,
                 "SubjectID": str,
                 "Sentence_ID": int,
                 "Word_Number": int,
@@ -110,7 +110,7 @@ class DyslexiaData:
             tmp = pd.read_excel(self.xlsx_fix, sheet)
             tmp = self._remove_missing_data(df=tmp)
             tmp = tmp.astype({
-                "Group": str,
+                "Group": int,
                 "SubjectID": str,
                 "Sentence_ID": int,
                 "Word_Number": int,
