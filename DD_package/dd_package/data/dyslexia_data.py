@@ -49,11 +49,11 @@ class DyslexiaData:
             tmp = pd.read_excel( self.xlsx_demo, sheet)
             tmp = self._remove_missing_data(df=tmp)
             tmp.replace(
-                {"Sex": {"fem": 10, "f": 10, "masc": 20, "m": 20}},
+                to_replace={"Sex": {"fem": 10, "f": 10, "masc": 20, "m": 20}},
                 inplace=True
             )
             tmp.replace(
-                {"Group": {"norm": 1, "risk":2, "dyslexia": 3}},
+                to_replace={"Group": {"norm": 10, "risk":20, "dyslexia": 30}},
                 inplace=True
             )
 
