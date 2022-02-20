@@ -129,7 +129,7 @@ class DyslexiaData:
     def concat_classes_demo(self, ):
         self.demo = pd.concat([v for k, v in self.demo_datasets.items()], axis=0)
         self.demo = self.demo.replace(
-            to_replace={"Group": {"norm": 1, "risk": 2, "dyslexia": 3}},
+            to_replace={"Group": {"norm": "N", "risk": "R", "dyslexia": "D"}},
             value=None,
             inplace=True
         )
