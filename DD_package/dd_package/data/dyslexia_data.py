@@ -50,7 +50,7 @@ class DyslexiaData:
             tmp = self._remove_missing_data(df=tmp)
             tmp.replace({"fem": 1, "f": 1, "masc": 2, "m": 2}, inplace=True)
             tmp.replace(
-                to_replace={"norm": 1, "risk": 2, "dyslexia": 3},
+                to_replace={"Group": {"norm": 1, "risk": 2, "dyslexia": 3}},
                 value=None,
                 inplace=True
             )
@@ -81,7 +81,7 @@ class DyslexiaData:
             tmp = pd.read_excel(self.xlsx_ia, sheet)
             tmp = self._remove_missing_data(df=tmp)
             tmp.replace(
-                to_replace={"norm": 1, "risk": 2, "dyslexia": 3},
+                to_replace={"Group": {"norm": 1, "risk": 2, "dyslexia": 3}},
                 value=None,
                 inplace=True
             )
@@ -120,7 +120,7 @@ class DyslexiaData:
             tmp = pd.read_excel(self.xlsx_fix, sheet)
             tmp = self._remove_missing_data(df=tmp)
             tmp.replace(
-                to_replace={"norm": 1, "risk": 2, "dyslexia": 3},
+                to_replace={"Group": {"norm": 1, "risk": 2, "dyslexia": 3}},
                 value=None,
                 inplace=True
             )
