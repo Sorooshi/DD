@@ -145,6 +145,7 @@ if __name__ == "__main__":
         "  shuffle_data:", to_shuffle, "\n",
         "  pre-processing:", pp, "\n",
         "  run:", run, "\n",
+        "  to_exclude_at-risk:", to_exclude_at_risk, "\n",
     )
 
     dd = DyslexiaData(
@@ -161,9 +162,9 @@ if __name__ == "__main__":
     #   if data_names == ... for less memory consumption, if it needed.
 
     # concatenate pd.dfs to a pd.df
-    demo = dd.concat_classes_demo()
     ia = dd.concat_classes_ia()
     fix = dd.concat_classes_fix()
+    demo = dd.concat_classes_demo()
 
     # The optimize way to exclude at-risk class
     if to_exclude_at_risk == 1:
