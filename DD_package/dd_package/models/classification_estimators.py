@@ -291,7 +291,7 @@ class ClassificationEstimators:
         search = BayesSearchCV(estimator=self.tuning_estimator,
                                search_spaces=self.params,
                                n_jobs=-2, cv=self.cv,
-                               scoring="r2",
+                               scoring="roc_auc",
                                optimizer_kwargs={'base_estimator': 'RF'},
                                verbose=1,
                                )
