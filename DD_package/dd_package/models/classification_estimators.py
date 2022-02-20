@@ -1,6 +1,6 @@
 import numpy as np
 import xgboost as xgb
-from sklearn.svm import SVR
+from sklearn.svm import SVC
 from skopt import BayesSearchCV
 from collections import defaultdict
 import dd_package.common.utils as util
@@ -36,7 +36,7 @@ class ClassificationEstimators:
     def instantiate_tuning_estimator_and_parameters(self, ):
 
         # Simplest learning method(s):
-        if self.estimator_name == "l_reg":
+        if self.estimator_name == "l_cls":
             self.tuning_estimator = LinearRegression()
 
             # define search space
@@ -48,8 +48,8 @@ class ClassificationEstimators:
             )
 
         # Support Vector machine method(s):
-        elif self.estimator_name == "sv_reg":
-            self.tuning_estimator = SVR()
+        elif self.estimator_name == "sv_cls":
+            self.tuning_estimator = SVC()
 
             # define search space
             self.params = defaultdict()
@@ -57,14 +57,13 @@ class ClassificationEstimators:
             self.params['degree'] = Integer(1, 3)
             self.params['C'] = Real(1e-1, 4.0, 'log-uniform')
             self.params['gamma'] = Real(1e-1, 2.0, 'log-uniform')
-            self.params["epsilon"] = Real(1e-1, 2.0, 'log-uniform')
 
             print(
                 "Linear Support Vector Regression."
             )
 
         # KNN method(s):
-        elif self.estimator_name == "knn_reg":
+        elif self.estimator_name == "knn_cls":
             self.tuning_estimator = KNeighborsClassifier()
 
             # define search space
@@ -77,7 +76,7 @@ class ClassificationEstimators:
             )
 
         # Bayesian Ridge:
-        elif self.estimator_name == "br_reg":
+        elif self.estimator_name == "br_cls":
             self.tuning_estimator = BayesianRidge()
 
             # define search space
@@ -94,7 +93,7 @@ class ClassificationEstimators:
             )
 
         # Ensemble learning method(s):
-        elif self.estimator_name == "rf_reg":
+        elif self.estimator_name == "rf_cls":
             self.tuning_estimator = RandomForestClassifier(verbose=1, )
 
             # define search space
@@ -107,7 +106,7 @@ class ClassificationEstimators:
                 "Random Forest Classifier."
             )
 
-        elif self.estimator_name == "gb_reg":
+        elif self.estimator_name == "gb_cls":
             self.tuning_estimator = GradientBoostingClassifier(verbose=1, )
 
             # define search space
@@ -122,7 +121,7 @@ class ClassificationEstimators:
                 "Gradient Boosting Classifier."
             )
 
-        elif self.estimator_name == "ab_reg":
+        elif self.estimator_name == "ab_cls":
             self.tuning_estimator = AdaBoostClassifier()
 
             # define search space
@@ -133,7 +132,7 @@ class ClassificationEstimators:
                 "Adaboost Classifier."
             )
 
-        elif self.estimator_name == "xgb_reg":
+        elif self.estimator_name == "xgb_cls":
             self.tuning_estimator = xgb.XGBClassifier()
 
             # define search space
@@ -146,7 +145,7 @@ class ClassificationEstimators:
             )
 
         # Gaussian Process method(s):
-        elif self.estimator_name == "_gp_reg_+":
+        elif self.estimator_name == "_gp_cls_+":
             self.tuning_estimator = GaussianProcessClassifier()
             # Previously we faced some issue due to limits of
             #   GP due the dataset size, and thus for now I won't consider it.
@@ -181,7 +180,7 @@ class ClassificationEstimators:
             )
 
         # Neural Networks method(s):
-        elif self.estimator_name == "mlp_reg":
+        elif self.estimator_name == "mlp_cls":
             self.tuning_estimator = MLPClassifier(
                 shuffle=False,
                 verbose=True,
@@ -209,61 +208,61 @@ class ClassificationEstimators:
     def instantiate_train_test_estimator(self, ):
 
         # Simplest learning method(s):
-        if self.estimator_name == "l_reg":
+        if self.estimator_name == "l_cls":
             self.estimator = LinearRegression(**self.tuned_params)
             print (
                 "Instantiate Linear Classifier."
             )
 
         # Support Vector machine method(s):
-        elif self.estimator_name == "sv_reg":
-            self.estimator = SVR(**self.tuned_params)
+        elif self.estimator_name == "sv_cls":
+            self.estimator = SVC(**self.tuned_params)
             print(
                 "Instantiate Linear Support Vector Regression."
             )
 
         # KNN method(s):
-        elif self.estimator_name == "knn_reg":
+        elif self.estimator_name == "knn_cls":
             self.estimator = KNeighborsClassifier(**self.tuned_params)
             print(
                 "Instantiate KNearest Neighbor Classifier."
             )
 
         # Bayesian Ridge:
-        elif self.estimator_name == "br_reg":
+        elif self.estimator_name == "br_cls":
             self.estimator = BayesianRidge(**self.tuned_params)
             print(
                 "Instantiate Bayesian Ridge Classifier."
             )
 
         # Ensemble learning method(s):
-        elif self.estimator_name == "rf_reg":
+        elif self.estimator_name == "rf_cls":
             self.estimator = RandomForestClassifier(**self.tuned_params)
 
             print(
                 "Instantiate Random Forest Classifier."
             )
 
-        elif self.estimator_name == "gb_reg":
+        elif self.estimator_name == "gb_cls":
             self.estimator = GradientBoostingClassifier(**self.tuned_params)
             print(
                 "Instantiate Gradient Boosting Classifier."
             )
 
-        elif self.estimator_name == "ab_reg":  # does not support 2d y
+        elif self.estimator_name == "ab_cls":  # does not support 2d y
             self.estimator = AdaBoostClassifier(**self.tuned_params)
             print(
                 "Instantiate Adaboost Classifier."
             )
 
-        elif self.estimator_name == "xgb_reg":
+        elif self.estimator_name == "xgb_cls":
             self.estimator = xgb.XGBClassifier(**self.tuned_params)
             print(
                 "Instantiate XGBoost Classifier."
             )
 
         # Gaussian Process method(s):
-        elif self.estimator_name == "gp_reg":
+        elif self.estimator_name == "gp_cls":
             self.estimator = GaussianProcessClassifier(**self.tuned_params)
             # Previously we faced some issue due to limits of
             #   GP due dataset size, and thus for now I won't consider it
@@ -272,7 +271,7 @@ class ClassificationEstimators:
             )
 
         # Neural Networks method(s):
-        elif self.estimator_name == "mlp_reg":
+        elif self.estimator_name == "mlp_cls":
             self.estimator = MLPClassifier(**self.tuned_params)
             print(
                 "Instantiate Multi-Layer Perceptron Classifier."
