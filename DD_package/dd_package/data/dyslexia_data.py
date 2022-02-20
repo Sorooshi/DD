@@ -46,7 +46,7 @@ class DyslexiaData:
         print("Loading Demo data: ")
 
         for sheet in  self.xlsx_demo.sheet_names:
-            tmp = pd.read_excel( self.xlsx_demo, sheet)
+            tmp = pd.read_excel( self.xlsx_demo, sheet,) #  converters={}
             tmp = self._remove_missing_data(df=tmp)
             tmp = tmp.replace(
                 to_replace={"Sex": {"fem": 10, "f": 10, "masc": 20, "m": 20}},
