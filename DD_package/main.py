@@ -66,8 +66,8 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--data_name", type=str, default="DD_Demo",
-        help="Dataset's name, e.g., DD_Demo, or DD_Demo_IA"
-                             " The following (lowercase) strings are supported"
+        help="Dataset's name, e.g., DD_Demo, or DD_Demo_IA."
+                             "The following (lowercase) strings are supported"
                              "  1) Demographic = dd_demo, "
                              "  2) IA_report = dd_ia, "
                              "  3) Fixation_report = dd_fix, "
