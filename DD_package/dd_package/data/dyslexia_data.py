@@ -54,9 +54,8 @@ class DyslexiaData:
                 value=None,
                 inplace=True
             )
-
             tmp = tmp.astype({
-                "Group": int,
+                "Group": str,
                 "SubjectID": str,
                 "Sex": int,
                 "Grade": int,
@@ -87,7 +86,7 @@ class DyslexiaData:
                 inplace=True
             )
             tmp = tmp.astype({
-                "Group": int,
+                "Group": str,
                 "SubjectID": str,
                 "Sentence_ID": int,
                 "Word_Number": int,
@@ -126,7 +125,7 @@ class DyslexiaData:
                 inplace=True
             )
             tmp = tmp.astype({
-                "Group": int,
+                "Group": str,
                 "SubjectID": str,
                 "Sentence_ID": int,
                 "Word_Number": int,
