@@ -49,9 +49,9 @@ class DyslexiaData:
             tmp = pd.read_excel( self.xlsx_demo, sheet)
             tmp = self._remove_missing_data(df=tmp)
             tmp.replace({"fem": 1, "f": 1, "masc": 2, "m": 2}, inplace=True)
-            tmp.replace({"norm": 1, "risk": 2, "dyslexia": 3}, inplace=True)
+            # tmp.replace({"norm": 1, "risk": 2, "dyslexia": 3}, inplace=True)
             tmp = tmp.astype({
-                "Group": int,
+                "Group": str,
                 "SubjectID": str,
                 "Sex": int,
                 "Grade": int,
@@ -76,9 +76,9 @@ class DyslexiaData:
         for sheet in self.xlsx_ia.sheet_names:
             tmp = pd.read_excel(self.xlsx_ia, sheet)
             tmp = self._remove_missing_data(df=tmp)
-            tmp.replace({"norm": 1, "risk": 2, "dyslexia": 3, }, inplace=True)
+            # tmp.replace({"norm": 1, "risk": 2, "dyslexia": 3, }, inplace=True)
             tmp = tmp.astype({
-                "Group": int,
+                "Group": str,
                 "SubjectID": str,
                 "Sentence_ID": int,
                 "Word_Number": int,
@@ -111,9 +111,9 @@ class DyslexiaData:
         for sheet in self.xlsx_fix.sheet_names:
             tmp = pd.read_excel(self.xlsx_fix, sheet)
             tmp = self._remove_missing_data(df=tmp)
-            tmp.replace({"norm": 1, "risk": 2, "dyslexia": 3, }, inplace=True)
+            # tmp.replace({"norm": 1, "risk": 2, "dyslexia": 3, }, inplace=True)
             tmp = tmp.astype({
-                "Group": int,
+                "Group": str,
                 "SubjectID": str,
                 "Sentence_ID": int,
                 "Word_Number": int,
