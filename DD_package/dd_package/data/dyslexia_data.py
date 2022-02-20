@@ -48,6 +48,13 @@ class DyslexiaData:
         for sheet in  self.xlsx_demo.sheet_names:
             tmp = pd.read_excel( self.xlsx_demo, sheet)
             tmp = self._remove_missing_data(df=tmp)
+            tmp = tmp.replace(
+                to_replace={"Sex": {"fem": 10, "f": 10, "masc": 20, "m": 20}},
+            )
+            tmp = tmp.replace(
+                to_replace={"Group": {"norm": 10, "risk":20, "dyslexia": 30}},
+            )
+
             tmp = tmp.astype({
                 "Group": int,
                 "SubjectID": str,
@@ -127,14 +134,6 @@ class DyslexiaData:
 
     def concat_classes_demo(self, ):
         self.demo = pd.concat([v for k, v in self.demo_datasets.items()], axis=0)
-        self.demo.replace(
-            to_replace={"Sex": {"fem": 10, "f": 10, "masc": 20, "m": 20}},
-            inplace=True
-        )
-        self.demo.replace(
-            to_replace={"Group": {"norm": 10, "risk": 20, "dyslexia": 30}},
-            inplace=True
-        )
         return self.demo.sort_values(by=["SubjectID",])
 
     def concat_classes_ia(self, ):
