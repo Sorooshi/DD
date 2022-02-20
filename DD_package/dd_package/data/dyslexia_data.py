@@ -22,6 +22,7 @@ class DyslexiaData:
         self.n_splits = n_splits
         self.n_repeats = n_repeats
         self.xlsx_file = pd.ExcelFile
+        self.sheet_names = ["dyslexia", "norm", "risk"]
 
         self.xlsx_demo = pd.ExcelFile(os.path.join(self.path, "demo.xlsx"))
         self.xlsx_ia = pd.ExcelFile(os.path.join(self.path, "IA_report.xlsx"))
@@ -42,10 +43,8 @@ class DyslexiaData:
         self.stratified_train_test_splits = defaultdict(defaultdict)
 
     def get_demo_datasets(self, ):
-
         print("Loading Demo data: ")
-
-        for sheet in  self.xlsx_demo.sheet_names:
+        for sheet in self.sheet_names:
             tmp = pd.read_excel(
                 self.xlsx_demo, sheet,
                 converters={"Group": str, "Sex":str}
@@ -81,7 +80,7 @@ class DyslexiaData:
 
         print("Loading IA_report data: ")
 
-        for sheet in self.xlsx_ia.sheet_names:
+        for sheet in self.sheet_names:
             tmp = pd.read_excel(self.xlsx_ia, sheet)
             tmp = self._remove_missing_data(df=tmp)
             tmp = tmp.astype({
@@ -115,7 +114,7 @@ class DyslexiaData:
 
         print("Loading Fixation report data:")
 
-        for sheet in self.xlsx_fix.sheet_names:
+        for sheet in self.sheet_names:
             tmp = pd.read_excel(self.xlsx_fix, sheet)
             tmp = self._remove_missing_data(df=tmp)
             tmp = tmp.astype({
