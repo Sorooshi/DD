@@ -70,7 +70,7 @@ class ClassificationEstimators:
             self.params['gamma'] = Real(1e-1, 2.0, 'log-uniform')
 
             print(
-                "Linear Support Vector Regression."
+                "C Support Vector Regression."
             )
 
         # KNN method(s):
@@ -229,7 +229,7 @@ class ClassificationEstimators:
             )
 
         else:
-            assert False, "Undefined regression model."
+            assert False, "Undefined classification model."
 
         return None  # self.tuning_estimator, self.params
 
@@ -249,7 +249,7 @@ class ClassificationEstimators:
         elif self.estimator_name == "sv_cls":
             self.estimator = SVC(**self.tuned_params)
             print(
-                "Instantiate Linear Support Vector Regression."
+                "Instantiate C Support Vector Classifier."
             )
 
         # KNN method(s):
