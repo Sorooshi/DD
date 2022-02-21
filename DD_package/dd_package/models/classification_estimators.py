@@ -288,13 +288,15 @@ class ClassificationEstimators:
         print("CV hyper-parameters tuning for " + self.estimator_name)
 
         # define the search
-        search = BayesSearchCV(estimator=self.tuning_estimator,
-                               search_spaces=self.params,
-                               n_jobs=-2, cv=self.cv,
-                               scoring="accuracy",
-                               optimizer_kwargs={'base_estimator': 'RF'},
-                               verbose=1,
-                               )
+        search = BayesSearchCV(
+            estimator=self.tuning_estimator,
+            search_spaces=self.params,
+            n_jobs=-2, cv=self.cv,
+            scoring="accuracy",
+            optimizer_kwargs={'base_estimator': 'RF'},
+            verbose=1,
+        )
+
         # perform the search
         search.fit(X=self.x, y=self.y, )
 
