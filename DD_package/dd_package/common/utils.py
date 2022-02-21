@@ -166,18 +166,18 @@ def init_a_wandb(name, project, notes, group, tag, config):
     return run
 
 
-def wandb_metrics(run, y_true, y_pred, learning_method):
+def wandb_metrics(run, y_true, y_pred, y_pred_prob, learning_method):
 
     meape_errors = mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100)
 
     # to compute ROC_AUC
     try:
-        y_pred.shape[1]
-        y_pred_ = y_pred
+        y_true.shape[1]
+        y_true_ = y_true
     except:
         enc = OneHotEncoder(sparse=False)
-        y_pred_ = y_pred.reshape(-1, 1)
-        y_pred_ = enc.fit_transform(y_pred_)
+        y_true_ = y_true.reshape(-1, 1)
+        y_true_ = enc.fit_transform(y_true_)
 
     if learning_method == "regression":
 
@@ -200,7 +200,7 @@ def wandb_metrics(run, y_true, y_pred, learning_method):
             "Precision": metrics.precision_score(y_true, y_pred, average='weighted'),
             "Recall": metrics.recall_score(y_true, y_pred, average='weighted'),
             "F1-Score": metrics.f1_score(y_true, y_pred, average='weighted'),
-            "ROC AUC": metrics.roc_auc_score(y_true, y_pred_, average='weighted', multi_class="ovr"),
+            "ROC AUC": metrics.roc_auc_score(y_true_, y_pred_prob, average='weighted', multi_class="ovr"),
             "MEAPE-mu": meape_errors.mean(axis=0),
             "MEAPE-std": meape_errors.std(axis=0)
         })
@@ -215,7 +215,7 @@ def wandb_metrics(run, y_true, y_pred, learning_method):
             "Precision": metrics.precision_score(y_true, y_pred, average='weighted'),
             "Recall": metrics.recall_score(y_true, y_pred, average='weighted'),
             "F1-Score": metrics.f1_score(y_true, y_pred, average='weighted'),
-            "ROC AUC": metrics.roc_auc_score(y_true, y_pred_, average='weighted', multi_class="ovr"),
+            "ROC AUC": metrics.roc_auc_score(y_true_, y_pred_prob, average='weighted', multi_class="ovr"),
             "MEAPE-mu": meape_errors.mean(axis=0),
             "MEAPE-std": meape_errors.std(axis=0)
         })
@@ -408,43 +408,45 @@ def print_the_evaluated_results(results, learning_method, ):
     for repeat, result in results.items():
         y_true = result["y_test"]
         y_pred = result["y_pred"]
+        y_pred_prob = result["y_pred_prob"]
 
         # to compute ROC_AUC
         try:
-            y_pred.shape[1]
-            y_pred_ = y_pred
+            y_true.shape[1]
+            y_true_ = y_true
         except:
             enc = OneHotEncoder(sparse=False)
-            y_pred_ = y_pred.reshape(-1, 1)
-            y_pred_ = enc.fit_transform(y_pred_)
+            y_true_ = y_true.reshape(-1, 1)
+            y_true_ = enc.fit_transform(y_true_)
 
-        if learning_method == "regression":  # or learning_method == "baseline":
+    if learning_method == "regression":
 
-            MEA.append(mae(y_true=y_true, y_pred=y_pred))
-            RMSE.append(rmse(y_true=y_true, y_pred=y_pred))
-            MRAE.append(mrae(y_true=y_true, y_pred=y_pred))
-            JSD.append(jsd(y_true=y_true, y_pred=y_pred).mean())
-            R2_Score.append(metrics.r2_score(y_true, y_pred))
-            meape_errors = mean_estimation_absolute_percentage_error(
-                y_true=y_true, y_pred=y_pred, n_iters=100)
+        MEA.append(mae(y_true=y_true, y_pred=y_pred))
+        RMSE.append(rmse(y_true=y_true, y_pred=y_pred))
+        MRAE.append(mrae(y_true=y_true, y_pred=y_pred))
+        JSD.append(jsd(y_true=y_true, y_pred=y_pred).mean())
+        R2_Score.append(metrics.r2_score(y_true, y_pred))
+        meape_errors = mean_estimation_absolute_percentage_error(
+            y_true=y_true, y_pred=y_pred, n_iters=100
+        )
+        MEAPE_mu.append(meape_errors.mean(axis=0))
+        MEAPE_std.append(meape_errors.std(axis=0))
 
-            MEAPE_mu.append(meape_errors.mean(axis=0))
-            MEAPE_std.append(meape_errors.std(axis=0))
+    else:
+        ARI.append(metrics.adjusted_rand_score(y_true, y_pred))
+        NMI.append(metrics.normalized_mutual_info_score(y_true, y_pred))
+        JSD.append(jsd(y_true=y_true, y_pred=y_pred).mean())
+        Precision.append(metrics.precision_score(y_true, y_pred, average='weighted'))
+        Recall.append(metrics.recall_score(y_true, y_pred, average='weighted'))
+        F1_Score.append(metrics.f1_score(y_true, y_pred, average='weighted'))
+        ROC_AUC.append(metrics.roc_auc_score(y_true_, y_pred_prob, average='weighted', multi_class="ovr"),)
+        meape_errors = mean_estimation_absolute_percentage_error(
+                y_true=y_true, y_pred=y_pred, n_iters=100
+        )
 
-        else:
-            ARI.append(metrics.adjusted_rand_score(y_true, y_pred))
-            NMI.append(metrics.normalized_mutual_info_score(y_true, y_pred))
-            JSD.append(jsd(y_true=y_true, y_pred=y_pred).mean())
-            Precision.append(metrics.precision_score(y_true, y_pred, average='weighted'))
-            Recall.append(metrics.recall_score(y_true, y_pred, average='weighted'))
-            F1_Score.append(metrics.f1_score(y_true, y_pred, average='weighted'))
-            ROC_AUC.append(metrics.roc_auc_score(y_true, y_pred_, average='weighted', multi_class="ovr"),)
-            meape_errors = mean_estimation_absolute_percentage_error(
-                y_true=y_true, y_pred=y_pred, n_iters=100)
-
-            MEAPE_mu.append(meape_errors.mean(axis=0))
-            MEAPE_std.append(meape_errors.std(axis=0))
-            ACC.append(metrics.accuracy_score(y_true, y_pred, ))
+        MEAPE_mu.append(meape_errors.mean(axis=0))
+        MEAPE_std.append(meape_errors.std(axis=0))
+        ACC.append(metrics.accuracy_score(y_true, y_pred, ))
 
     if learning_method == "regression":
         MEA = np.nan_to_num(np.asarray(MEA))

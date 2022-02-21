@@ -9,12 +9,14 @@ from sklearn.ensemble import AdaBoostClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from skopt.space import Real, Categorical, Integer
+from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.gaussian_process import GaussianProcessClassifier
-from sklearn.linear_model import LogisticRegression, BayesianRidge
 from sklearn.gaussian_process.kernels import RBF, RationalQuadratic, \
     ExpSineSquared, ConstantKernel, RBF
+from sklearn.vaive_bayes import GaussianNB, MultinomialNB, ComplementNB
+
 
 
 class ClassificationEstimators:
@@ -85,21 +87,38 @@ class ClassificationEstimators:
                 "KNearest Neighbor Classifier."
             )
 
-        # Bayesian Ridge:
-        elif self.estimator_name == "br_cls":
-            self.tuning_estimator = BayesianRidge()
+        # Bayesian methods:
+        elif self.estimator_name == "bg_cls":
+            self.tuning_estimator = GaussianNB()
 
             # define search space
             self.params = defaultdict()
-            self.params["n_iter"] = Integer(1e2, 2e4, "uniform")
-            self.params["alpha_1"] = Real(1e-8, 1e-2, "uniform")
-            self.params["alpha_2"] = Real(1e-8, 1e-2, "uniform")
-            self.params["lambda_1"] = Real(1e-8, 1e-2, "uniform")
-            self.params["lambda_2"] = Real(1e-8, 1e-2, "uniform")
-            self.params["fit_intercept"] = Categorical([True, False])
+            self.params["var_smoothing"] = Real(1e-9, 1e-7, "uniform")
 
             print(
-                "Instantiate Bayesian Ridge Classifier."
+                "Instantiate Naive Gaussian Bayese Classifier."
+            )
+
+        elif self.estimator_name == "bm_cls":
+            self.tuning_estimator = MultinomialNB()
+
+            # define search space
+            self.params = defaultdict()
+            self.params["alpha"] = Real(1e-3, 1, "uniform")
+
+            print(
+                "Instantiate Naive Bayes: Multinomial Classifier."
+            )
+
+        elif self.estimator_name == "bc_cls":
+            self.tuning_estimator = ComplementNB()
+
+            # define search space
+            self.params = defaultdict()
+            self.params["alpha"] = Real(1e-3, 1, "uniform")
+
+            print(
+                "Instantiate Naive Bayes: Complement Classifier."
             )
 
         # Ensemble learning method(s):
@@ -125,7 +144,6 @@ class ClassificationEstimators:
             self.params["n_estimators"] = Integer(10, 10000, )
             self.params["min_samples_split"] = Integer(2, 10, )
             self.params["min_samples_leaf"] = Integer(1, 10, )
-            self.params["alpha"] = Real(1e-1, 9e-1, "uniform")
 
             print(
                 "Gradient Boosting Classifier."
@@ -150,6 +168,7 @@ class ClassificationEstimators:
             self.params["n_estimators"] = Integer(10, 10000, )
             self.params["learning_rate"] = Real(1e-3, 5e-1, "uniform")
             self.params["max_depth"] = Integer(1, 100, "uniform")
+
             print(
                 "XGBoost Classifier."
             )
@@ -223,7 +242,8 @@ class ClassificationEstimators:
             self.tuned_params["multi_class"] = "multinomial"
             self.estimator = LogisticRegression(**self.tuned_params)
             print (
-                "Instantiate Logistic Classifier."
+                "Instantiate Logistic Classifier. \n",
+                self.tuned_params
             )
 
         # Support Vector machine method(s):
@@ -240,11 +260,25 @@ class ClassificationEstimators:
                 "Instantiate KNearest Neighbor Classifier."
             )
 
-        # Bayesian Ridge:
-        elif self.estimator_name == "br_cls":
-            self.estimator = BayesianRidge(**self.tuned_params)
+        # Bayesian methods:
+        elif self.estimator_name == "bg_cls":
+            self.estimator = GaussianNB(**self.tuned_params)
+
             print(
-                "Instantiate Bayesian Ridge Classifier."
+                "Instantiate Naive Gaussian Bayese Classifier."
+            )
+
+        elif self.estimator_name == "bm_cls":
+            self.tuning_estimator = MultinomialNB(**self.tuned_params)
+            print(
+                "Instantiate Naive Bayes: Multinomial Classifier."
+            )
+
+        elif self.estimator_name == "bc_cls":
+            self.tuning_estimator = ComplementNB(**self.tuned_params)
+
+            print(
+                "Instantiate Naive Bayes: Complement Classifier."
             )
 
         # Ensemble learning method(s):
@@ -344,13 +378,16 @@ class ClassificationEstimators:
             self.estimator.fit(v["x_train"], v["y_train"])
             y_test = v["y_test"]
             y_pred = self.estimator.predict(v["x_test"])
+            y_pred_prob = self.estimator.predict_proba(v["x_test"])
             self.results[k]["y_pred"] = y_pred
+            self.results[k]["y_pred_prob"] = y_pred_prob
             self.results[k]["y_test"] = y_test
 
             run = util.wandb_metrics(
                 run=run,
                 y_true=y_test,
                 y_pred=y_pred,
+                y_pred_prob=y_pred_prob,
                 learning_method=self.configs.learning_method,
             )
 
