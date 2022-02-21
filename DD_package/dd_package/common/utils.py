@@ -450,50 +450,50 @@ def print_the_evaluated_results(results, learning_method, ):
             MEAPE_std.append(meape_errors.std(axis=0))
             ACC.append(metrics.accuracy_score(y_true, y_pred, ))
 
-        if learning_method == "regression":
-            MEA = np.nan_to_num(np.asarray(MEA))
-            RMSE = np.nan_to_num(np.asarray(RMSE))
-            MRAE = np.nan_to_num(np.asarray(MRAE))
-            JSD = np.nan_to_num(np.asarray(JSD))
-            R2_Score = np.nan_to_num(np.asarray(R2_Score))
-            MEAPE_mu = np.nan_to_num(np.asarray(MEAPE_mu))
+    if learning_method == "regression":
+        MEA = np.nan_to_num(np.asarray(MEA))
+        RMSE = np.nan_to_num(np.asarray(RMSE))
+        MRAE = np.nan_to_num(np.asarray(MRAE))
+        JSD = np.nan_to_num(np.asarray(JSD))
+        R2_Score = np.nan_to_num(np.asarray(R2_Score))
+        MEAPE_mu = np.nan_to_num(np.asarray(MEAPE_mu))
 
-            mae_ave = np.mean(MEA, axis=0)
-            mae_std = np.std(MEA, axis=0)
+        mae_ave = np.mean(MEA, axis=0)
+        mae_std = np.std(MEA, axis=0)
 
-            rmse_ave = np.mean(RMSE, axis=0)
-            rmse_std = np.std(RMSE, axis=0)
+        rmse_ave = np.mean(RMSE, axis=0)
+        rmse_std = np.std(RMSE, axis=0)
 
-            mrae_ave = np.mean(MRAE, axis=0)
-            mrae_std = np.std(MRAE, axis=0)
+        mrae_ave = np.mean(MRAE, axis=0)
+        mrae_std = np.std(MRAE, axis=0)
 
-            jsd_ave = np.mean(JSD, axis=0)
-            jsd_std = np.std(JSD, axis=0)
+        jsd_ave = np.mean(JSD, axis=0)
+        jsd_std = np.std(JSD, axis=0)
 
-            r2_ave = np.mean(R2_Score, axis=0)
-            r2_std = np.std(R2_Score, axis=0)
+        r2_ave = np.mean(R2_Score, axis=0)
+        r2_std = np.std(R2_Score, axis=0)
 
-            meape_ave = np.mean(MEAPE_mu, axis=0)
-            meape_std = np.std(MEAPE_mu, axis=0)
+        meape_ave = np.mean(MEAPE_mu, axis=0)
+        meape_std = np.std(MEAPE_mu, axis=0)
 
-            print("   mae ", "   rmse ", "\t mrae",
-                  "\t r2_score ", "\t meape ", "\t jsd ",
-                  )
+        print("   mae ", "   rmse ", "\t mrae",
+              "\t r2_score ", "\t meape ", "\t jsd ",
+              )
 
-            print(" Ave ", " std", " Ave ", " std ", " Ave ", " std ", " Ave ", " std ",
-                  " Ave ", " std ", " Ave ", " std ",
-                  )
+        print(" Ave ", " std", " Ave ", " std ", " Ave ", " std ", " Ave ", " std ",
+              " Ave ", " std ", " Ave ", " std ",
+              )
 
-            print(
-                "%.3f" % mae_ave, "%.3f" % mae_std,
-                "%.3f" % rmse_ave, "%.3f" % rmse_std,
-                "%.3f" % mrae_ave, "%.3f" % mrae_std,
-                "%.3f" % r2_ave, "%.3f" % r2_std,
-                "%.3f" % meape_ave, "%.3f" % meape_std,
-                "%.3f" % jsd_ave, "%.3f" % jsd_std,
-            )
+        print(
+            "%.3f" % mae_ave, "%.3f" % mae_std,
+            "%.3f" % rmse_ave, "%.3f" % rmse_std,
+            "%.3f" % mrae_ave, "%.3f" % mrae_std,
+            "%.3f" % r2_ave, "%.3f" % r2_std,
+            "%.3f" % meape_ave, "%.3f" % meape_std,
+            "%.3f" % jsd_ave, "%.3f" % jsd_std,
+        )
 
-        else:
+    else:
 
             JSD = np.nan_to_num(np.asarray(JSD))
             MEAPE_mu = np.nan_to_num(np.asarray(MEAPE_mu))
