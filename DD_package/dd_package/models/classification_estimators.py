@@ -11,7 +11,7 @@ from skopt.space import Real, Categorical, Integer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.gaussian_process import GaussianProcessClassifier
-from sklearn.linear_model import LinearRegression, BayesianRidge
+from sklearn.linear_model import LogisticRegression, BayesianRidge
 from sklearn.gaussian_process.kernels import RBF, RationalQuadratic, \
     ExpSineSquared, ConstantKernel, RBF
 
@@ -37,14 +37,19 @@ class ClassificationEstimators:
 
         # Simplest learning method(s):
         if self.estimator_name == "l_cls":
-            self.tuning_estimator = LinearRegression()
+            self.tuning_estimator = LogisticRegression()
 
             # define search space
             self.params = defaultdict()
+            self.params["penalty"] = Categorical(["none", "l1", "l2", "elasticnet", ])
+            self.params['C'] = Real(1e-1, 4.0, 'log-uniform')
             self.params["fit_intercept"] = Categorical([True, False])
+            self.params["max_iter"] = Integer(100, 100000, "uniform")
+            self.params["solver"] = "saga"  # These solvers: "newton-cg", "sag", "lbfgs", don't support all penalties.
+            self.params["multi_class"] = "multinomial"  # to use cross-entropy loss in all cases
 
             print (
-                "Linear Classifier."
+                "Logistic Classifier."
             )
 
         # Support Vector machine method(s):
@@ -209,9 +214,9 @@ class ClassificationEstimators:
 
         # Simplest learning method(s):
         if self.estimator_name == "l_cls":
-            self.estimator = LinearRegression(**self.tuned_params)
+            self.estimator = LogisticRegression(**self.tuned_params)
             print (
-                "Instantiate Linear Classifier."
+                "Instantiate Logistic Classifier."
             )
 
         # Support Vector machine method(s):
