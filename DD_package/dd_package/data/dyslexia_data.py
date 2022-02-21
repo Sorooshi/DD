@@ -14,7 +14,7 @@ class DyslexiaData:
                  n_splits: int = 5,
                  n_repeats: int = 10,
                  path: Path= Path("../datasets"),
-                 names: list = ["demo_", "IA_report", "Fixation_report",],
+                 names: list = ["demo", "IA_report", "Fixation_report",],
                  ):
 
         self.path = path
