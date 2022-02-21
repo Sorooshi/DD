@@ -153,13 +153,11 @@ if __name__ == "__main__":
         n_repeats=configs.n_repeats,
     )
 
+    """ 
     # dict of dicts, s.t each dict contains pd.df of a class, e.g normal
     _ = dd.get_demo_datasets()  # demos
     _ = dd.get_ia_datasets()  # ias
     _ = dd.get_fix_datasets()  # fixes
-
-    # The three below lines can be move to
-    #   if data_names == ... for less memory consumption, if it needed.
 
     # concatenate pd.dfs to a pd.df
     ia = dd.concat_classes_ia()
@@ -172,16 +170,38 @@ if __name__ == "__main__":
         ia = ia.loc[ia.Group != 2]
         fix = fix.loc[fix.Group != 2]
         demo = demo.loc[demo.Group != 2]
+    
+    """
 
     # Determine which dataset to use, e.g. demo dataset
     # alone or concatenation of demo and IA_report, for instance.
     if data_name == "dd_demo":
+        # dict of dicts, s.t each dict contains pd.df of a class, e.g normal
+        _ = dd.get_demo_datasets()  # demos
+        demo = dd.concat_classes_demo()
+
+        # The optimize way to exclude at-risk class
+        if to_exclude_at_risk == 1:
+            to_exclude_at_risk = True
+            demo = demo.loc[demo.Group != 2]
+
         df_data_to_use = demo
         c_features = ['Sex', 'Grade', ]
         indicators = ['SubjectID', ]
         targets = ["Group", "Reading_speed", ]
 
     elif data_name == "dd_ia":
+        # dict of dicts, s.t each dict contains pd.df of a class, e.g normal
+        _ = dd.get_ia_datasets()  # ias
+
+        # concatenate pd.dfs to a pd.df
+        ia = dd.concat_classes_ia()
+
+        # The optimize way to exclude at-risk class
+        if to_exclude_at_risk == 1:
+            to_exclude_at_risk = True
+            ia = ia.loc[ia.Group != 2]
+
         df_data_to_use = ia
         c_features = [
             'QUESTION_ACCURACY', 'SKIP', 'REGRESSION_IN',
@@ -195,6 +215,17 @@ if __name__ == "__main__":
         targets = ["Group", ]
 
     elif data_name == "dd_fix":
+
+        # dict of dicts, s.t each dict contains pd.df of a class, e.g normal
+        _ = dd.get_fix_datasets()  # fixes
+        # concatenate pd.dfs to a pd.df
+        fix = dd.concat_classes_fix()
+
+        # The optimize way to exclude at-risk class
+        if to_exclude_at_risk == 1:
+            to_exclude_at_risk = True
+            fix = fix.loc[fix.Group != 2]
+
         df_data_to_use = fix
         c_features = None
         indicators = [
@@ -204,6 +235,19 @@ if __name__ == "__main__":
         targets = ["Group", ]
 
     elif data_name == "dd_ia_demo":
+        # dict of dicts, s.t each dict contains pd.df of a class, e.g normal
+        _ = dd.get_demo_datasets()  # demos
+        _ = dd.get_ia_datasets()  # ias
+
+        # concatenate pd.dfs to a pd.df
+        ia = dd.concat_classes_ia()
+        demo = dd.concat_classes_demo()
+
+        # The optimize way to exclude at-risk class
+        if to_exclude_at_risk == 1:
+            to_exclude_at_risk = True
+            ia = ia.loc[ia.Group != 2]
+            demo = demo.loc[demo.Group != 2]
 
         ia_demo = dd.concat_dfs(
             df1=ia,
@@ -227,6 +271,20 @@ if __name__ == "__main__":
 
     elif data_name == "dd_ia_reg":
 
+        # dict of dicts, s.t each dict contains pd.df of a class, e.g normal
+        _ = dd.get_demo_datasets()  # demos
+        _ = dd.get_ia_datasets()  # ias
+
+        # concatenate pd.dfs to a pd.df
+        ia = dd.concat_classes_ia()
+        demo = dd.concat_classes_demo()
+
+        # The optimize way to exclude at-risk class
+        if to_exclude_at_risk == 1:
+            to_exclude_at_risk = True
+            ia = ia.loc[ia.Group != 2]
+            demo = demo.loc[demo.Group != 2]
+
         ia_reg = dd.concat_dfs(
             df1=ia,
             df2=demo,
@@ -248,6 +306,19 @@ if __name__ == "__main__":
         targets = ["Group", "Reading_speed", ]
 
     elif data_name == "dd_fix_demo":
+        # dict of dicts, s.t each dict contains pd.df of a class, e.g normal
+        _ = dd.get_demo_datasets()  # demos
+        _ = dd.get_fix_datasets()  # fixes
+
+        # concatenate pd.dfs to a pd.df
+        fix = dd.concat_classes_fix()
+        demo = dd.concat_classes_demo()
+
+        # The optimize way to exclude at-risk class
+        if to_exclude_at_risk == 1:
+            to_exclude_at_risk = True
+            fix = fix.loc[fix.Group != 2]
+            demo = demo.loc[demo.Group != 2]
 
         fix_demo = dd.concat_dfs(
             df1=fix,
@@ -265,6 +336,19 @@ if __name__ == "__main__":
         targets = ["Group", "Reading_speed", ]
 
     elif data_name == "dd_fix_reg":
+        # dict of dicts, s.t each dict contains pd.df of a class, e.g normal
+        _ = dd.get_demo_datasets()  # demos
+        _ = dd.get_fix_datasets()  # fixes
+
+        # concatenate pd.dfs to a pd.df
+        fix = dd.concat_classes_fix()
+        demo = dd.concat_classes_demo()
+
+        # The optimize way to exclude at-risk class
+        if to_exclude_at_risk == 1:
+            to_exclude_at_risk = True
+            fix = fix.loc[fix.Group != 2]
+            demo = demo.loc[demo.Group != 2]
 
         fix_reg = dd.concat_dfs(
             df1=fix,
@@ -423,5 +507,8 @@ if __name__ == "__main__":
         "  run:", run, "\n",
         "  to_exclude_at-risk:", to_exclude_at_risk, "\n",
     )
+
+
+
 
 
