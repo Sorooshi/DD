@@ -414,4 +414,14 @@ if __name__ == "__main__":
         "  The corresponding results, parameters, models, and figures of " + estimator_name + " are stored."
     )
 
+    print(
+        "configuration: \n",
+        "  estimator:", estimator_name, "\n",
+        "  data_name:", data_name, "\n",
+        "  shuffle_data:", to_shuffle, "\n",
+        "  pre-processing:", pp, "\n",
+        "  run:", run, "\n",
+        "  to_exclude_at-risk:", to_exclude_at_risk, "\n",
+    )
+
 
