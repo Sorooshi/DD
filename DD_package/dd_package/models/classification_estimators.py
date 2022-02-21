@@ -87,7 +87,7 @@ class ClassificationEstimators:
             )
 
         # Bayesian methods:
-        elif self.estimator_name == "bg_cls":
+        elif self.estimator_name == "gnb_cls":
             self.tuning_estimator = GaussianNB()
 
             # define search space
@@ -98,7 +98,7 @@ class ClassificationEstimators:
                 "Instantiate Naive Gaussian Bayese Classifier."
             )
 
-        elif self.estimator_name == "bm_cls":
+        elif self.estimator_name == "mnb_cls":
             self.tuning_estimator = MultinomialNB()
 
             # define search space
@@ -109,7 +109,7 @@ class ClassificationEstimators:
                 "Instantiate Naive Bayes: Multinomial Classifier."
             )
 
-        elif self.estimator_name == "bc_cls":
+        elif self.estimator_name == "cnb_cls":
             self.tuning_estimator = ComplementNB()
 
             # define search space
@@ -260,20 +260,20 @@ class ClassificationEstimators:
             )
 
         # Bayesian methods:
-        elif self.estimator_name == "bg_cls":
+        elif self.estimator_name == "gnb_cls":
             self.estimator = GaussianNB(**self.tuned_params)
 
             print(
                 "Instantiate Naive Gaussian Bayese Classifier."
             )
 
-        elif self.estimator_name == "bm_cls":
+        elif self.estimator_name == "mnb_cls":
             self.tuning_estimator = MultinomialNB(**self.tuned_params)
             print(
                 "Instantiate Naive Bayes: Multinomial Classifier."
             )
 
-        elif self.estimator_name == "bc_cls":
+        elif self.estimator_name == "cnb_cls":
             self.tuning_estimator = ComplementNB(**self.tuned_params)
 
             print(
