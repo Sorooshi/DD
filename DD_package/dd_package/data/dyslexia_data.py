@@ -47,6 +47,14 @@ class DyslexiaData:
         for sheet in self.sheet_names:
             tmp = pd.read_excel(self.xlsx_demo, sheet,)
             tmp = self._remove_missing_data(df=tmp)
+            tmp.replace(
+                to_replace={"Sex": {"fem": 1, "f": 1, "masc": 2, "m": 2}},
+                inplace=True,
+            )
+            tmp.replace(
+                to_replace={"Group": {"norm": 1, "risk": 2, "dyslexia": 3}},
+            inplace = True,
+            )
             tmp = tmp.astype({
                 "Group": int,
                 "SubjectID": str,
@@ -73,6 +81,10 @@ class DyslexiaData:
         for sheet in self.sheet_names:
             tmp = pd.read_excel(self.xlsx_ia, sheet)
             tmp = self._remove_missing_data(df=tmp)
+            tmp.replace(
+                to_replace={"Group": {"norm": 1, "risk": 2, "dyslexia": 3}},
+                inplace=True,
+            )
             tmp = tmp.astype({
                 "Group": int,
                 "SubjectID": str,
@@ -107,6 +119,10 @@ class DyslexiaData:
         for sheet in self.sheet_names:
             tmp = pd.read_excel(self.xlsx_fix, sheet)
             tmp = self._remove_missing_data(df=tmp)
+            tmp.replace(
+                to_replace={"Group": {"norm": 1, "risk": 2, "dyslexia": 3}},
+                inplace=True,
+            )
             tmp = tmp.astype({
                 "Group": int,
                 "SubjectID": str,
@@ -126,19 +142,6 @@ class DyslexiaData:
 
     def concat_classes_demo(self, ):
         self.demo = pd.concat([v for k, v in self.demo_datasets.items()], axis=0)
-        self.demo.replace(
-            to_replace={"Sex": {"fem": 1, "f": 1, "masc": 2, "m": 2}},
-            inplace=True,
-        )
-        """ 
-        There are some inconsistencies between the groups' labels in the demo files and the others.
-        More precisely, in demo files, dyslexia is denoted with 2, while in the other files it is denoted with 3. 
-        Similarly, in demo files, at-risk, is denoted with 3 while in the remaining files it is denoted with 2. 
-        """
-        self.demo.replace(
-            to_replace={"Group": {1:1 , 3: 2, 2: 3}},
-            inplace=True,
-        )
         return self.demo.sort_values(by=["SubjectID",])
 
     def concat_classes_ia(self, ):
