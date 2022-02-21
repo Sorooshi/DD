@@ -323,7 +323,7 @@ class ClassificationEstimators:
             )
 
         else:
-            assert False, "Undefined regression model."
+            assert False, "Undefined classification model."
 
         return None  # self.estimator
 
