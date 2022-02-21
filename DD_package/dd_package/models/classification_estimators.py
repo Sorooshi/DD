@@ -377,7 +377,11 @@ class ClassificationEstimators:
             self.estimator.fit(v["x_train"], v["y_train"])
             y_test = v["y_test"]
             y_pred = self.estimator.predict(v["x_test"])
-            y_pred_prob = self.estimator.predict_proba(v["x_test"])
+            try:
+                y_pred_prob = self.estimator.predict_proba(v["x_test"])
+            except:
+                y_pred_prob = self.estimator.decision_function(v["x_test"])
+
             self.results[k]["y_pred"] = y_pred
             self.results[k]["y_pred_prob"] = y_pred_prob
             self.results[k]["y_test"] = y_test
