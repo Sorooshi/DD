@@ -61,7 +61,7 @@ class RegressionEstimators:
             self.params["epsilon"] = Real(1e-1, 2.0, 'log-uniform')
 
             print(
-                "Linear Support Vector Regression."
+                "C-Support Vector Regression."
             )
 
         # KNN method(s):
@@ -220,7 +220,7 @@ class RegressionEstimators:
         elif self.estimator_name == "sv_reg":
             self.estimator = SVR(**self.tuned_params)
             print(
-                "Instantiate Linear Support Vector Regression."
+                "Instantiate C-Support Vector Regression."
             )
 
         # KNN method(s):
