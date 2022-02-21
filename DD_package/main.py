@@ -67,25 +67,25 @@ if __name__ == "__main__":
     parser.add_argument(
         "--data_name", type=str, default="DD_Demo",
         help="Dataset's name, e.g., DD_Demo, or DD_Demo_IA."
-                             "The following (lowercase) strings are supported"
-                             "  1) Demographic = dd_demo, "
-                             "  2) IA_report = dd_ia, "
-                             "  3) Fixation_report = dd_fix, "
-                             "  4) Demographic + IA_report = dd_demo_ia, "
-                             "  5) Demographic + Fixation_report = dd_demo_fix,"
-                             "  6) IA_report + demo.Reading_speed = dd_ia_reg,"
-                             "  7) Fix_report + demo.Reading_speed = dd_fix_reg"
+             "The following (lowercase) strings are supported"
+             "  1) Demographic = dd_demo, "
+             "  2) IA_report = dd_ia, "
+             "  3) Fixation_report = dd_fix, "
+             "  4) Demographic + IA_report = dd_demo_ia, "
+             "  5) Demographic + Fixation_report = dd_demo_fix,"
+             "  6) IA_report + demo.Reading_speed = dd_ia_reg,"
+             "  7) Fix_report + demo.Reading_speed = dd_fix_reg"
     )
 
     parser.add_argument(
         "--estimator_name", type=str, default="base_reg",
         help="None case sensitive first letter abbreviated name of an estimator proceeds "
-                             "  one of the three following suffixes separated with the underscore."
-                             "  Possible suffixes are: regression := reg, "
-                             "  classification := cls, clustering := clu"
-                             "      E.g., Random Forest Regressor := rf_reg, or "
-                             "      Random Forest Classifiers := rf_cls "
-                             "Note: First letter of the methods' name should be used for abbreviation."
+             "  one of the three following suffixes separated with the underscore."
+             "  Possible suffixes are: regression := reg, "
+             "  classification := cls, clustering := clu"
+             "      E.g., Random Forest Regressor := rf_reg, or "
+             "      Random Forest Classifiers := rf_cls "
+             "Note: First letter of the methods' name should be used for abbreviation."
     )
 
     parser.add_argument(
