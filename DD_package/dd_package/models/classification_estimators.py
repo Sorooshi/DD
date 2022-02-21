@@ -49,6 +49,7 @@ class ClassificationEstimators:
             self.params['C'] = Real(1e-1, 4.0, 'log-uniform')
             self.params["fit_intercept"] = Categorical([True, False])
             self.params["max_iter"] = Integer(100, 100000, "uniform")
+            self.params["l1_ratio"] = Real(1e-1, 9e-1, "uniform")
             # self.params["solver"] = "saga"  # These solvers: "newton-cg", "sag", "lbfgs", don't support all penalties.
             # self.params["multi_class"] = "multinomial"  # to use cross-entropy loss in all cases
 
