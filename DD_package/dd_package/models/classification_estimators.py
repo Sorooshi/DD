@@ -15,7 +15,7 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.gaussian_process import GaussianProcessClassifier
 from sklearn.gaussian_process.kernels import RBF, RationalQuadratic, \
     ExpSineSquared, ConstantKernel, RBF
-from sklearn.vaive_bayes import GaussianNB, MultinomialNB, ComplementNB
+from sklearn.naive_bayes import GaussianNB, MultinomialNB, ComplementNB
 
 
 
