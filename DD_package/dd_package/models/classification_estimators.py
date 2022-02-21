@@ -18,7 +18,6 @@ from sklearn.gaussian_process.kernels import RBF, RationalQuadratic, \
 from sklearn.naive_bayes import GaussianNB, MultinomialNB, ComplementNB
 
 
-
 class ClassificationEstimators:
 
     def __init__(self, x, y, cv, data, estimator_name, configs, ):
