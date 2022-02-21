@@ -1,3 +1,4 @@
+import time
 import numpy as np
 import xgboost as xgb
 from sklearn.svm import SVR
@@ -329,13 +330,19 @@ class RegressionEstimators:
                 config=self.tuned_params,
             )
 
+            start = time.time()
             self.estimator.fit(v["x_train"], v["y_train"])
             y_test = v["y_test"]
-            y_pred = self.estimator.predict(v["x_test"])
-            y_pred_prob = self.estimator.predict_proba(v["x_test"])
+            x_test = v["x_test"]
+            y_pred = self.estimator.predict(x_test)
+            y_pred_prob = self.estimator.predict_proba(x_test)
+            end = time.time()
+
+            self.results[k]["y_test"] = y_test
+            self.results[k]["x_test"] = x_test
             self.results[k]["y_pred"] = y_pred
             self.results[k]["y_pred_prob"] = y_pred_prob
-            self.results[k]["y_test"] = y_test
+            self.results[k]["exe_time"] = end - start
 
             run = util.wandb_metrics(
                 run=run,
