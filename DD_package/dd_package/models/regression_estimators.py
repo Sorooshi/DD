@@ -346,7 +346,7 @@ class RegressionEstimators:
                 run=run,
                 y_true=y_test,
                 y_pred=y_pred,
-                y_pred_prob=y_pred_prob,
+                y_pred_prob=None,
                 learning_method=self.configs.learning_method,
             )
 
