@@ -268,13 +268,13 @@ class ClassificationEstimators:
             )
 
         elif self.estimator_name == "mnb_cls":
-            self.tuning_estimator = MultinomialNB(**self.tuned_params)
+            self.estimator = MultinomialNB(**self.tuned_params)
             print(
                 "Instantiate Naive Bayes: Multinomial Classifier."
             )
 
         elif self.estimator_name == "cnb_cls":
-            self.tuning_estimator = ComplementNB(**self.tuned_params)
+            self.estimator = ComplementNB(**self.tuned_params)
 
             print(
                 "Instantiate Naive Bayes: Complement Classifier."
@@ -377,14 +377,15 @@ class ClassificationEstimators:
             self.estimator.fit(v["x_train"], v["y_train"])
             y_test = v["y_test"]
             y_pred = self.estimator.predict(v["x_test"])
+
             try:
                 y_pred_prob = self.estimator.predict_proba(v["x_test"])
             except:
                 y_pred_prob = self.estimator.decision_function(v["x_test"])
 
+            self.results[k]["y_test"] = y_test
             self.results[k]["y_pred"] = y_pred
             self.results[k]["y_pred_prob"] = y_pred_prob
-            self.results[k]["y_test"] = y_test
 
             run = util.wandb_metrics(
                 run=run,
