@@ -4,6 +4,7 @@ from sklearn.svm import SVC
 from skopt import BayesSearchCV
 from collections import defaultdict
 import dd_package.common.utils as util
+from sklearn.metrics import accuracy_score
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.neighbors import KNeighborsClassifier
@@ -37,7 +38,10 @@ class ClassificationEstimators:
 
         # Simplest learning method(s):
         if self.estimator_name == "l_cls":
-            self.tuning_estimator = LogisticRegression()
+            self.tuning_estimator = LogisticRegression(
+                solver="saga",
+                multi_class="multinomial",
+            )
 
             # define search space
             self.params = defaultdict()
@@ -45,8 +49,8 @@ class ClassificationEstimators:
             self.params['C'] = Real(1e-1, 4.0, 'log-uniform')
             self.params["fit_intercept"] = Categorical([True, False])
             self.params["max_iter"] = Integer(100, 100000, "uniform")
-            self.params["solver"] = "saga"  # These solvers: "newton-cg", "sag", "lbfgs", don't support all penalties.
-            self.params["multi_class"] = "multinomial"  # to use cross-entropy loss in all cases
+            # self.params["solver"] = "saga"  # These solvers: "newton-cg", "sag", "lbfgs", don't support all penalties.
+            # self.params["multi_class"] = "multinomial"  # to use cross-entropy loss in all cases
 
             print (
                 "Logistic Classifier."
@@ -214,6 +218,8 @@ class ClassificationEstimators:
 
         # Simplest learning method(s):
         if self.estimator_name == "l_cls":
+            self.tuned_params["solver"] = "saga"
+            self.tuned_params["multi_class"] = "multinomial"
             self.estimator = LogisticRegression(**self.tuned_params)
             print (
                 "Instantiate Logistic Classifier."
@@ -348,7 +354,7 @@ class ClassificationEstimators:
             )
 
             # to save the best results model and plots
-            score = r2_score(y_test, y_pred)
+            score = accuracy_score(y_test, y_pred)
 
             if score > old_score:
                 old_score = score
