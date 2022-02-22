@@ -183,12 +183,12 @@ def wandb_metrics(run, y_true, y_pred, y_pred_prob, learning_method):
 
         run.log({
             "MAE": mae(y_true=y_true, y_pred=y_pred),
-            "RMSE": rmse(y_true=y_true, y_pred=y_pred),
             "MRAE": mrae(y_true=y_true, y_pred=y_pred),
-            "JSD": jsd(y_true=y_true, y_pred=y_pred).mean(),
             "R^2-Score": metrics.r2_score(y_true, y_pred),
             "MEAPE-mu": meape_errors.mean(axis=0),
-            "MEAPE-std": meape_errors.std(axis=0)
+            "MEAPE-std": meape_errors.std(axis=0),
+            "RMSE": rmse(y_true=y_true, y_pred=y_pred),
+            "JSD": jsd(y_true=y_true, y_pred=y_pred).mean(),
         })
 
     elif learning_method == "classification":
@@ -216,7 +216,7 @@ def wandb_metrics(run, y_true, y_pred, y_pred_prob, learning_method):
             "Precision": metrics.precision_score(y_true, y_pred, average='weighted'),
             "Recall": metrics.recall_score(y_true, y_pred, average='weighted'),
             "F1-Score": metrics.f1_score(y_true, y_pred, average='weighted'),
-            "ROC AUC": metrics.roc_auc_score(y_true_, y_pred_prob, average='weighted', multi_class="ovr"),
+            # "ROC AUC": metrics.roc_auc_score(y_true_, y_pred_prob, average='weighted', multi_class="ovr"),
             "Accuracy": metrics.accuracy_score(y_true, y_pred, ),
             "MEAPE-mu": meape_errors.mean(axis=0),
             "MEAPE-std": meape_errors.std(axis=0)
@@ -441,14 +441,19 @@ def print_the_evaluated_results(results, learning_method, ):
             Precision.append(metrics.precision_score(y_true, y_pred, average='weighted'))
             Recall.append(metrics.recall_score(y_true, y_pred, average='weighted'))
             F1_Score.append(metrics.f1_score(y_true, y_pred, average='weighted'))
-            ROC_AUC.append(metrics.roc_auc_score(y_true_, y_pred_prob, average='weighted', multi_class="ovr"),)
             meape_errors = mean_estimation_absolute_percentage_error(
                     y_true=y_true, y_pred=y_pred, n_iters=100
             )
-
             MEAPE_mu.append(meape_errors.mean(axis=0))
             MEAPE_std.append(meape_errors.std(axis=0))
             ACC.append(metrics.accuracy_score(y_true, y_pred, ))
+
+        if learning_method == "classification":
+            ROC_AUC.append(
+                metrics.roc_auc_score(y_true_, y_pred_prob, average='weighted', multi_class="ovr"),
+            )
+        else:
+            ROC_AUC.append(123)  # appending an impossible outcome of ROC_AUC to avoid adding one more
 
     if learning_method == "regression":
         MEA = np.nan_to_num(np.asarray(MEA))
@@ -494,62 +499,61 @@ def print_the_evaluated_results(results, learning_method, ):
         )
 
     else:
+        JSD = np.nan_to_num(np.asarray(JSD))
+        MEAPE_mu = np.nan_to_num(np.asarray(MEAPE_mu))
+        ARI = np.nan_to_num(np.asarray(ARI))
+        NMI = np.nan_to_num(np.asarray(NMI))
+        Precision = np.nan_to_num(np.asarray(Precision))
+        Recall = np.nan_to_num(np.asarray(Recall))
+        F1_Score = np.nan_to_num(np.asarray(F1_Score))
+        ROC_AUC = np.nan_to_num(np.asarray(ROC_AUC))
+        ACC = np.nan_to_num((np.asarray(ACC)))
 
-            JSD = np.nan_to_num(np.asarray(JSD))
-            MEAPE_mu = np.nan_to_num(np.asarray(MEAPE_mu))
-            ARI = np.nan_to_num(np.asarray(ARI))
-            NMI = np.nan_to_num(np.asarray(NMI))
-            Precision = np.nan_to_num(np.asarray(Precision))
-            Recall = np.nan_to_num(np.asarray(Recall))
-            F1_Score = np.nan_to_num(np.asarray(F1_Score))
-            ROC_AUC = np.nan_to_num(np.asarray(ROC_AUC))
-            ACC = np.nan_to_num((np.asarray(ACC)))
+        ari_ave = np.mean(ARI, axis=0)
+        ari_std = np.std(ARI, axis=0)
 
-            ari_ave = np.mean(ARI, axis=0)
-            ari_std = np.std(ARI, axis=0)
+        nmi_ave = np.mean(NMI, axis=0)
+        nmi_std = np.std(NMI, axis=0)
 
-            nmi_ave = np.mean(NMI, axis=0)
-            nmi_std = np.std(NMI, axis=0)
+        precision_ave = np.mean(Precision, axis=0)
+        precision_std = np.std(Precision, axis=0)
 
-            precision_ave = np.mean(Precision, axis=0)
-            precision_std = np.std(Precision, axis=0)
+        recall_ave = np.mean(Recall, axis=0)
+        recall_std = np.std(Recall, axis=0)
 
-            recall_ave = np.mean(Recall, axis=0)
-            recall_std = np.std(Recall, axis=0)
+        f1_score_ave = np.mean(F1_Score, axis=0)
+        f1_score_std = np.std(F1_Score, axis=0)
 
-            f1_score_ave = np.mean(F1_Score, axis=0)
-            f1_score_std = np.std(F1_Score, axis=0)
+        roc_auc_ave = np.mean(ROC_AUC, axis=0)
+        roc_auv_std = np.std(ROC_AUC, axis=0)
 
-            roc_auc_ave = np.mean(ROC_AUC, axis=0)
-            roc_auv_std = np.std(ROC_AUC, axis=0)
+        jsd_ave = np.mean(JSD, axis=0)
+        jsd_std = np.std(JSD, axis=0)
 
-            jsd_ave = np.mean(JSD, axis=0)
-            jsd_std = np.std(JSD, axis=0)
+        meape_ave = np.mean(MEAPE_mu, axis=0)
+        meape_std = np.std(MEAPE_std, axis=0)
 
-            meape_ave = np.mean(MEAPE_mu, axis=0)
-            meape_std = np.std(MEAPE_std, axis=0)
+        acc_ave = np.mean(ACC, axis=0)
+        acc_std = np.std(ACC, axis=0)
 
-            acc_ave = np.mean(ACC, axis=0)
-            acc_std = np.std(ACC, axis=0)
-
-            print("  ari ", "  nmi ", "\t preci", "\t recall ",
+        print("  ari ", "  nmi ", "\t preci", "\t recall ",
                   "\t f1_score ", "\t roc_auc ", "\t meape ", "\t jsd ", "\t acc"
-                  )
+              )
 
-            print(" Ave ", " std", " Ave ", " std ", " Ave ", " std ", " Ave ", " std ",
-                  " Ave ", " std ", " Ave ", " std ", " Ave ", " std ", " Ave ", " std ", " Ave ", " std "
-                  )
+        print(" Ave ", " std", " Ave ", " std ", " Ave ", " std ", " Ave ", " std ",
+              " Ave ", " std ", " Ave ", " std ", " Ave ", " std ", " Ave ", " std ", " Ave ", " std "
+              )
 
-            print("%.3f" % ari_ave, "%.3f" % ari_std,
-                  "%.3f" % nmi_ave, "%.3f" % nmi_std,
-                  "%.3f" % precision_ave, "%.3f" % precision_std,
-                  "%.3f" % recall_ave, "%.3f" % recall_std,
-                  "%.3f" % f1_score_ave, "%.3f" % f1_score_std,
-                  "%.3f" % roc_auc_ave, "%.3f" % roc_auv_std,
-                  "%.3f" % meape_ave, "%.3f" % meape_std,
-                  "%.3f" % jsd_ave, "%.3f" % jsd_std,
-                  "%.3f" % acc_ave, "%.3f" % acc_std,
-                  )
+        print("%.3f" % ari_ave, "%.3f" % ari_std,
+              "%.3f" % nmi_ave, "%.3f" % nmi_std,
+              "%.3f" % precision_ave, "%.3f" % precision_std,
+              "%.3f" % recall_ave, "%.3f" % recall_std,
+              "%.3f" % f1_score_ave, "%.3f" % f1_score_std,
+              "%.3f" % roc_auc_ave, "%.3f" % roc_auv_std,
+              "%.3f" % meape_ave, "%.3f" % meape_std,
+              "%.3f" % jsd_ave, "%.3f" % jsd_std,
+              "%.3f" % acc_ave, "%.3f" % acc_std,
+              )
 
     return None
 
