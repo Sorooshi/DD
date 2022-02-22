@@ -142,14 +142,15 @@ class ClusteringEstimators:
     def instantiate_train_test_estimator(self, ):
 
         # Methods based on given n_clusters:
-        # K-Means:
         if self.estimator_name != "dbs_clus" and \
                 self.estimator_name != "ms_clu" and \
                 self.estimator_name != "gm_clu":
             self.tuned_params["n_clusters"] = self.configs.n_clusters
+
         elif self.estimator_name == "gm_clu":
             self.tuned_params["n_components"] = self.configs.n_clusters
 
+        # K-Means:
         if self.estimator_name == "km_clu":
             self.estimator = KMeans(**self.tuned_params)
             print (
@@ -185,6 +186,7 @@ class ClusteringEstimators:
             )
 
         # Methods based on automatic determination of n_clusters:
+
         # DBSCAN:
         elif self.estimator_name == "dbs_clu":
             self.estimator = DBSCAN(**self.tuned_params)
@@ -213,7 +215,7 @@ class ClusteringEstimators:
         search = BayesSearchCV(
             estimator=self.tuning_estimator,
             search_spaces=self.params,
-            n_jobs=-2, cv=self.cv,
+            n_jobs=1, cv=self.cv,
             scoring="adjusted_rand_score",
             optimizer_kwargs={'base_estimator': 'RF'},
             verbose=1,

@@ -293,7 +293,7 @@ class RegressionEstimators:
         # define the search
         search = BayesSearchCV(estimator=self.tuning_estimator,
                                search_spaces=self.params,
-                               n_jobs=-2, cv=self.cv,
+                               n_jobs=1, cv=self.cv,
                                scoring="r2",
                                optimizer_kwargs={'base_estimator': 'RF'},
                                verbose=1,
