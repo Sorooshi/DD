@@ -123,7 +123,7 @@ class ClassificationEstimators:
 
         # Ensemble learning method(s):
         elif self.estimator_name == "rf_cls":
-            self.tuning_estimator = RandomForestClassifier(verbose=1, )
+            self.tuning_estimator = RandomForestClassifier(verbose=0, )
 
             # define search space
             self.params = defaultdict()
@@ -136,7 +136,7 @@ class ClassificationEstimators:
             )
 
         elif self.estimator_name == "gb_cls":
-            self.tuning_estimator = GradientBoostingClassifier(verbose=1, )
+            self.tuning_estimator = GradientBoostingClassifier(verbose=0, )
 
             # define search space
             self.params = defaultdict()
@@ -212,7 +212,7 @@ class ClassificationEstimators:
         elif self.estimator_name == "mlp_cls":
             self.tuning_estimator = MLPClassifier(
                 shuffle=False,
-                verbose=True,
+                verbose=False,
             )
 
             # define search space

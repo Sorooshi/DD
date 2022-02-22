@@ -97,7 +97,7 @@ class RegressionEstimators:
 
         # Ensemble learning method(s):
         elif self.estimator_name == "rf_reg":
-            self.tuning_estimator = RandomForestRegressor(verbose=1, )
+            self.tuning_estimator = RandomForestRegressor(verbose=0, )
 
             # define search space
             self.params = defaultdict()
@@ -110,7 +110,7 @@ class RegressionEstimators:
             )
 
         elif self.estimator_name == "gb_reg":
-            self.tuning_estimator = GradientBoostingRegressor(verbose=1, )
+            self.tuning_estimator = GradientBoostingRegressor(verbose=0, )
 
             # define search space
             self.params = defaultdict()
@@ -186,7 +186,7 @@ class RegressionEstimators:
         elif self.estimator_name == "mlp_reg":
             self.tuning_estimator = MLPRegressor(
                 shuffle=False,
-                verbose=True,
+                verbose=False,
             )
 
             # define search space
