@@ -6,6 +6,7 @@ from types import SimpleNamespace
 from dd_package.models.baseline import BaseLineModel
 from dd_package.data.preprocess import preprocess_data
 from dd_package.data.dyslexia_data import DyslexiaData
+from dd_package.models.clustering_estimators import ClusteringEstimators
 from dd_package.models.regression_estimators import RegressionEstimators
 from dd_package.models.classification_estimators import ClassificationEstimators
 
@@ -411,6 +412,7 @@ if __name__ == "__main__":
     configs.data_name = data_name
     configs.name_wb = data_name+": "+specifier
     configs.learning_method = learning_method
+    configs.n_clusters = n_clusters
 
     x = preprocess_data(x=x_org, pp=pp)  # only x is standardized
 
@@ -465,10 +467,7 @@ if __name__ == "__main__":
         reg_est.print_results()
 
     # Classification methods:
-    if learning_method == "classification":
-        print(
-            "classification to be completed"
-        )
+    elif learning_method == "classification":
 
         cls_est = ClassificationEstimators(
             x=x, y=y, cv=cv, data=data,
@@ -488,10 +487,25 @@ if __name__ == "__main__":
 
         cls_est.print_results()
 
-    if learning_method == "clustering":
-        print(
-            "clustering to be completed"
+    elif learning_method == "clustering":
+
+        clu_est = ClusteringEstimators(
+            x=x, y=y, cv=cv, data=data,
+            estimator_name=estimator_name,
+            configs=configs,
         )
+
+        clu_est.instantiate_tuning_estimator_and_parameters()
+
+        clu_est.tune_hyper_parameters()
+
+        clu_est.instantiate_train_test_estimator()
+
+        clu_est.train_test_tuned_estimator()
+
+        clu_est.save_params_results()
+
+        clu_est.print_results()
 
     print(
         "\n Hyper-parameters tuning and train-test evaluation at " + data_name + " are finished. \n",
