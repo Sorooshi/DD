@@ -154,10 +154,10 @@ class ClusteringEstimators:
 
         return None  # self.tuning_estimator, self.params
 
-    def instantiate_train_test_estimator(self, ):
+    def instantiate_fit_test_estimator(self, ):
 
         # Methods based on given n_clusters:
-        if self.estimator_name != "dbs_clus" and \
+        if self.estimator_name != "dbs_clu" and \
                 self.estimator_name != "ms_clu" and \
                 self.estimator_name != "gm_clu" and \
                 self.estimator_name != "ap_clu" and \

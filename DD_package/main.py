@@ -499,7 +499,7 @@ if __name__ == "__main__":
 
         clu_est.tune_hyper_parameters()
 
-        clu_est.instantiate_train_test_estimator()
+        clu_est.instantiate_fit_test_estimator()
 
         clu_est.fit_test_tuned_estimator()
 
