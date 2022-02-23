@@ -157,17 +157,14 @@ class ClusteringEstimators:
     def instantiate_fit_test_estimator(self, ):
 
         # Methods based on given n_clusters:
-        if self.estimator_name != "dbs_clu" and \
-                self.estimator_name != "ms_clu" and \
-                self.estimator_name != "gm_clu" and \
-                self.estimator_name != "ap_clu" and \
-                self.estimator_name != "s_clu":
+        if self.estimator_name == "km_clu" or \
+                self.estimator_name != "ap_clu" or \
+                self.estimator_name != "a_clu":
             self.tuned_params["n_clusters"] = self.configs.n_clusters
 
-        elif self.estimator_name == "gm_clu" or "s_clu":
+        elif self.estimator_name == "gm_clu" or self.estimator_name == "s_clu":
             self.tuned_params["n_components"] = self.configs.n_clusters
             self.tuned_params["n_components"] = self.configs.n_clusters
-
 
         # K-Means:
         if self.estimator_name == "km_clu":
