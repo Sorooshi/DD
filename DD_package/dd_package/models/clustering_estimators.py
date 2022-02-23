@@ -56,7 +56,7 @@ class ClusteringEstimators:
             self.params = defaultdict()
             self.params["covariance_type"] = Categorical(["full", "tied", "diag", "spherical", ])
             self.params["max_iter"] = Integer(10, 1000, "uniform")
-            self.params["init_params"] = Categorical(["k-means++", "random"])
+            # self.params["init_params"] = Categorical(["k-means++", "random"])
 
             print(
                 "Gaussian Mixture Clustering."
