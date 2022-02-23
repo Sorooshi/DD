@@ -96,7 +96,7 @@ class ClusteringEstimators:
 
             # No predict() method, thus can not be tuned using BayesSearch Opt.
             self.tuned_params = defaultdict()
-            self.tuned_params["affinity"] = "cosine"
+            self.tuned_params["affinity"] = "l2"
             self.tuned_params["linkage"] = "ward"
 
 
@@ -259,12 +259,12 @@ class ClusteringEstimators:
 
         return None  # self.tuned_params, self.estimator
 
-    def train_test_tuned_estimator(self,):
+    def fit_test_tuned_estimator(self,):
 
         """ returns of dict of dicts, containing y_test and y_pred per each repeat. """
 
         print(
-            "Training and testing of " + self.estimator_name
+            "Fitting and testing of " + self.estimator_name
         )
 
         old_score = - np.inf
