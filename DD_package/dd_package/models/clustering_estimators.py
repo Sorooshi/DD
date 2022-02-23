@@ -158,7 +158,6 @@ class ClusteringEstimators:
 
         # Methods based on given n_clusters:
         if self.estimator_name == "km_clu" or \
-                self.estimator_name == "ap_clu" or \
                 self.estimator_name == "a_clu":
             self.tuned_params["n_clusters"] = self.configs.n_clusters
 
