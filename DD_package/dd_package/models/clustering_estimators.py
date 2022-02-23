@@ -97,7 +97,7 @@ class ClusteringEstimators:
             # No predict() method, thus can not be tuned using BayesSearch Opt.
             self.tuned_params = defaultdict()
             self.tuned_params["affinity"] = "l2"
-            self.tuned_params["linkage"] = "ward"
+            self.tuned_params["linkage"] = "average"
 
 
             print(
