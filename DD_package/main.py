@@ -501,7 +501,7 @@ if __name__ == "__main__":
 
         clu_est.instantiate_train_test_estimator()
 
-        clu_est.train_test_tuned_estimator()
+        clu_est.fit_test_tuned_estimator()
 
         clu_est.save_params_results()
 
