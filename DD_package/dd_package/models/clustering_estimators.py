@@ -43,7 +43,7 @@ class ClusteringEstimators:
             self.params["n_init"] = Categorical([5, 10, ])
 
             print (
-                "K-Means Clustering."
+                "Instantiate K-Means Clustering."
             )
 
         # Gaussian Mixture:
@@ -59,27 +59,31 @@ class ClusteringEstimators:
             # self.params["init_params"] = Categorical(["k-means++", "random"])
 
             print(
-                "Gaussian Mixture Clustering."
+                "Instantiate Gaussian Mixture Clustering."
             )
 
-        # Spectral:
+        # Spectral (no predict() method to tune hyperparams):
         elif self.estimator_name == "s_clu":
             self.tuning_estimator = SpectralClustering(
                 n_clusters=self.configs.n_clusters,
             )
-
             # define search space
             self.params = defaultdict()
-            self.params["n_init"] = Categorical([5, 10, ])
-            self.params["gamma"] = Real(1e-1, 1, "uniform")
-            self.params["affinity"] = Categorical(["nearest_neighbors", "rbf", ])
-            self.params["n_neighbors"] = Real(5, 20, "uniform")
+            # self.params["n_init"] = Categorical([5, 10, ])
+            # self.params["gamma"] = Real(1e-1, 1, "uniform")
+            # self.params["affinity"] = Categorical(["nearest_neighbors", "rbf", ])
+            # self.params["n_neighbors"] = Real(5, 20, "uniform")
+            # No predict() method, thus can not be tuned using BayesSearch Opt.
+            self.tuned_params = defaultdict()
+            self.tuned_params["n_init"] = 10
+            self.tuned_params["gamma"] = 1.0
+            self.tuned_params["affinity"] = "rbf"
 
             print(
-                "Spectral Clustering."
+                "Instantiate Spectral Clustering."
             )
 
-        # Agglomerative:
+        # Agglomerative (no predict() method to tune hyperparams):
         elif self.estimator_name == "a_clu":
             self.tuning_estimator = AgglomerativeClustering(
                 n_clusters=self.configs.n_clusters,
@@ -87,11 +91,17 @@ class ClusteringEstimators:
 
             # define search space
             self.params = defaultdict()
-            self.params["affinity"] = Categorical(["l1", "l2", "manhattan", "cosine", ])
-            self.params["linkage"] = Categorical(["ward", "complete", "average", "single"])
+            # self.params["affinity"] = Categorical(["l1", "l2", "manhattan", "cosine", ])
+            # self.params["linkage"] = Categorical(["ward", "complete", "average", "single"])
+
+            # No predict() method, thus can not be tuned using BayesSearch Opt.
+            self.tuned_params = defaultdict()
+            self.tuned_params["affinity"] = "cosine"
+            self.tuned_params["linkage"] = "ward"
+
 
             print(
-                "Agglomerative Clustering."
+                "Instantiate Agglomerative Clustering."
             )
 
         # Methods based on automatic determination of n_clusters:
@@ -104,21 +114,27 @@ class ClusteringEstimators:
             self.params["max_iter"] = Integer(10, 1000, "uniform")
             self.params["damping"] = Real(5e-1, 1, "uniform")
             print(
-                "Affinity Propagation Clustering."
+                "Instantiate Affinity Propagation Clustering."
             )
 
-        # DBSCAN:
+        # DBSCAN (no predict() method to tune hyperparams):
         elif self.estimator_name == "dbs_clu":
             self.tuning_estimator = DBSCAN()
 
             # define search space
             self.params = defaultdict()
-            self.params["eps"] = Real(1e-1, 9e-1, "uniform")
-            self.params["min_samples"] = Integer(2, 10, "uniform")
-            self.params["p"] = Real(1, 10, "uniform")
+            # self.params["eps"] = Real(1e-1, 9e-1, "uniform")
+            # self.params["min_samples"] = Integer(2, 10, "uniform")
+            # self.params["p"] = Real(1, 10, "uniform")
+
+            # No predict() method, thus can not be tuned using BayesSearch Opt.
+            self.tuned_params = defaultdict()
+            self.tuned_params["eps"] = 5e-1
+            self.tuned_params["min_samples"] = 8
+            self.tuned_params["p"] = 2
 
             print(
-                "DBSCAN Clustering."
+                "Instantiate DBSCAN Clustering."
             )
 
         # MeanShift:
@@ -130,7 +146,7 @@ class ClusteringEstimators:
             self.params["max_iter"] = Integer(10, 1000, "uniform")
 
             print(
-                "MeanShift Clustering."
+                "Instantiate MeanShift Clustering."
             )
 
         else:
@@ -144,11 +160,14 @@ class ClusteringEstimators:
         if self.estimator_name != "dbs_clus" and \
                 self.estimator_name != "ms_clu" and \
                 self.estimator_name != "gm_clu" and \
-                self.estimator_name != "ap_clu":
+                self.estimator_name != "ap_clu" and \
+                self.estimator_name != "s_clu":
             self.tuned_params["n_clusters"] = self.configs.n_clusters
 
-        elif self.estimator_name == "gm_clu":
+        elif self.estimator_name == "gm_clu" or "s_clu":
             self.tuned_params["n_components"] = self.configs.n_clusters
+            self.tuned_params["n_components"] = self.configs.n_clusters
+
 
         # K-Means:
         if self.estimator_name == "km_clu":
@@ -209,25 +228,34 @@ class ClusteringEstimators:
     def tune_hyper_parameters(self, ):
         """ estimator sklearn estimator, estimator dict of parameters. """
 
-        print("CV hyper-parameters tuning for " + self.estimator_name)
+        if len(self.params.values()) != 0:  # search space has been defined for this estimator
 
-        # define the search
-        search = BayesSearchCV(
-            estimator=self.tuning_estimator,
-            search_spaces=self.params,
-            n_jobs=1, cv=self.cv,
-            scoring="adjusted_rand_score",
-            optimizer_kwargs={'base_estimator': 'RF'},
-            verbose=1,
-        )
+            print(
+                    "CV hyper-parameters tuning for " + self.estimator_name
+            )
 
-        # perform the search
-        search.fit(X=self.x, y=self.y, )
+            # define the search
+            search = BayesSearchCV(
+                estimator=self.tuning_estimator,
+                search_spaces=self.params,
+                n_jobs=1, cv=self.cv,
+                scoring="adjusted_rand_score",
+                optimizer_kwargs={'base_estimator': 'RF'},
+                verbose=1,
+            )
 
-        # report the best result
-        print("best score:", search.best_score_)
-        print("best params:", search.best_params_)
-        self.tuned_params = search.best_params_
+            # perform the search
+            search.fit(X=self.x, y=self.y, )
+
+            # report the best result
+            print("best score:", search.best_score_)
+            print("best params:", search.best_params_)
+            self.tuned_params = search.best_params_
+
+        else:
+            print(
+                    "No CV hyper-parameters tuning for " + self.estimator_name
+            )
 
         return None  # self.tuned_params, self.estimator
 
