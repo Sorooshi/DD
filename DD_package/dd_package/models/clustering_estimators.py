@@ -62,19 +62,6 @@ class ClusteringEstimators:
                 "Gaussian Mixture Clustering."
             )
 
-        # Affinity Propagation:
-        elif self.estimator_name == "ap_clu":
-            self.tuning_estimator = AffinityPropagation()
-
-            # define search space
-            self.params = defaultdict()
-            self.params["max_iter"] = Integer(10, 1000, "uniform")
-            self.params["damping"] = Real(5e-1, 1, "uniform")
-
-            print(
-                "Affinity Propagation Clustering."
-            )
-
         # Spectral:
         elif self.estimator_name == "s_clu":
             self.tuning_estimator = SpectralClustering(
@@ -108,6 +95,18 @@ class ClusteringEstimators:
             )
 
         # Methods based on automatic determination of n_clusters:
+        # Affinity Propagation:
+        elif self.estimator_name == "ap_clu":
+            self.tuning_estimator = AffinityPropagation()
+
+            # define search space
+            self.params = defaultdict()
+            self.params["max_iter"] = Integer(10, 1000, "uniform")
+            self.params["damping"] = Real(5e-1, 1, "uniform")
+            print(
+                "Affinity Propagation Clustering."
+            )
+
         # DBSCAN:
         elif self.estimator_name == "dbs_clu":
             self.tuning_estimator = DBSCAN()
@@ -144,7 +143,8 @@ class ClusteringEstimators:
         # Methods based on given n_clusters:
         if self.estimator_name != "dbs_clus" and \
                 self.estimator_name != "ms_clu" and \
-                self.estimator_name != "gm_clu":
+                self.estimator_name != "gm_clu" and \
+                self.estimator_name != "ap_clu":
             self.tuned_params["n_clusters"] = self.configs.n_clusters
 
         elif self.estimator_name == "gm_clu":
