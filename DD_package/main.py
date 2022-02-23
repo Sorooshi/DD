@@ -249,6 +249,7 @@ if __name__ == "__main__":
             to_exclude_at_risk = True
             ia = ia.loc[ia.Group != 2]
             demo = demo.loc[demo.Group != 2]
+            n_clusters = 2
 
         ia_demo = dd.concat_dfs(
             df1=ia,
