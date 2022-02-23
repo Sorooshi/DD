@@ -16,7 +16,6 @@ from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 
 
-
 np.set_printoptions(suppress=True, precision=3)
 
 
@@ -453,7 +452,7 @@ def print_the_evaluated_results(results, learning_method, ):
                 metrics.roc_auc_score(y_true_, y_pred_prob, average='weighted', multi_class="ovr"),
             )
         else:
-            ROC_AUC.append(123)  # appending an impossible outcome of ROC_AUC to avoid adding one more
+            ROC_AUC.append(123456)  # appending an impossible outcome of ROC_AUC to avoid adding one more
 
     if learning_method == "regression":
         MEA = np.nan_to_num(np.asarray(MEA))
