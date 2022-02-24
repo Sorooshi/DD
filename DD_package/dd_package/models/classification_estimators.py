@@ -223,7 +223,7 @@ class ClassificationEstimators:
             # self.params["alpha"] = Real(1e-6, 1e-2, "uniform")
             # self.params["learning_rate"] = Categorical(["constant", "invscaling", "adaptive"])
             # self.params["learning_rate_init"] = Real(1e-4, 1e-1, "uniform")
-            self.params["max_iter"] = Integer(100, 100000, "uniform")
+            self.params["max_iter"] = Integer(100, 10000, "uniform")
 
             print(
                 "Multi Layer Perceptron Classifier."
