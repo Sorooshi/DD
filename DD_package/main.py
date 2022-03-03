@@ -176,17 +176,17 @@ if __name__ == "__main__":
 
     # Determine which dataset to use, e.g. demo dataset
     # alone or concatenation of demo and IA_report, for instance.
-    if data_name == "dd_demo":
+    if data_name == "dd_demo_phono":
         # dict of dicts, s.t each dict contains pd.df of a class, e.g normal
-        _ = dd.get_demo_datasets()  # demos
-        demo = dd.concat_classes_demo()
+        _ = dd.get_demo_datasets()  # demos and phonological (which is initially part of demo)
+        demo_phono = dd.concat_classes_demo()
 
         # The optimize way to exclude at-risk class
         if to_exclude_at_risk == 1:
             to_exclude_at_risk = True
-            demo = demo.loc[demo.Group != 2]
+            demo_phono = demo_phono.loc[demo_phono.Group != 2]
 
-        df_data_to_use = demo
+        df_data_to_use = demo_phono
         c_features = ['Sex', 'Grade', ]
         indicators = ['SubjectID', ]
         targets = ["Group", "Reading_speed", ]
@@ -215,25 +215,43 @@ if __name__ == "__main__":
 
         targets = ["Group", ]
 
-    elif data_name == "dd_fix":
+    elif data_name == "dd_ia_phono":
 
         # dict of dicts, s.t each dict contains pd.df of a class, e.g normal
-        _ = dd.get_fix_datasets()  # fixes
+        _ = dd.get_demo_datasets()  # demos
+        _ = dd.get_ia_datasets()  # ias
+
         # concatenate pd.dfs to a pd.df
-        fix = dd.concat_classes_fix()
+        ia = dd.concat_classes_ia()
+        demo_phono = dd.concat_classes_demo()
 
         # The optimize way to exclude at-risk class
         if to_exclude_at_risk == 1:
             to_exclude_at_risk = True
-            fix = fix.loc[fix.Group != 2]
+            ia = ia.loc[ia.Group != 2]
+            demo_phono = demo_phono.loc[demo_phono.Group != 2]
+            n_clusters = 2
 
-        df_data_to_use = fix
-        c_features = None
+        ia_phono = dd.concat_dfs(
+            df1=ia,
+            df2=demo_phono,
+            features1=ia.columns,
+            features2=[
+                "Reading_speed", "Sound_detection", "Sound_change",
+            ],
+        )
+
+        df_data_to_use = ia_phono
+        c_features = [
+            'QUESTION_ACCURACY', 'SKIP', 'REGRESSION_IN',
+            'REGRESSION_OUT', 'REGRESSION_OUT_FULL',
+        ]
+
         indicators = [
             'SubjectID', 'Sentence_ID', 'Word_Number',
         ]
 
-        targets = ["Group", ]
+        targets = ["Group", "Reading_speed", ]
 
     elif data_name == "dd_ia_demo":
         # dict of dicts, s.t each dict contains pd.df of a class, e.g normal
@@ -242,23 +260,59 @@ if __name__ == "__main__":
 
         # concatenate pd.dfs to a pd.df
         ia = dd.concat_classes_ia()
-        demo = dd.concat_classes_demo()
+        demo_phono = dd.concat_classes_demo()
 
         # The optimize way to exclude at-risk class
         if to_exclude_at_risk == 1:
             to_exclude_at_risk = True
             ia = ia.loc[ia.Group != 2]
-            demo = demo.loc[demo.Group != 2]
+            demo_phono = demo_phono.loc[demo_phono.Group != 2]
             n_clusters = 2
 
         ia_demo = dd.concat_dfs(
             df1=ia,
-            df2=demo,
+            df2=demo_phono,
             features1=ia.columns,
-            features2=demo.columns[2:],
+            features2=["Sex", "Grade", "Age", "IQ", "Reading_speed", ],
         )
 
         df_data_to_use = ia_demo
+        c_features = [
+            'Sex', 'Grade', 'QUESTION_ACCURACY',
+            'SKIP', 'REGRESSION_IN', 'REGRESSION_OUT',
+            'REGRESSION_OUT_FULL',
+        ]
+
+        indicators = [
+            'SubjectID', 'Sentence_ID', 'Word_Number',
+        ]
+
+        targets = ["Group", "Reading_speed", ]
+
+    elif data_name == "dd_ia_demo_phono":
+        # dict of dicts, s.t each dict contains pd.df of a class, e.g normal
+        _ = dd.get_demo_datasets()  # demos
+        _ = dd.get_ia_datasets()  # ias
+
+        # concatenate pd.dfs to a pd.df
+        ia = dd.concat_classes_ia()
+        demo_phono = dd.concat_classes_demo()
+
+        # The optimize way to exclude at-risk class
+        if to_exclude_at_risk == 1:
+            to_exclude_at_risk = True
+            ia = ia.loc[ia.Group != 2]
+            demo = demo_phono.loc[demo_phono.Group != 2]
+            n_clusters = 2
+
+        ia_demo_phono = dd.concat_dfs(
+            df1=ia,
+            df2=demo_phono,
+            features1=ia.columns,
+            features2=demo_phono.columns[2:],
+        )
+
+        df_data_to_use = ia_demo_phono
         c_features = [
             'Sex', 'Grade', 'QUESTION_ACCURACY',
             'SKIP', 'REGRESSION_IN', 'REGRESSION_OUT',
@@ -279,17 +333,17 @@ if __name__ == "__main__":
 
         # concatenate pd.dfs to a pd.df
         ia = dd.concat_classes_ia()
-        demo = dd.concat_classes_demo()
+        demo_phono = dd.concat_classes_demo()
 
         # The optimize way to exclude at-risk class
         if to_exclude_at_risk == 1:
             to_exclude_at_risk = True
             ia = ia.loc[ia.Group != 2]
-            demo = demo.loc[demo.Group != 2]
+            demo = demo_phono.loc[demo_phono.Group != 2]
 
         ia_reg = dd.concat_dfs(
             df1=ia,
-            df2=demo,
+            df2=demo_phono,
             features1=ia.columns,
             features2=["Reading_speed", ],
         )
@@ -307,6 +361,56 @@ if __name__ == "__main__":
 
         targets = ["Group", "Reading_speed", ]
 
+    elif data_name == "dd_fix":
+
+        # dict of dicts, s.t each dict contains pd.df of a class, e.g normal
+        _ = dd.get_fix_datasets()  # fixes
+        # concatenate pd.dfs to a pd.df
+        fix = dd.concat_classes_fix()
+
+        # The optimize way to exclude at-risk class
+        if to_exclude_at_risk == 1:
+            to_exclude_at_risk = True
+            fix = fix.loc[fix.Group != 2]
+
+        df_data_to_use = fix
+        c_features = None
+        indicators = [
+            'SubjectID', 'Sentence_ID', 'Word_Number',
+        ]
+
+        targets = ["Group", ]
+
+    elif data_name == "dd_fix_reg":
+        # dict of dicts, s.t each dict contains pd.df of a class, e.g normal
+        _ = dd.get_demo_datasets()  # demos
+        _ = dd.get_fix_datasets()  # fixes
+
+        # concatenate pd.dfs to a pd.df
+        fix = dd.concat_classes_fix()
+        demo_phono = dd.concat_classes_demo()
+
+        # The optimize way to exclude at-risk class
+        if to_exclude_at_risk == 1:
+            to_exclude_at_risk = True
+            fix = fix.loc[fix.Group != 2]
+            demo_phono = demo_phono.loc[demo_phono.Group != 2]
+
+        fix_reg = dd.concat_dfs(
+            df1=fix,
+            df2=demo_phono,
+            features1=fix.columns,
+            features2=["Reading_speed"],
+        )
+
+        df_data_to_use = fix_reg
+        c_features = None
+        indicators = [
+            'SubjectID', 'Sentence_ID', 'Word_Number',
+        ]
+
+        targets = ["Group", "Reading_speed", ]
+
     elif data_name == "dd_fix_demo":
         # dict of dicts, s.t each dict contains pd.df of a class, e.g normal
         _ = dd.get_demo_datasets()  # demos
@@ -314,19 +418,21 @@ if __name__ == "__main__":
 
         # concatenate pd.dfs to a pd.df
         fix = dd.concat_classes_fix()
-        demo = dd.concat_classes_demo()
+        demo_phono = dd.concat_classes_demo()
 
         # The optimize way to exclude at-risk class
         if to_exclude_at_risk == 1:
             to_exclude_at_risk = True
             fix = fix.loc[fix.Group != 2]
-            demo = demo.loc[demo.Group != 2]
+            demo_phono = demo_phono.loc[demo_phono.Group != 2]
 
         fix_demo = dd.concat_dfs(
             df1=fix,
-            df2=demo,
+            df2=demo_phono,
             features1=fix.columns,
-            features2=demo.columns[2:],
+            features2=[
+                "Sex", "Grade", "Age", "IQ", "Reading_speed",
+            ],
         )
 
         df_data_to_use = fix_demo
@@ -337,30 +443,62 @@ if __name__ == "__main__":
 
         targets = ["Group", "Reading_speed", ]
 
-    elif data_name == "dd_fix_reg":
+    elif data_name == "dd_fix_phono":
         # dict of dicts, s.t each dict contains pd.df of a class, e.g normal
         _ = dd.get_demo_datasets()  # demos
         _ = dd.get_fix_datasets()  # fixes
 
         # concatenate pd.dfs to a pd.df
         fix = dd.concat_classes_fix()
-        demo = dd.concat_classes_demo()
+        demo_phono = dd.concat_classes_demo()
 
         # The optimize way to exclude at-risk class
         if to_exclude_at_risk == 1:
             to_exclude_at_risk = True
             fix = fix.loc[fix.Group != 2]
-            demo = demo.loc[demo.Group != 2]
+            demo_phono = demo_phono.loc[demo_phono.Group != 2]
 
-        fix_reg = dd.concat_dfs(
+        fix_phono = dd.concat_dfs(
             df1=fix,
-            df2=demo,
+            df2=demo_phono,
             features1=fix.columns,
-            features2=["Reading_speed"],
+            features2=[
+                "Reading_speed", "Sound_detection", "Sound_change",
+            ],
         )
 
-        df_data_to_use = fix_reg
+        df_data_to_use = fix_phono
         c_features = None
+        indicators = [
+            'SubjectID', 'Sentence_ID', 'Word_Number',
+        ]
+
+        targets = ["Group", "Reading_speed", ]
+
+    elif data_name == "dd_fix_demo_phono":
+        # dict of dicts, s.t each dict contains pd.df of a class, e.g normal
+        _ = dd.get_demo_datasets()  # demos
+        _ = dd.get_fix_datasets()  # fixes
+
+        # concatenate pd.dfs to a pd.df
+        fix = dd.concat_classes_fix()
+        demo_phono = dd.concat_classes_demo()
+
+        # The optimize way to exclude at-risk class
+        if to_exclude_at_risk == 1:
+            to_exclude_at_risk = True
+            fix = fix.loc[fix.Group != 2]
+            demo_phono = demo_phono.loc[demo_phono.Group != 2]
+
+        fix_demo_phono = dd.concat_dfs(
+            df1=fix,
+            df2=demo_phono,
+            features1=fix.columns,
+            features2=demo_phono.columns[2:],
+        )
+
+        df_data_to_use = fix_demo_phono
+        c_features = ['Sex', 'Grade', ]
         indicators = [
             'SubjectID', 'Sentence_ID', 'Word_Number',
         ]
