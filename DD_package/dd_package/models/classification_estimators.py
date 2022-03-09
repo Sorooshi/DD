@@ -71,7 +71,7 @@ class ClassificationEstimators:
             self.params['gamma'] = Real(1e-1, 2.0, 'log-uniform')
 
             print(
-                "C Support Vector Regression."
+                "C Support Vector Classifier."
             )
 
         # KNN method(s):
