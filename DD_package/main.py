@@ -6,9 +6,6 @@ from types import SimpleNamespace
 from dd_package.models.baseline import BaseLineModel
 from dd_package.data.preprocess import preprocess_data
 from dd_package.data.dyslexia_data import DyslexiaData
-from dd_package.models.clustering_estimators import ClusteringEstimators
-from dd_package.models.regression_estimators import RegressionEstimators
-from dd_package.models.classification_estimators import ClassificationEstimators
 
 
 np.set_printoptions(suppress=True, precision=3, linewidth=140)
@@ -541,14 +538,19 @@ if __name__ == "__main__":
 
     if estimator_name.split("_")[-1] == "reg":
         learning_method = "regression"
+        from dd_package.models.regression_estimators import RegressionEstimators
         y = y_org.Reading_speed.values
 
     elif estimator_name.split("_")[-1] == "cls":
         learning_method = "classification"
+        from dd_package.models.classification_estimators import ClassificationEstimators
+
         y = y_org.Group.values
 
     elif estimator_name.split("_")[-1] == "clu":
         learning_method = "clustering"
+        from dd_package.models.clustering_estimators import ClusteringEstimators
+
         y = y_org.Group.values
     else:
         assert False, "Undefined algorithm and thus undefined target values"
