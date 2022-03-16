@@ -6,9 +6,6 @@ from types import SimpleNamespace
 from dd_package.models.baseline import BaseLineModel
 from dd_package.data.preprocess import preprocess_data
 from dd_package.data.dyslexia_data import DyslexiaData
-from dd_package.models.clustering_estimators import ClusteringEstimators
-from dd_package.models.regression_estimators import RegressionEstimators
-from dd_package.models.classification_estimators import ClassificationEstimators
 
 
 np.set_printoptions(suppress=True, precision=3, linewidth=140)
@@ -540,14 +537,20 @@ if __name__ == "__main__":
     print("x_org:", x_org.shape, "\n", x_org.head())
 
     if estimator_name.split("_")[-1] == "reg":
+        from dd_package.models.regression_estimators import RegressionEstimators
+
         learning_method = "regression"
         y = y_org.Reading_speed.values
 
     elif estimator_name.split("_")[-1] == "cls":
+        from dd_package.models.classification_estimators import ClassificationEstimators
+
         learning_method = "classification"
         y = y_org.Group.values
 
     elif estimator_name.split("_")[-1] == "clu":
+        from dd_package.models.clustering_estimators import ClusteringEstimators
+
         learning_method = "clustering"
         y = y_org.Group.values
     else:
