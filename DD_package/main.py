@@ -537,9 +537,8 @@ if __name__ == "__main__":
     print("x_org:", x_org.shape, "\n", x_org.head())
 
     if estimator_name.split("_")[-1] == "reg":
-        from dd_package.models.regression_estimators import RegressionEstimators
-
         learning_method = "regression"
+        from dd_package.models.regression_estimators import RegressionEstimators
         y = y_org.Reading_speed.values
 
     elif estimator_name.split("_")[-1] == "cls":
