@@ -29,10 +29,10 @@ def args_parser(arguments):
 
 
 configs = {
-    "models_path": Path("/home/soroosh/Programmes/DD/Models"),
-    "results_path": Path("/home/soroosh/Programmes/DD/Results"),
-    "figures_path": Path("/home/soroosh/Programmes/DD/Figures"),
-    "params_path": Path("/home/soroosh/Programmes/DD//Params"),
+    "models_path": Path("~/Programmes/DD/Models"),
+    "results_path": Path("~/Programmes/DD/Results"),
+    "figures_path": Path("~/Programmes/DD/Figures"),
+    "params_path": Path("~/Programmes/DD//Params"),
     "n_repeats": 10,
     "n_splits": 5,
 }
