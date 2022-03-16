@@ -543,15 +543,15 @@ if __name__ == "__main__":
         y = y_org.Reading_speed.values
 
     elif estimator_name.split("_")[-1] == "cls":
+        learning_method = "classification"
         from dd_package.models.classification_estimators import ClassificationEstimators
 
-        learning_method = "classification"
         y = y_org.Group.values
 
     elif estimator_name.split("_")[-1] == "clu":
+        learning_method = "clustering"
         from dd_package.models.clustering_estimators import ClusteringEstimators
 
-        learning_method = "clustering"
         y = y_org.Group.values
     else:
         assert False, "Undefined algorithm and thus undefined target values"
