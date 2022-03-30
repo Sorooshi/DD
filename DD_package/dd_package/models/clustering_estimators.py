@@ -201,7 +201,6 @@ class ClusteringEstimators:
             )
 
         # Methods based on automatic determination of n_clusters:
-
         # DBSCAN:
         elif self.estimator_name == "dbs_clu":
             self.estimator = DBSCAN(**self.tuned_params)
@@ -214,6 +213,19 @@ class ClusteringEstimators:
             self.estimator = MeanShift(**self.tuned_params)
             print(
                 "MeanShift Clustering."
+            )
+
+        # SEFNAC:
+        elif self.estimator_name == "sefnac_clu":
+            self.estimator = MeanShift(**self.tuned_params)
+            print(
+                "SEFNAC Clustering."
+            )
+        # KEFRiN:
+        elif self.estimator_name == "kefrin_clu":
+            self.estimator = MeanShift(**self.tuned_params)
+            print(
+                "KEFRiN Clustering."
             )
 
         else:
