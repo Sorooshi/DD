@@ -607,8 +607,8 @@ if __name__ == "__main__":
 
         assert False, "Random prediction is done, no need to proceed further"
 
-    # Regression methods:
-    if learning_method == "regression":
+    # Regression methods: tune and fit
+    if learning_method == "regression" and run == 1:
 
         reg_est = RegressionEstimators(
             x=x, y=y, cv=cv, data=data,
@@ -619,6 +619,23 @@ if __name__ == "__main__":
         reg_est.instantiate_tuning_estimator_and_parameters()
 
         reg_est.tune_hyper_parameters()
+
+        reg_est.instantiate_train_test_estimator()
+
+        reg_est.train_test_tuned_estimator()
+
+        reg_est.save_params_results()
+
+        reg_est.print_results()
+
+    # Regression methods: fit with tuned params
+    elif learning_method == "regression" and run == 2:
+
+        reg_est = RegressionEstimators(
+            x=x, y=y, cv=cv, data=data,
+            estimator_name=estimator_name,
+            configs=configs,
+        )
 
         reg_est.instantiate_train_test_estimator()
 
