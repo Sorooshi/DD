@@ -645,6 +645,17 @@ if __name__ == "__main__":
 
         reg_est.print_results()
 
+    # Regression methods: fit with tuned params
+    elif learning_method == "regression" and run != 1 and run != 2:
+
+        reg_est = RegressionEstimators(
+            x=x, y=y, cv=cv, data=data,
+            estimator_name=estimator_name,
+            configs=configs,
+        )
+
+        reg_est.print_results()
+
     # Classification methods:
     elif learning_method == "classification":
 
