@@ -32,7 +32,14 @@ class ClassificationEstimators:
         self.estimator = None
         self.tuning_estimator = None
         self.params = defaultdict()
-        self.tuned_params = defaultdict()
+        if self.configs.run == 1:
+            self.tuned_params = defaultdict()
+        else:
+            self.tuned_params = self.load_saved_tuned_params()
+            print(
+                "tuned params:\n",
+                self.tuned_params,
+            )
 
         self.results = defaultdict(defaultdict)
 
@@ -55,7 +62,7 @@ class ClassificationEstimators:
             # self.params["solver"] = "saga"  # These solvers: "newton-cg", "sag", "lbfgs", don't support all penalties.
             # self.params["multi_class"] = "multinomial"  # to use cross-entropy loss in all cases
 
-            print (
+            print(
                 "Logistic Classifier."
             )
 
@@ -454,25 +461,24 @@ class ClassificationEstimators:
 
         return None
 
+    def load_saved_tuned_params(self,):
+        saved_tuned_params = util.load_a_dict(
+            name=self.configs.specifier,
+            save_path=self.configs.params_path
+        )
+        return saved_tuned_params
+
     def print_results(self, ):
 
-        # no tuning or training has been executed
-        if len(self.results.values()) != 0:
-            util.print_the_evaluated_results(
-                self.results,
-                self.configs.learning_method,
-            )
+        results = util.load_a_dict(
+            name=self.configs.specifier,
+            save_path=self.configs.results_path,
+        )
 
-        else:
-            results = util.load_a_dict(
-                name=self.configs.specifier,
-                save_path=self.configs.results_path,
-            )
-
-            util.print_the_evaluated_results(
-                results,
-                self.configs.learning_method,
-            )
+        util.print_the_evaluated_results(
+            results,
+            self.configs.learning_method,
+        )
 
         return None
 

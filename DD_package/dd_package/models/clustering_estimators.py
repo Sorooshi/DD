@@ -23,7 +23,14 @@ class ClusteringEstimators:
         self.estimator = None
         self.tuning_estimator = None
         self.params = defaultdict()
-        self.tuned_params = defaultdict()
+        if self.configs.run == 1:
+            self.tuned_params = defaultdict()
+        else:
+            self.tuned_params = self.load_saved_tuned_params()
+            print(
+                "tuned params:\n",
+                self.tuned_params,
+            )
 
         self.results = defaultdict(defaultdict)
 
@@ -201,7 +208,6 @@ class ClusteringEstimators:
             )
 
         # Methods based on automatic determination of n_clusters:
-
         # DBSCAN:
         elif self.estimator_name == "dbs_clu":
             self.estimator = DBSCAN(**self.tuned_params)
@@ -214,6 +220,19 @@ class ClusteringEstimators:
             self.estimator = MeanShift(**self.tuned_params)
             print(
                 "MeanShift Clustering."
+            )
+
+        # SEFNAC:
+        elif self.estimator_name == "sefnac_clu":
+            self.estimator = MeanShift(**self.tuned_params)
+            print(
+                "SEFNAC Clustering."
+            )
+        # KEFRiN:
+        elif self.estimator_name == "kefrin_clu":
+            self.estimator = MeanShift(**self.tuned_params)
+            print(
+                "KEFRiN Clustering."
             )
 
         else:
@@ -353,24 +372,23 @@ class ClusteringEstimators:
 
         return None
 
+    def load_saved_tuned_params(self,):
+        saved_tuned_params = util.load_a_dict(
+            name=self.configs.specifier,
+            save_path=self.configs.params_path
+        )
+        return saved_tuned_params
+
     def print_results(self, ):
 
-        # no tuning or training has been executed
-        if len(self.results.values()) != 0:
-            util.print_the_evaluated_results(
-                self.results,
-                self.configs.learning_method,
-            )
+        results = util.load_a_dict(
+            name=self.configs.specifier,
+            save_path=self.configs.results_path,
+        )
 
-        else:
-            results = util.load_a_dict(
-                name=self.configs.specifier,
-                save_path=self.configs.results_path,
-            )
-
-            util.print_the_evaluated_results(
-                results,
-                self.configs.learning_method,
-            )
+        util.print_the_evaluated_results(
+            results,
+            self.configs.learning_method,
+        )
 
         return None
