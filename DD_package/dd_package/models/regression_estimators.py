@@ -422,23 +422,15 @@ class RegressionEstimators:
 
     def print_results(self, ):
 
-        # no tuning or training has been executed
-        if len(self.results.values()) != 0:
-            util.print_the_evaluated_results(
-                self.results,
-                self.configs.learning_method,
-            )
+        results = util.load_a_dict(
+            name=self.configs.specifier,
+            save_path=self.configs.results_path,
+        )
 
-        else:
-            results = util.load_a_dict(
-                name=self.configs.specifier,
-                save_path=self.configs.results_path,
-            )
-
-            util.print_the_evaluated_results(
-                results,
-                self.configs.learning_method,
-            )
+        util.print_the_evaluated_results(
+            results,
+            self.configs.learning_method,
+        )
 
         return None
 
