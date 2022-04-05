@@ -645,7 +645,7 @@ if __name__ == "__main__":
 
         reg_est.print_results()
 
-    # Regression methods: fit with tuned params
+    # Regression methods: print the saved results
     elif learning_method == "regression" and run != 1 and run != 2:
 
         reg_est = RegressionEstimators(
@@ -656,8 +656,8 @@ if __name__ == "__main__":
 
         reg_est.print_results()
 
-    # Classification methods:
-    elif learning_method == "classification":
+    # Classification methods: tune and fit
+    elif learning_method == "classification" and run == 1:
 
         cls_est = ClassificationEstimators(
             x=x, y=y, cv=cv, data=data,
@@ -677,7 +677,36 @@ if __name__ == "__main__":
 
         cls_est.print_results()
 
-    elif learning_method == "clustering":
+    # Classification methods: fit with tuned params
+    elif learning_method == "classification" and run == 2:
+
+        cls_est = ClassificationEstimators(
+            x=x, y=y, cv=cv, data=data,
+            estimator_name=estimator_name,
+            configs=configs,
+        )
+
+        cls_est.instantiate_train_test_estimator()
+
+        cls_est.train_test_tuned_estimator()
+
+        cls_est.save_params_results()
+
+        cls_est.print_results()
+
+    # Classification methods: print the saved results
+    elif learning_method == "classification" and run != 1 and run != 2:
+
+        cls_est = ClassificationEstimators(
+            x=x, y=y, cv=cv, data=data,
+            estimator_name=estimator_name,
+            configs=configs,
+        )
+
+        cls_est.print_results()
+
+    # Clustering methods: tune and fit
+    elif learning_method == "clustering" and run == 1:
 
         clu_est = ClusteringEstimators(
             x=x, y=y, cv=cv, data=data,
@@ -697,10 +726,47 @@ if __name__ == "__main__":
 
         clu_est.print_results()
 
-    print(
-        "\n Hyper-parameters tuning and train-test evaluation at " + data_name + " are finished. \n",
-        "  The corresponding results, parameters, models, and figures of " + estimator_name + " are stored."
-    )
+    # Clustering methods: fit with tuned params
+    elif learning_method == "clustering" and run == 2:
+
+        clu_est = ClusteringEstimators(
+            x=x, y=y, cv=cv, data=data,
+            estimator_name=estimator_name,
+            configs=configs,
+        )
+
+        clu_est.instantiate_fit_test_estimator()
+
+        clu_est.fit_test_tuned_estimator()
+
+        clu_est.save_params_results()
+
+        clu_est.print_results()
+
+    # Clustering methods: print the saved results
+    elif learning_method == "clustering" and run != 1 and run != 2:
+
+        clu_est = ClusteringEstimators(
+            x=x, y=y, cv=cv, data=data,
+            estimator_name=estimator_name,
+            configs=configs,
+        )
+
+        clu_est.print_results()
+
+    elif run == 1:
+
+        print(
+            "\n Hyper-parameters tuning and train-test evaluation at " + data_name + " are finished. \n",
+            "  The corresponding results, parameters, models, and figures of " + estimator_name + " are stored."
+        )
+
+    elif run == 2:
+
+        print(
+            "\n Train-test evaluation at " + data_name + " are finished. \n",
+            "  The corresponding results, parameters, models, and figures of " + estimator_name + " are stored."
+        )
 
     print(
         "configuration: \n",
