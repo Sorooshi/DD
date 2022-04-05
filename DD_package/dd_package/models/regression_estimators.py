@@ -1,4 +1,5 @@
 import time
+import pickle
 import numpy as np
 import xgboost as xgb
 from sklearn.svm import SVR
@@ -31,7 +32,14 @@ class RegressionEstimators:
         self.estimator = None
         self.tuning_estimator = None
         self.params = defaultdict()
-        self.tuned_params = defaultdict()
+        if self.configs.run == 1:
+            self.tuned_params = defaultdict()
+        else:
+            self.tuned_params = self.load_saved_tuned_params()
+            print(
+                "tuned params:\n",
+                self.tuned_params,
+            )
 
         self.results = defaultdict(defaultdict)
 
@@ -45,7 +53,7 @@ class RegressionEstimators:
             self.params = defaultdict()
             self.params["fit_intercept"] = Categorical([True, False])
 
-            print (
+            print(
                 "Linear Regressor."
             )
 
@@ -404,6 +412,13 @@ class RegressionEstimators:
         )
 
         return None
+
+    def load_saved_tuned_params(self,):
+        saved_tuned_params = util.load_a_dict(
+            name=self.configs.specifier,
+            save_path=self.configs.params_path
+        )
+        return saved_tuned_params
 
     def print_results(self, ):
 
