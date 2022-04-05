@@ -30,6 +30,7 @@ class ClusteringEstimators:
             print(
                 "tuned params:\n",
                 self.tuned_params,
+                "\n"
             )
 
         self.results = defaultdict(defaultdict)
