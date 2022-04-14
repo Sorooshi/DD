@@ -101,7 +101,7 @@ class ClassificationEstimators:
 
             # define search space
             self.params = defaultdict()
-            self.params["var_smoothing"] = Real(1e-9, 1e-7, "uniform")
+            self.params["var_smoothing"] = Real(1e-11, 1e-5, "uniform")
 
             print(
                 "Instantiate Naive Gaussian Bayese Classifier."
