@@ -249,7 +249,7 @@ class ClassificationEstimators:
             self.tuned_params["solver"] = "saga"
             self.tuned_params["multi_class"] = "multinomial"
             self.estimator = LogisticRegression(**self.tuned_params)
-            print (
+            print(
                 "Instantiate Logistic Classifier. \n",
                 self.tuned_params
             )
