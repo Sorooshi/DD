@@ -222,7 +222,7 @@ class RegressionEstimators:
         # Simplest learning method(s):
         if self.estimator_name == "l_reg":
             self.estimator = LinearRegression(**self.tuned_params)
-            print (
+            print(
                 "Instantiate Linear Regressor."
             )
 
