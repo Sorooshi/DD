@@ -10,10 +10,10 @@ from sklearn.ensemble import AdaBoostClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from skopt.space import Real, Categorical, Integer
-from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.gaussian_process import GaussianProcessClassifier
+from sklearn.linear_model import LogisticRegression, BayesianRidge
 from sklearn.gaussian_process.kernels import RBF, RationalQuadratic, \
     ExpSineSquared, ConstantKernel, RBF
 from sklearn.naive_bayes import GaussianNB, MultinomialNB, ComplementNB
@@ -127,6 +127,23 @@ class ClassificationEstimators:
 
             print(
                 "Instantiate Naive Bayes: Complement Classifier."
+            )
+
+        # Bayesian Ridge:
+        elif self.estimator_name == "br_reg":
+            self.tuning_estimator = BayesianRidge()
+
+            # define search space
+            self.params = defaultdict()
+            self.params["n_iter"] = Integer(1e2, 2e4, "uniform")
+            self.params["alpha_1"] = Real(1e-8, 1e-2, "uniform")
+            self.params["alpha_2"] = Real(1e-8, 1e-2, "uniform")
+            self.params["lambda_1"] = Real(1e-8, 1e-2, "uniform")
+            self.params["lambda_2"] = Real(1e-8, 1e-2, "uniform")
+            self.params["fit_intercept"] = Categorical([True, False])
+
+            print(
+                "Instantiate Bayesian Ridge Classifier."
             )
 
         # Ensemble learning method(s):
@@ -287,6 +304,13 @@ class ClassificationEstimators:
 
             print(
                 "Instantiate Naive Bayes: Complement Classifier."
+            )
+
+        # Bayesian Ridge:
+        elif self.estimator_name == "br_reg":
+            self.estimator = BayesianRidge(**self.tuned_params)
+            print(
+                "Instantiate Bayesian Ridge Classifier."
             )
 
         # Ensemble learning method(s):
