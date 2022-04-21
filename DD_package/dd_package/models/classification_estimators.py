@@ -130,7 +130,7 @@ class ClassificationEstimators:
             )
 
         # Bayesian Ridge:
-        elif self.estimator_name == "br_reg":
+        elif self.estimator_name == "br_cls":
             self.tuning_estimator = BayesianRidge()
 
             # define search space
@@ -307,7 +307,7 @@ class ClassificationEstimators:
             )
 
         # Bayesian Ridge:
-        elif self.estimator_name == "br_reg":
+        elif self.estimator_name == "br_cls":
             self.estimator = BayesianRidge(**self.tuned_params)
             print(
                 "Instantiate Bayesian Ridge Classifier."
