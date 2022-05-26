@@ -409,7 +409,11 @@ def print_the_evaluated_results(results, learning_method, ):
     for repeat, result in results.items():
         y_true = result["y_test"]
         y_pred = result["y_pred"]
-        y_pred_prob = result["y_pred_prob"]
+        try:
+            y_pred_prob = result["y_pred_prob"]
+        except:
+            print("No prediction probability exist.")
+
 
         # to compute ROC_AUC
         try:
