@@ -458,7 +458,7 @@ def print_the_evaluated_results(results, learning_method, ):
             tp = np.diag(cm)
             tn = cm.sum() - (fp + fn + tp)
             tnr = tn.astype(float) / (tn.astype(float) + fp.astype(float))
-            _, support = np.unique(y_true, return_count=True)
+            _, support = np.unique(y_true, return_counts=True)
             tnr = np.dot(tnr, support)/sum(support)
             TNR.append(tnr)
 
