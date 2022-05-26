@@ -412,6 +412,7 @@ def print_the_evaluated_results(results, learning_method, ):
         try:
             y_pred_prob = result["y_pred_prob"]
         except:
+            y_pred_prob = None
             print("No prediction probability exist.")
 
 
