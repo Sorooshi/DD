@@ -677,7 +677,7 @@ if __name__ == "__main__":
         reg_est.print_results()
 
     # Regression methods: print the saved results
-    elif learning_method == "regression" and run != 1 and run != 2:
+    elif learning_method == "regression" and run == 3:
 
         reg_est = RegressionEstimators(
             x=x, y=y, cv=cv, data=data,
@@ -726,7 +726,7 @@ if __name__ == "__main__":
         cls_est.print_results()
 
     # Classification methods: print the saved results
-    elif learning_method == "classification" and run != 1 and run != 2:
+    elif learning_method == "classification" and run == 3:
 
         cls_est = ClassificationEstimators(
             x=x, y=y, cv=cv, data=data,
@@ -775,7 +775,7 @@ if __name__ == "__main__":
         clu_est.print_results()
 
     # Clustering methods: print the saved results
-    elif learning_method == "clustering" and run != 1 and run != 2:
+    elif learning_method == "clustering" and run == 3:
 
         clu_est = ClusteringEstimators(
             x=x, y=y, cv=cv, data=data,
