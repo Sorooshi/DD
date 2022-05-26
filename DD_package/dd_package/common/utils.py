@@ -404,7 +404,7 @@ def print_the_evaluated_results(results, learning_method, ):
     # Regression metrics
     MEA, RMSE, MRAE, JSD, R2_Score, MEAPE_mu, MEAPE_std = [], [], [], [], [], [], []
     # Classification and clustering metrics
-    ARI, NMI, Precision, Recall, F1_Score, ROC_AUC, ACC = [], [], [], [], [], [], []
+    ARI, NMI, Precision, Recall, F1_Score, ROC_AUC, ACC, TNR = [], [], [], [], [], [], [], []
 
     for repeat, result in results.items():
         y_true = result["y_test"]
@@ -451,6 +451,17 @@ def print_the_evaluated_results(results, learning_method, ):
             ROC_AUC.append(
                 metrics.roc_auc_score(y_true_, y_pred_prob, average='weighted', multi_class="ovr"),
             )
+
+            cm = metrics.confusion_matrix(y_true, y_pred,)
+            fp = cm.sum(axis=0) - np.diag(cm)
+            fn = cm.sum(axis=1) - np.diag(cm)
+            tp = np.diag(cm)
+            tn = cm.sum() - (fp + fn + tp)
+            tnr = tn.astype(float) / (tn.astype(float) + fp.astype(float))
+            _, support = np.unique(y_true, return_count=True)
+            tnr = np.dot(tnr, support)/sum(support)
+            TNR.append(tnr)
+
         else:
             ROC_AUC.append(123456)  # appending an impossible outcome of ROC_AUC to avoid adding one more
 
@@ -506,7 +517,8 @@ def print_the_evaluated_results(results, learning_method, ):
         Recall = np.nan_to_num(np.asarray(Recall))
         F1_Score = np.nan_to_num(np.asarray(F1_Score))
         ROC_AUC = np.nan_to_num(np.asarray(ROC_AUC))
-        ACC = np.nan_to_num((np.asarray(ACC)))
+        ACC = np.nan_to_num(np.asarray(ACC))
+        TNR = np.nan_to_num(np.asarray(TNR))
 
         ari_ave = np.mean(ARI, axis=0)
         ari_std = np.std(ARI, axis=0)
@@ -535,12 +547,15 @@ def print_the_evaluated_results(results, learning_method, ):
         acc_ave = np.mean(ACC, axis=0)
         acc_std = np.std(ACC, axis=0)
 
+        tnr_ave = np.mean(TNR, axis=0)
+        tnr_std = np.std(TNR, axis=0)
+
         print("  ari ", "  nmi ", "\t preci", "\t recall ",
-                  "\t f1_score ", "\t roc_auc ", "\t meape ", "\t jsd ", "\t acc"
+                  "\t f1_score ", "\t roc_auc ", "\t meape ", "\t jsd ", "\t acc", "\t tnr"
               )
 
         print(" Ave ", " std", " Ave ", " std ", " Ave ", " std ", " Ave ", " std ",
-              " Ave ", " std ", " Ave ", " std ", " Ave ", " std ", " Ave ", " std ", " Ave ", " std "
+              " Ave ", " std ", " Ave ", " std ", " Ave ", " std ", " Ave ", " std ", " Ave ", " std ", " Ave ", " std "
               )
 
         print("%.3f" % ari_ave, "%.3f" % ari_std,
@@ -552,6 +567,7 @@ def print_the_evaluated_results(results, learning_method, ):
               "%.3f" % meape_ave, "%.3f" % meape_std,
               "%.3f" % jsd_ave, "%.3f" % jsd_std,
               "%.3f" % acc_ave, "%.3f" % acc_std,
+              "%.3f" % tnr_ave, "%.3f" % tnr_std,
               )
 
     return None
