@@ -415,7 +415,6 @@ def print_the_evaluated_results(results, learning_method, ):
             y_pred_prob = None
             print("No prediction probability exist.")
 
-
         # to compute ROC_AUC
         try:
             y_true.shape[1]
@@ -453,9 +452,10 @@ def print_the_evaluated_results(results, learning_method, ):
             ACC.append(metrics.accuracy_score(y_true, y_pred, ))
 
         if learning_method == "classification":
-            ROC_AUC.append(
-                metrics.roc_auc_score(y_true_, y_pred_prob, average='weighted', multi_class="ovr"),
-            )
+            if y_pred_prob is not None:
+                ROC_AUC.append(
+                    metrics.roc_auc_score(y_true_, y_pred_prob, average='weighted', multi_class="ovr"),
+                )
 
             cm = metrics.confusion_matrix(y_true, y_pred,)
             fp = cm.sum(axis=0) - np.diag(cm)
