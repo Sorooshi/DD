@@ -451,7 +451,7 @@ def print_the_evaluated_results(results, learning_method, ):
             MEAPE_std.append(meape_errors.std(axis=0))
             ACC.append(metrics.accuracy_score(y_true, y_pred, ))
 
-        if learning_method == "classification":
+        if learning_method == "classification" or learning_method=="abnormality_detection":
             if y_pred_prob is not None:
                 ROC_AUC.append(
                     metrics.roc_auc_score(y_true_, y_pred_prob, average='weighted', multi_class="ovr"),
