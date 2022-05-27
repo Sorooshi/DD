@@ -172,9 +172,9 @@ class AbnormalityEstimators:
             start = time.time()
 
             self.estimator.fit(v["x_train"], v["y_train"])
-            y_test = np.asarray([1 if i == 1 else -1 for i in v["y_test"]]).reshape(1, -1)
+            y_test = np.asarray([1 if i == 1 else -1 for i in v["y_test"]]).reshape(-1, 1)
             x_test = v["x_test"]
-            y_pred = self.estimator.predict(x_test).reshape(1, -1)
+            y_pred = self.estimator.predict(x_test).reshape(-1, 1)
             print(
                 "y_pred:", y_pred.shape, "\n",
                 y_pred, "\n",
