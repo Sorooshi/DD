@@ -656,11 +656,11 @@ if __name__ == "__main__":
 
         reg_est.tune_hyper_parameters()
 
+        reg_est.save_params_results()
+
         reg_est.instantiate_train_test_estimator()
 
         reg_est.train_test_tuned_estimator()
-
-        reg_est.save_params_results()
 
         reg_est.print_results()
 
@@ -705,11 +705,11 @@ if __name__ == "__main__":
 
         cls_est.tune_hyper_parameters()
 
+        cls_est.save_params_results()
+
         cls_est.instantiate_train_test_estimator()
 
         cls_est.train_test_tuned_estimator()
-
-        cls_est.save_params_results()
 
         cls_est.print_results()
 
@@ -725,8 +725,6 @@ if __name__ == "__main__":
         cls_est.instantiate_train_test_estimator()
 
         cls_est.train_test_tuned_estimator()
-
-        cls_est.save_params_results()
 
         cls_est.print_results()
 
@@ -803,11 +801,11 @@ if __name__ == "__main__":
 
         ad_est.tune_hyper_parameters()
 
+        ad_est.save_params_results()
+
         ad_est.instantiate_train_test_estimator()
 
         ad_est.train_test_tuned_estimator()
-
-        ad_est.save_params_results()
 
         ad_est.print_results()
 
