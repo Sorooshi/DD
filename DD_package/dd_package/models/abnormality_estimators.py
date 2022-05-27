@@ -39,7 +39,7 @@ class AbnormalityEstimators:
     def instantiate_tuning_estimator_and_parameters(self, ):
 
         # Support Vector machine method(s):
-        if self.estimator_name == "osv_cls":
+        if self.estimator_name == "osv_ad":
             self.tuning_estimator = OneClassSVM()
 
             # define search space
@@ -50,11 +50,11 @@ class AbnormalityEstimators:
             self.params['nu'] = Real(0, 1.0, 'uniform')
 
             print(
-                "OneClass Support Vector Classifier."
+                "OneClass Support Vector Abnormality Detector."
             )
 
         # KNN method(s):
-        elif self.estimator_name == "lof_cls":
+        elif self.estimator_name == "lof_ad":
             self.tuning_estimator = LocalOutlierFactor()
 
             # define search space
@@ -64,13 +64,13 @@ class AbnormalityEstimators:
             self.params["leaf_size"] = Integer(5, 100)
 
             print(
-                "Local Outlier Factor (KNN-based) Classifier."
+                "Local Outlier Factor (KNN-based) Abnormality Detector."
             )
 
         # Bayesian methods:
 
         # Ensemble learning method(s):
-        elif self.estimator_name == "if_cls":
+        elif self.estimator_name == "if_ad":
             self.tuning_estimator = IsolationForest(verbose=0, )
 
             # define search space
@@ -78,7 +78,7 @@ class AbnormalityEstimators:
             self.params["n_estimators"] = Integer(10, 10000, )
 
             print(
-                "Isolation Forest Classifier."
+                "Isolation Forest Abnormality Detector."
             )
 
         # Neural Networks method(s):
@@ -91,27 +91,27 @@ class AbnormalityEstimators:
     def instantiate_train_test_estimator(self, ):
 
         # Support Vector machine method(s):
-        if self.estimator_name == "osv_cls":
+        if self.estimator_name == "osv_ad":
             self.estimator = OneClassSVM(**self.tuned_params)
             print(
-                "Instantiate OneClass Support Vector Classifier."
+                "Instantiate OneClass Support Vector Abnormality Detector."
             )
 
         # KNN method(s):
-        elif self.estimator_name == "lof_cls":
+        elif self.estimator_name == "lof_ad":
             self.estimator = LocalOutlierFactor(**self.tuned_params)
             print(
-                "Instantiate Local Outlier Factor (KNN) Classifier."
+                "Instantiate Local Outlier Factor (KNN) Abnormality Detector."
             )
 
         # Bayesian methods:
 
         # Ensemble learning method(s):
-        elif self.estimator_name == "If_cls":
+        elif self.estimator_name == "If_ad":
             self.estimator = IsolationForest(**self.tuned_params)
 
             print(
-                "Instantiate Isolation Forest Classifier."
+                "Instantiate Isolation Forest Abnormality Detector."
             )
 
         # Neural Networks method(s):
