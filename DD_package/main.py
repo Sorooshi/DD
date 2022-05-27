@@ -33,7 +33,7 @@ configs = {
     "results_path": Path("/home/soroosh/Programmes/DD/Results"),
     "figures_path": Path("/home/soroosh/Programmes/DD/Figures"),
     "params_path": Path("/home/soroosh/Programmes/DD/Params"),
-    "n_repeats": 2,
+    "n_repeats": 10,
     "n_splits": 5,
 }
 
