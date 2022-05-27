@@ -108,7 +108,7 @@ class AbnormalityEstimators:
         # Bayesian methods:
 
         # Ensemble learning method(s):
-        elif self.estimator_name == "If_ad":
+        elif self.estimator_name == "if_ad":
             self.estimator = IsolationForest(**self.tuned_params)
 
             print(
