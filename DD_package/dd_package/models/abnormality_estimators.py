@@ -107,15 +107,14 @@ class AbnormalityEstimators:
         # Bayesian methods:
 
         # Ensemble learning method(s):
-        elif self.estimator_name == "rf_cls":
-            self.estimator = RandomForestClassifier(**self.tuned_params)
+        elif self.estimator_name == "If_cls":
+            self.estimator = IsolationForest(**self.tuned_params)
 
             print(
-                "Instantiate Random Forest Classifier."
+                "Instantiate Isolation Forest Classifier."
             )
 
         # Neural Networks method(s):
-
 
         else:
             assert False, "Undefined classification model."
@@ -172,7 +171,7 @@ class AbnormalityEstimators:
             start = time.time()
 
             self.estimator.fit(v["x_train"], v["y_train"])
-            y_test = v["y_test"]
+            y_test = np.asarray([1 if i == 1 else -1 for i in v["y_test"]])
             x_test = v["x_test"]
             y_pred = self.estimator.predict(x_test)
 
