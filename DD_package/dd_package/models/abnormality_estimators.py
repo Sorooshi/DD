@@ -39,7 +39,7 @@ class AbnormalityEstimators:
     def instantiate_tuning_estimator_and_parameters(self, ):
 
         # Support Vector machine method(s):
-        if self.estimator_name == "osv_ad":
+        if self.estimator_name == "ocs_ad":
             self.tuning_estimator = OneClassSVM()
 
             # define search space
@@ -91,7 +91,7 @@ class AbnormalityEstimators:
     def instantiate_train_test_estimator(self, ):
 
         # Support Vector machine method(s):
-        if self.estimator_name == "osv_ad":
+        if self.estimator_name == "ocs_ad":
             self.estimator = OneClassSVM(**self.tuned_params)
             print(
                 "Instantiate OneClass Support Vector Abnormality Detector."
