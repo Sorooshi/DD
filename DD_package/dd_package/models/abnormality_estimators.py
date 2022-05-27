@@ -62,6 +62,7 @@ class AbnormalityEstimators:
             self.params["n_neighbors"] = Integer(1, 100, )
             self.params["p"] = Real(1, 5, "uniform")
             self.params["leaf_size"] = Integer(5, 100)
+            self.params['novelty'] = True
 
             print(
                 "Local Outlier Factor (KNN-based) Abnormality Detector."
