@@ -458,6 +458,16 @@ def print_the_evaluated_results(results, learning_method, ):
                     metrics.roc_auc_score(y_true_, y_pred_prob, average='weighted', multi_class="ovr"),
                 )
 
+            cm = metrics.confusion_matrix(y_true, y_pred, )
+            fp = cm.sum(axis=0) - np.diag(cm)
+            fn = cm.sum(axis=1) - np.diag(cm)
+            tp = np.diag(cm)
+            tn = cm.sum() - (fp + fn + tp)
+            tnr = tn.astype(float) / (tn.astype(float) + fp.astype(float))
+            _, support = np.unique(y_true, return_counts=True)
+            tnr = np.dot(tnr, support) / sum(support)
+            TNR.append(tnr)
+
         elif learning_method == "abnormality_detection":
             if y_pred_prob is not None:
                 ROC_AUC.append(
