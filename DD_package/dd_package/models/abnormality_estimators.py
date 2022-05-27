@@ -175,12 +175,6 @@ class AbnormalityEstimators:
             y_test = np.asarray([1 if i == 1 else -1 for i in v["y_test"]])
             x_test = v["x_test"]
             y_pred = self.estimator.predict(x_test)
-            print(
-                "y_pred:", y_pred.shape, "\n",
-                y_pred, "\n",
-                "y_test:", y_test.shape, "\n",
-                y_test
-            )
 
             try:
                 y_pred_prob = self.estimator.predict_proba(x_test).reshape(-1, 1)
@@ -188,6 +182,15 @@ class AbnormalityEstimators:
                 y_pred_prob = self.estimator.decision_function(x_test).reshape(-1, 1)
 
             end = time.time()
+
+            print(
+                "y_pred:", y_pred.shape, "\n",
+                y_pred, "\n",
+                "y_prob:", y_pred_prob.shape, "\n",
+                y_pred_prob, "\n",
+                "y_test:", y_test.shape, "\n",
+                y_test
+            )
 
             self.results[k]["y_test"] = y_test
             self.results[k]["x_test"] = x_test
