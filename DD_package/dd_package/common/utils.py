@@ -207,13 +207,13 @@ def wandb_metrics(run, y_true, y_pred, y_pred_prob, learning_method):
 
         elif learning_method == "abnormality_detection":
             # to compute ROC_AUC
-            try:
-                y_true.shape[1]
-                y_true_ = y_true
-            except:
-                enc = OneHotEncoder(sparse=False)
-                y_true_ = y_true.reshape(-1, 1)
-                y_true_ = enc.fit_transform(y_true_)
+            # try:
+            #     y_true.shape[1]
+            #     y_true_ = y_true
+            # except:
+            #     enc = OneHotEncoder(sparse=False)
+            #     y_true_ = y_true.reshape(-1, 1)
+            #     y_true_ = enc.fit_transform(y_true_)
 
             if y_pred_prob is not None:
                 roc_auc = metrics.roc_auc_score(y_true_, y_pred_prob,
