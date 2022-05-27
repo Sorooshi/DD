@@ -811,7 +811,7 @@ if __name__ == "__main__":
 
         ad_est.print_results()
 
-        # Abnormality Detection methods: fit with tuned params
+    # Abnormality Detection methods: fit with tuned params
     elif learning_method == "abnormality_detection" and run == 2:
 
         ad_est = AbnormalityEstimators(
@@ -819,8 +819,6 @@ if __name__ == "__main__":
             estimator_name=estimator_name,
             configs=configs,
         )
-
-        ad_est.instantiate_train_test_estimator()
 
         ad_est.train_test_tuned_estimator()
 
