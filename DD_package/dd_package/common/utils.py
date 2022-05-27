@@ -415,15 +415,6 @@ def print_the_evaluated_results(results, learning_method, ):
             y_pred_prob = None
             print("No prediction probability exist.")
 
-        # to compute ROC_AUC
-        try:
-            y_true.shape[1]
-            y_true_ = y_true
-        except:
-            enc = OneHotEncoder(sparse=False)
-            y_true_ = y_true.reshape(-1, 1)
-            y_true_ = enc.fit_transform(y_true_)
-
         if learning_method == "regression":
 
             MEA.append(mae(y_true=y_true, y_pred=y_pred))
@@ -451,7 +442,17 @@ def print_the_evaluated_results(results, learning_method, ):
             MEAPE_std.append(meape_errors.std(axis=0))
             ACC.append(metrics.accuracy_score(y_true, y_pred, ))
 
-        if learning_method == "classification" or learning_method=="abnormality_detection":
+        if learning_method == "classification":
+
+            # to compute ROC_AUC
+            try:
+                y_true.shape[1]
+                y_true_ = y_true
+            except:
+                enc = OneHotEncoder(sparse=False)
+                y_true_ = y_true.reshape(-1, 1)
+                y_true_ = enc.fit_transform(y_true_)
+
             if y_pred_prob is not None:
                 ROC_AUC.append(
                     metrics.roc_auc_score(y_true_, y_pred_prob, average='weighted', multi_class="ovr"),
@@ -460,7 +461,7 @@ def print_the_evaluated_results(results, learning_method, ):
         elif learning_method == "abnormality_detection":
             if y_pred_prob is not None:
                 ROC_AUC.append(
-                    metrics.roc_auc_score(y_true_, y_pred_prob.reshape(1, -1),
+                    metrics.roc_auc_score(y_true_, y_pred_prob,
                                           average='weighted',
                                           ),
                 )
