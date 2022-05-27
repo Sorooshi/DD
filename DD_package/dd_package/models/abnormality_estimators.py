@@ -177,7 +177,9 @@ class AbnormalityEstimators:
             y_pred = self.estimator.predict(x_test)
             print(
                 "y_pred:", y_pred.shape, "\n",
-                y_pred
+                y_pred, "\n",
+                "y_test:", y_test.shape, "\n",
+                y_test
             )
 
             try:
