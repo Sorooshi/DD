@@ -175,6 +175,10 @@ class AbnormalityEstimators:
             y_test = np.asarray([1 if i == 1 else -1 for i in v["y_test"]])
             x_test = v["x_test"]
             y_pred = self.estimator.predict(x_test)
+            print(
+                "y_pred:", y_pred.shape, "\n",
+                y_pred
+            )
 
             try:
                 y_pred_prob = self.estimator.predict_proba(x_test)
