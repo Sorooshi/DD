@@ -169,14 +169,6 @@ def wandb_metrics(run, y_true, y_pred, y_pred_prob, learning_method):
 
     meape_errors = mean_estimation_absolute_percentage_error(y_true, y_pred, n_iters=100)
 
-    # to compute ROC_AUC
-    try:
-        y_true.shape[1]
-        y_true_ = y_true
-    except:
-        enc = OneHotEncoder(sparse=False)
-        y_true_ = y_true.reshape(-1, 1)
-        y_true_ = enc.fit_transform(y_true_)
 
     if learning_method == "regression":
 
@@ -216,7 +208,7 @@ def wandb_metrics(run, y_true, y_pred, y_pred_prob, learning_method):
             #     y_true_ = enc.fit_transform(y_true_)
 
             if y_pred_prob is not None:
-                roc_auc = metrics.roc_auc_score(y_true_, y_pred_prob,
+                roc_auc = metrics.roc_auc_score(y_true, y_pred_prob,
                                                 average='weighted',)
 
         run.log({
