@@ -583,6 +583,11 @@ if __name__ == "__main__":
         from dd_package.models.clustering_estimators import ClusteringEstimators
 
         y = y_org.Group.values
+
+    elif estimator_name.split("_")[-1] == "ad":
+        learning_method = "abnormality_detection"
+        from dd_package.models.abnormality_estimators import AbnormalityEstimators
+        y = y_org.Group.values
     else:
         assert False, "Undefined algorithm and thus undefined target values"
 
@@ -784,6 +789,55 @@ if __name__ == "__main__":
         )
 
         clu_est.print_results()
+
+    # abnormality_detection methods: tune and fit
+    elif learning_method == "abnormality_detection" and run == 1:
+
+        ad_est = AbnormalityEstimators(
+            x=x, y=y, cv=cv, data=data,
+            estimator_name=estimator_name,
+            configs=configs,
+        )
+
+        ad_est.instantiate_tuning_estimator_and_parameters()
+
+        ad_est.tune_hyper_parameters()
+
+        ad_est.instantiate_train_test_estimator()
+
+        ad_est.train_test_tuned_estimator()
+
+        ad_est.save_params_results()
+
+        ad_est.print_results()
+
+        # Abnormality Detection methods: fit with tuned params
+    elif learning_method == "abnormality_detection" and run == 2:
+
+        ad_est = AbnormalityEstimators(
+            x=x, y=y, cv=cv, data=data,
+            estimator_name=estimator_name,
+            configs=configs,
+        )
+
+        ad_est.instantiate_train_test_estimator()
+
+        ad_est.train_test_tuned_estimator()
+
+        ad_est.save_params_results()
+
+        ad_est.print_results()
+
+        # Classification methods: print the saved results
+    elif learning_method == "abnormality_detection" and run == 3:
+
+        ad_est = AbnormalityEstimators(
+            x=x, y=y, cv=cv, data=data,
+            estimator_name=estimator_name,
+            configs=configs,
+        )
+
+        ad_est.print_results()
 
     elif run == 1:
 
