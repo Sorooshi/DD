@@ -183,9 +183,9 @@ class AbnormalityEstimators:
             )
 
             try:
-                y_pred_prob = self.estimator.predict_proba(x_test)
+                y_pred_prob = self.estimator.predict_proba(x_test).reshape(-1, 1)
             except:
-                y_pred_prob = self.estimator.decision_function(x_test)
+                y_pred_prob = self.estimator.decision_function(x_test).reshape(-1, 1)
 
             end = time.time()
 
