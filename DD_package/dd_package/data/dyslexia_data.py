@@ -42,6 +42,8 @@ class DyslexiaData:
         self.stratified_kFold_cv = None
         self.stratified_train_test_splits = defaultdict(defaultdict)
 
+        self.features = None
+
     def get_demo_datasets(self, ):
         print("Loading Demo data: ")
         for sheet in self.sheet_names:
@@ -53,7 +55,7 @@ class DyslexiaData:
             )
             tmp.replace(
                 to_replace={"Group": {"norm": 1, "risk": 2, "dyslexia": 3}},
-            inplace = True,
+                inplace = True,
             )
             tmp = tmp.astype({
                 "Group": int,
@@ -173,13 +175,13 @@ class DyslexiaData:
         if not targets:
             targets = ["Group", "Reading_speed"]
 
-        features = list(
+        self.features = list(
             set(data.columns).difference(
                 set(indicators).union(set(targets))
             )
         )
 
-        self.x = data.loc[:, features]
+        self.x = data.loc[:, self.features]
         self.y = data.loc[:, targets]
 
         return self.x, self.y
@@ -200,7 +202,7 @@ class DyslexiaData:
         """ Returns dict containing repeated train and test splits.
                 Repeat numbers are separated from the rest of strinds in the key with a single dash "-".
         """
-        skf =  StratifiedKFold(
+        skf = StratifiedKFold(
             n_splits=n_splits,
             shuffle=to_shuffle
         )
@@ -214,7 +216,6 @@ class DyslexiaData:
             self.stratified_train_test_splits[k]["x_test"] = x[test_index]
             self.stratified_train_test_splits[k]["y_train"] = y[train_index]
             self.stratified_train_test_splits[k]["y_test"] = y[test_index]
-
 
         return self.stratified_train_test_splits
 
