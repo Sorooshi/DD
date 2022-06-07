@@ -862,6 +862,7 @@ if __name__ == "__main__":
     )
 
     print(
-        "Implementation of predicting a real-experiment test data will completed of submitting the paper!"
+        "Implementation of predicting a real-experiment on test data can be found on dev_pp branch in"
+        "jupyter notebook DEV_PP-d04_test_on_new_dataset_classification_fix_stats_demo-mm-spec+SHAP_importance.ipynb!"
     )
 
