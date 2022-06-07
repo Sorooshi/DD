@@ -27,6 +27,7 @@ class DyslexiaData:
         self.xlsx_demo = pd.ExcelFile(os.path.join(self.path, "demo.xlsx"))
         self.xlsx_ia = pd.ExcelFile(os.path.join(self.path, "IA_report.xlsx"))
         self.xlsx_fix = pd.ExcelFile(os.path.join(self.path, "Fixation_report.xlsx"))
+        self.xlsx_fix_stats = pd.ExcelFile(os.path.join(self.path, "Fix_stats.xlsx"))
 
         self.ia_datasets = defaultdict(list)
         self.fix_datasets = defaultdict(list)
