@@ -35,6 +35,7 @@ class DyslexiaData:
         self.ia = pd.DataFrame()
         self.fix = pd.DataFrame()
         self.demo = pd.DataFrame()
+        self.fix_stats = pd.DataFrame()
 
         self.x = pd.DataFrame()  # features/random variables (either shuffled or not)
         self.y = pd.DataFrame()  # targets variables/predictions (in corresponding to x)
@@ -162,6 +163,19 @@ class DyslexiaData:
             inplace=True,
         )
         return self.fix.sort_values(by=["SubjectID", "Sentence_ID", ])
+
+    def get_fix_stats_dataset(self, ):
+
+        tmp = pd.read_excel(self.xlsx_fix_stats, 'Sheet1')
+        tmp = self._remove_missing_data(df=tmp)
+
+        self.fix_stats = tmp.sort_values(by=["SubjectID", "Sentence_ID", ]).dropna()  # "Word_Number"
+
+        print(
+            "Loading Fixation report statistics data:", self.fix_stats.shape
+        )
+
+        return self.fix_stats
 
     def get_onehot_features_targets(self, data, c_features=None, indicators=None, targets=None):
         """ Returns x, y, pd.DataFrames, of features and targets values respectively. """
