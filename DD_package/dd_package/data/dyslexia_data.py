@@ -1,5 +1,5 @@
 import os
-import logging
+import re
 import numpy as np
 import pandas as pd
 from pathlib import Path
@@ -219,6 +219,77 @@ class DyslexiaData:
 
         return self.stratified_train_test_splits
 
+    def _get_sub_categories_quant_stats(self, ):
+
+        self.sub_categories = {f: [] for f in self.features}
+        if self.c_features:
+            for f in self.c_features:
+                pattern = re.compile(f)
+                str_match = [x for x in self.features_dum if re.search(f, x)]
+                self.sub_categories[f] = str_match
+
+        return self.sub_categories
+
+    def compute_stats_of_fix(self, fix):
+        """In order to save the execution time the result of this function
+            has been saved will be loaded via calling get_fix_stats_data method.
+        """
+
+        fix_stats = pd.DataFrame(
+            columns=["Group", "SubjectID", "Sentence_ID", "Word_Number",
+                     "FIX_X_mean", "FIX_X_std", "FIX_Y_mean", "FIX_Y_std",
+                     "FIX_DURATION_mean", "FIX_DURATION_std"]
+        )
+
+        subject_ids = set(fix.SubjectID)
+        sentence_ids = set(fix.Sentence_ID)
+        missing_sentence = []
+        for subject_id in subject_ids:
+            for sentence_id in sentence_ids:
+                tmp = fix.loc[(fix.Sentence_ID == sentence_id) & (fix.SubjectID == subject_id)]
+                if "Group" in fix.columns:
+                    g = tmp.Group.iloc[-1]
+                else:
+                    g = 'Unknown'
+                try:
+                    num_words = max(tmp.Word_Number)
+                    mean_x = tmp.FIX_X.mean()
+                    std_x = tmp.FIX_X.std()
+                    mean_y = tmp.FIX_Y.mean()
+                    std_y = tmp.FIX_Y.std()
+                    mean_t = tmp.FIX_DURATION.mean()
+                    std_t = tmp.FIX_DURATION.std()
+                except:
+                    missing_sentence.append((subject_id, sentence_id))
+
+                d = {
+                    "Group": g,
+                    "SubjectID": subject_id,
+                    "Sentence_ID": sentence_id,
+                    "Word_Number": num_words,
+                    "FIX_X_mean": mean_x,
+                    "FIX_X_std": std_x,
+                    "FIX_Y_mean": mean_y,
+                    "FIX_Y_std": std_y,
+                    "FIX_DURATION_mean": mean_t,
+                    "FIX_DURATION_std": std_t,
+                }
+
+                fix_stats = fix_stats.append(d, ignore_index=True)
+                fix_stats = self._remove_missing_data(df=fix_stats)
+
+        return fix_stats
+
+    @staticmethod
+    def _remove_missing_data(df):
+        for col in df.columns:
+            try:
+                df[col].replace({".": np.nan}, inplace=True)
+            except Exception as e:
+                print(e, "\n No missing values in", col)
+
+        return df.dropna()
+
     @staticmethod
     def concat_dfs(df1, df2, features1, features2):
 
@@ -255,12 +326,3 @@ class DyslexiaData:
             data.append(tmp3)
 
         return pd.concat(data)
-
-    def _remove_missing_data(self, df):
-        for col in df.columns:
-            try:
-                df[col].replace({".": np.nan}, inplace=True)
-            except Exception as e:
-                print(e, "\n No missing values in", col)
-
-        return df.dropna()
