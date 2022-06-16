@@ -40,6 +40,7 @@ class DyslexiaData:
 
         self.x = pd.DataFrame()  # features/random variables (either shuffled or not)
         self.y = pd.DataFrame()  # targets variables/predictions (in corresponding to x)
+        self.x_dum_test_pp_df = pd.DataFrame()  # independent/real-world test data
 
         self.stratified_kFold_cv = None
         self.stratified_train_test_splits = defaultdict(defaultdict)
@@ -341,3 +342,7 @@ class DyslexiaData:
             data.append(tmp3)
 
         return pd.concat(data)
+
+
+
+
