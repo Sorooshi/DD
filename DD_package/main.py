@@ -663,7 +663,6 @@ if __name__ == "__main__":
         reg_est.save_params_results()
 
         reg_est.print_results()
-
     # Regression methods: fit with tuned params
     elif learning_method == "regression" and run == 2:
 
@@ -680,7 +679,6 @@ if __name__ == "__main__":
         reg_est.save_params_results()
 
         reg_est.print_results()
-
     # Regression methods: print the saved results
     elif learning_method == "regression" and run == 3:
 
@@ -691,7 +689,6 @@ if __name__ == "__main__":
         )
 
         reg_est.print_results()
-
     # Classification methods: tune and fit
     elif learning_method == "classification" and run == 1:
 
@@ -712,7 +709,6 @@ if __name__ == "__main__":
         cls_est.save_params_results()
 
         cls_est.print_results()
-
     # Classification methods: fit with tuned params
     elif learning_method == "classification" and run == 2:
 
@@ -729,7 +725,6 @@ if __name__ == "__main__":
         cls_est.save_params_results()
 
         cls_est.print_results()
-
     # Classification methods: print the saved results
     elif learning_method == "classification" and run == 3:
 
@@ -740,7 +735,6 @@ if __name__ == "__main__":
         )
 
         cls_est.print_results()
-
     # Clustering methods: tune and fit
     elif learning_method == "clustering" and run == 1:
 
@@ -761,7 +755,6 @@ if __name__ == "__main__":
         clu_est.save_params_results()
 
         clu_est.print_results()
-
     # Clustering methods: fit with tuned params
     elif learning_method == "clustering" and run == 2:
 
@@ -778,7 +771,6 @@ if __name__ == "__main__":
         clu_est.save_params_results()
 
         clu_est.print_results()
-
     # Clustering methods: print the saved results
     elif learning_method == "clustering" and run == 3:
 
@@ -789,7 +781,6 @@ if __name__ == "__main__":
         )
 
         clu_est.print_results()
-
     # abnormality_detection methods: tune and fit
     elif learning_method == "abnormality_detection" and run == 1:
 
@@ -810,7 +801,6 @@ if __name__ == "__main__":
         ad_est.save_params_results()
 
         ad_est.print_results()
-
     # Abnormality Detection methods: fit with tuned params
     elif learning_method == "abnormality_detection" and run == 2:
 
