@@ -3,7 +3,7 @@
 
 The source codes, experimental test-beds and, the datasets of our paper entitled "Dyslexia Detection Using Artificial Intelligence and Eye Movement Data,"
 By [Soroosh Shalileh,](https://www.hse.ru/en/staff/srshalileh),
-[Dmitry Ignatov,](https://www.hse.ru/en/staff/dima) [Anastasiya Lopukhina](https://www.hse.ru/en/staff/lopukhina) and Olga Dragoy[https://www.hse.ru/en/staff/dragoy].
+[Dmitry Ignatov,](https://www.hse.ru/en/staff/dima) [Anastasiya Lopukhina](https://www.hse.ru/en/staff/lopukhina) and [Olga Dragoy](https://www.hse.ru/en/staff/dragoy).
 
 Center for Language and Brain, HSE University, Myasnitskaya Ulitsa, 20, Moscow, 101000, Moscow, RF. 
 
