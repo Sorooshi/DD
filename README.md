@@ -19,4 +19,4 @@ Submitted to Journal: Engineering Applications of Artificial Intelligence
 - Determine the importance of features in detecting dyslexia which is aligned with domain knowledge.
 
 
-- Poetry and pip installation will be added after paper acceptance 
+- Poetry and pip installation will be added after paper's acceptance 
