@@ -13,7 +13,7 @@ class DyslexiaData:
     def __init__(self,
                  n_splits: int = 5,
                  n_repeats: int = 10,
-                 path: Path= Path("../datasets"),
+                 path: Path = Path("../datasets"),
                  names: list = ["demo", "IA_report", "Fixation_report",],
                  ):
 
@@ -321,7 +321,7 @@ class DyslexiaData:
 
             n = tmp1.shape[0]
             if n == tmp2.shape[0]:
-                tmp2 = pd.concat([tmp1], ignore_index=True)
+                tmp2 = pd.concat([tmp2], ignore_index=True)
             else:
                 tmp2 = pd.concat([tmp2] * n, ignore_index=True)  # .reset_index(drop=True)
 
