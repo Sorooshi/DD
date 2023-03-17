@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/soroosh/Programmes/DD/DD_package/main.py", line 504, in <module>
+    clu_est.fit_test_tuned_estimator()
+  File "/home/soroosh/Programmes/DD/DD_package/dd_package/models/clustering_estimators.py", line 285, in fit_test_tuned_estimator
+    self.estimator.fit(v["x_train"], v["y_train"])
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/sklearn/cluster/_agglomerative.py", line 852, in fit
+    raise ValueError("%s was provided as affinity. Ward can only "
+ValueError: l2 was provided as affinity. Ward can only work with euclidean distances.

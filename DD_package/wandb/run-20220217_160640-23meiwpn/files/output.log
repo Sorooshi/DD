@@ -1,0 +1,29 @@
+[34m[1mwandb[39m[22m: [32m[41mERROR[39m[49m plotly is required to log interactive plots, install with: pip install plotly or convert the plot to an image with `wandb.Image(plt)`
+Traceback (most recent call last):
+  File "/home/soroosh/Programmes/DD/DD_package/main.py", line 268, in <module>
+    reg_est.train_test_tuned_estimator()
+  File "/home/soroosh/Programmes/DD/DD_package/dd_package/models/regression_estimators.py", line 261, in train_test_tuned_estimator
+    run = util.wandb_true_pred_plots(
+  File "/home/soroosh/Programmes/DD/DD_package/dd_package/common/utils.py", line 281, in wandb_true_pred_plots
+    run.log(
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/wandb/sdk/wandb_run.py", line 1339, in log
+    self.history._row_add(data)
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/wandb/sdk/wandb_history.py", line 44, in _row_add
+    self._flush()
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/wandb/sdk/wandb_history.py", line 59, in _flush
+    self._callback(row=self._data, step=self._step)
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/wandb/sdk/wandb_run.py", line 1017, in _history_callback
+    self._backend.interface.publish_history(
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/wandb/sdk/interface/interface.py", line 496, in publish_history
+    data = data_types.history_dict_to_json(run, data, step=step)
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/wandb/sdk/data_types.py", line 2597, in history_dict_to_json
+    payload[key] = val_to_json(run, key, val, namespace=step)
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/wandb/sdk/data_types.py", line 2622, in val_to_json
+    val = Plotly.make_plot_media(val)
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/wandb/sdk/data_types.py", line 2547, in make_plot_media
+    val = util.matplotlib_to_plotly(val)
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/wandb/util.py", line 506, in matplotlib_to_plotly
+    tools = get_module(
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/wandb/util.py", line 189, in get_module
+    raise wandb.Error(required)
+wandb.errors.Error: plotly is required to log interactive plots, install with: pip install plotly or convert the plot to an image with `wandb.Image(plt)`

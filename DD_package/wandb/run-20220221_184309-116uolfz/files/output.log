@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "/home/soroosh/Programmes/DD/DD_package/main.py", line 401, in <module>
+    cls_est.train_test_tuned_estimator()
+  File "/home/soroosh/Programmes/DD/DD_package/dd_package/models/classification_estimators.py", line 389, in train_test_tuned_estimator
+    run = util.wandb_metrics(
+  File "/home/soroosh/Programmes/DD/DD_package/dd_package/common/utils.py", line 203, in wandb_metrics
+    "ROC AUC": metrics.roc_auc_score(y_true_, y_pred_prob, average='weighted', multi_class="ovr"),
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/sklearn/utils/validation.py", line 63, in inner_f
+    return f(*args, **kwargs)
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/sklearn/metrics/_ranking.py", line 547, in roc_auc_score
+    return _average_binary_score(partial(_binary_roc_auc_score,
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/sklearn/metrics/_base.py", line 81, in _average_binary_score
+    y_score = check_array(y_score)
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/sklearn/utils/validation.py", line 63, in inner_f
+    return f(*args, **kwargs)
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/sklearn/utils/validation.py", line 694, in check_array
+    raise ValueError(
+ValueError: Expected 2D array, got 1D array instead:
+array=[-1.003 -1.009 -1.02  ... -1.07  -1.005 -1.07 ].
+Reshape your data either using array.reshape(-1, 1) if your data has a single feature or array.reshape(1, -1) if it contains a single sample.
