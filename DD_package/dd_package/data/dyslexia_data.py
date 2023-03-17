@@ -156,8 +156,7 @@ class DyslexiaData:
             to_replace={"Sex": {"fem": 1, "f": 1, "masc": 2, "m": 2}},
             inplace=True,
         )
-        self.ia.drop('QUESTION_ACCURACY_', inplace=True, axis=1)
-
+        self.ia.drop('QUESTION_ACCURACY', inplace=True, axis=1)
         return self.ia.sort_values(by=["SubjectID", "Sentence_ID", "Word_Number"])
 
     def concat_classes_fix(self, ):
