@@ -423,7 +423,7 @@ def print_the_evaluated_results(results, learning_method, ):
     # Regression metrics
     MEA, RMSE, MRAE, JSD, R2_Score, MEAPE_mu, MEAPE_std = [], [], [], [], [], [], []
     # Classification and clustering metrics
-    ARI, NMI, Precision, Recall, F1_Score, ROC_AUC, ACC, TNR = [], [], [], [], [], [], [], []
+    ARI, NMI, Precision, Recall, F1_Score, ROC_AUC, ACC, TNR, KapCo = [], [], [], [], [], [], [], [], []
 
     for repeat, result in results.items():
         y_true = result["y_test"]
@@ -460,6 +460,7 @@ def print_the_evaluated_results(results, learning_method, ):
             MEAPE_mu.append(meape_errors.mean(axis=0))
             MEAPE_std.append(meape_errors.std(axis=0))
             ACC.append(metrics.accuracy_score(y_true, y_pred, ))
+            KapCo.append(metrics.cohen_kappa_score(y1=y_true, y2=y_pred))
 
         if learning_method == "classification":
 
@@ -571,6 +572,7 @@ def print_the_evaluated_results(results, learning_method, ):
         ROC_AUC = np.nan_to_num(np.asarray(ROC_AUC))
         ACC = np.nan_to_num(np.asarray(ACC))
         TNR = np.nan_to_num(np.asarray(TNR))
+        KapCo = np.nan_to_num(np.asarray(KapCo))
 
         ari_ave = np.mean(ARI, axis=0)
         ari_std = np.std(ARI, axis=0)
@@ -602,12 +604,16 @@ def print_the_evaluated_results(results, learning_method, ):
         tnr_ave = np.mean(TNR, axis=0)
         tnr_std = np.std(TNR, axis=0)
 
-        print("  ari ", "  nmi ", "\t preci", "\t recall ",
-                  "\t f1_score ", "\t roc_auc ", "\t meape ", "\t jsd ", "\t acc", "\t tnr"
+        kapco_ave = np.mean(KapCo, axis=0)
+        kapco_std = np.std(KapCo, axis=0)
+
+        print("  ari ", "  nmi ", "\t preci", "\t recall ", "\t f1_score ",
+              "\t roc_auc ", "\t meape ", "\t jsd ", "\t acc", "\t tnr", " Kappa Cohen"
               )
 
         print(" Ave ", " std", " Ave ", " std ", " Ave ", " std ", " Ave ", " std ",
-              " Ave ", " std ", " Ave ", " std ", " Ave ", " std ", " Ave ", " std ", " Ave ", " std ", " Ave ", " std "
+              " Ave ", " std ", " Ave ", " std ", " Ave ", " std ", " Ave ", " std ",
+              " Ave ", " std ", " Ave ", " std ", " Ave ", " std "
               )
 
         print("%.3f" % ari_ave, "%.3f" % ari_std,
@@ -620,6 +626,7 @@ def print_the_evaluated_results(results, learning_method, ):
               "%.3f" % jsd_ave, "%.3f" % jsd_std,
               "%.3f" % acc_ave, "%.3f" % acc_std,
               "%.3f" % tnr_ave, "%.3f" % tnr_std,
+              "%.3f" % kapco_ave, "%.3f" % kapco_std,
               )
 
     return None
