@@ -233,7 +233,7 @@ if __name__ == "__main__":
 
         df_data_to_use = ia
         c_features = [
-            'QUESTION_ACCURACY', 'SKIP', 'REGRESSION_IN',
+            'SKIP', 'REGRESSION_IN',
             'REGRESSION_OUT', 'REGRESSION_OUT_FULL',
         ]
 
@@ -268,7 +268,7 @@ if __name__ == "__main__":
         df_data_to_use = ia_reg
 
         c_features = [
-            'QUESTION_ACCURACY', 'SKIP', 'REGRESSION_IN',
+            'SKIP', 'REGRESSION_IN',
             'REGRESSION_OUT', 'REGRESSION_OUT_FULL',
         ]
 
@@ -302,7 +302,7 @@ if __name__ == "__main__":
 
         df_data_to_use = ia_demo
         c_features = [
-            'Sex', 'Grade', 'QUESTION_ACCURACY',
+            'Sex', 'Grade',
             'SKIP', 'REGRESSION_IN', 'REGRESSION_OUT',
             'REGRESSION_OUT_FULL',
         ]
@@ -340,7 +340,7 @@ if __name__ == "__main__":
 
         df_data_to_use = ia_phono
         c_features = [
-            'QUESTION_ACCURACY', 'SKIP', 'REGRESSION_IN',
+            'SKIP', 'REGRESSION_IN',
             'REGRESSION_OUT', 'REGRESSION_OUT_FULL',
         ]
 
@@ -374,8 +374,8 @@ if __name__ == "__main__":
 
         df_data_to_use = ia_demo_phono
         c_features = [
-            'Sex', 'Grade', 'QUESTION_ACCURACY',
-            'SKIP', 'REGRESSION_IN', 'REGRESSION_OUT',
+            'Sex', 'Grade', 'SKIP',
+            'REGRESSION_IN', 'REGRESSION_OUT',
             'REGRESSION_OUT_FULL',
         ]
 
@@ -663,6 +663,7 @@ if __name__ == "__main__":
         reg_est.save_params_results()
 
         reg_est.print_results()
+
     # Regression methods: fit with tuned params
     elif learning_method == "regression" and run == 2:
 
