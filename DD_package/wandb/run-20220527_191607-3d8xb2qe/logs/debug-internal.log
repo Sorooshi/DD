@@ -1,0 +1,61 @@
+2022-05-27 19:16:08,032 INFO    MainThread:378116 [internal.py:wandb_internal():89] W&B internal server running at pid: 378116, started at: 2022-05-27 19:16:08.032471
+2022-05-27 19:16:08,033 DEBUG   HandlerThread:378116 [handler.py:handle_request():131] handle_request: check_version
+2022-05-27 19:16:08,033 INFO    WriterThread:378116 [datastore.py:open_for_write():77] open: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/run-3d8xb2qe.wandb
+2022-05-27 19:16:08,034 DEBUG   SenderThread:378116 [sender.py:send():235] send: header
+2022-05-27 19:16:08,034 DEBUG   SenderThread:378116 [sender.py:send_request():249] send_request: check_version
+2022-05-27 19:16:08,119 DEBUG   SenderThread:378116 [sender.py:send():235] send: run
+2022-05-27 19:16:08,381 INFO    SenderThread:378116 [dir_watcher.py:__init__():169] watching files in: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/files
+2022-05-27 19:16:08,381 INFO    SenderThread:378116 [sender.py:_start_run_threads():809] run started: 3d8xb2qe with start time 1653668167
+2022-05-27 19:16:08,381 DEBUG   SenderThread:378116 [sender.py:send():235] send: summary
+2022-05-27 19:16:08,382 INFO    SenderThread:378116 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-05-27 19:16:08,383 DEBUG   HandlerThread:378116 [handler.py:handle_request():131] handle_request: run_start
+2022-05-27 19:16:09,382 INFO    Thread-8  :378116 [dir_watcher.py:_on_file_created():217] file/dir created: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/files/wandb-summary.json
+2022-05-27 19:16:09,451 DEBUG   HandlerThread:378116 [meta.py:__init__():36] meta init
+2022-05-27 19:16:09,451 DEBUG   HandlerThread:378116 [meta.py:__init__():50] meta init done
+2022-05-27 19:16:09,451 DEBUG   HandlerThread:378116 [meta.py:probe():210] probe
+2022-05-27 19:16:09,451 DEBUG   HandlerThread:378116 [meta.py:_setup_git():200] setup git
+2022-05-27 19:16:09,469 DEBUG   HandlerThread:378116 [meta.py:_setup_git():207] setup git done
+2022-05-27 19:16:09,469 DEBUG   HandlerThread:378116 [meta.py:_save_code():88] save code
+2022-05-27 19:16:09,477 DEBUG   HandlerThread:378116 [meta.py:_save_code():109] save code done
+2022-05-27 19:16:09,477 DEBUG   HandlerThread:378116 [meta.py:_save_patches():126] save patches
+2022-05-27 19:16:09,701 DEBUG   HandlerThread:378116 [meta.py:_save_patches():168] save patches done
+2022-05-27 19:16:09,701 DEBUG   HandlerThread:378116 [meta.py:_save_pip():54] save pip
+2022-05-27 19:16:09,702 DEBUG   HandlerThread:378116 [meta.py:_save_pip():68] save pip done
+2022-05-27 19:16:09,702 DEBUG   HandlerThread:378116 [meta.py:probe():248] probe done
+2022-05-27 19:16:09,707 DEBUG   SenderThread:378116 [sender.py:send():235] send: files
+2022-05-27 19:16:09,707 INFO    SenderThread:378116 [sender.py:_save_file():944] saving file wandb-metadata.json with policy now
+2022-05-27 19:16:09,708 INFO    SenderThread:378116 [sender.py:_save_file():944] saving file code/DD_package/main.py with policy now
+2022-05-27 19:16:09,709 INFO    SenderThread:378116 [sender.py:_save_file():944] saving file diff.patch with policy now
+2022-05-27 19:16:09,718 DEBUG   HandlerThread:378116 [handler.py:handle_request():131] handle_request: stop_status
+2022-05-27 19:16:09,721 DEBUG   SenderThread:378116 [sender.py:send_request():249] send_request: stop_status
+2022-05-27 19:16:09,984 WARNING MainThread:378116 [internal.py:wandb_internal():152] Internal process interrupt: 1
+2022-05-27 19:16:10,337 INFO    Thread-12 :378116 [upload_job.py:push():137] Uploaded file /tmp/tmpr60is3pfwandb/2zep290i-code/DD_package/main.py
+2022-05-27 19:16:10,361 INFO    Thread-11 :378116 [upload_job.py:push():137] Uploaded file /tmp/tmpr60is3pfwandb/37b3705m-wandb-metadata.json
+2022-05-27 19:16:10,383 INFO    Thread-8  :378116 [dir_watcher.py:_on_file_created():217] file/dir created: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/files/requirements.txt
+2022-05-27 19:16:10,384 INFO    Thread-8  :378116 [dir_watcher.py:_on_file_created():217] file/dir created: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/files/code/DD_package/main.py
+2022-05-27 19:16:10,384 INFO    Thread-8  :378116 [dir_watcher.py:_on_file_created():217] file/dir created: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/files/wandb-metadata.json
+2022-05-27 19:16:10,384 INFO    Thread-8  :378116 [dir_watcher.py:_on_file_created():217] file/dir created: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/files/diff.patch
+2022-05-27 19:16:10,385 INFO    Thread-8  :378116 [dir_watcher.py:_on_file_created():217] file/dir created: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/files/output.log
+2022-05-27 19:16:10,385 INFO    Thread-8  :378116 [dir_watcher.py:_on_file_created():217] file/dir created: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/files/code/DD_package
+2022-05-27 19:16:10,385 INFO    Thread-8  :378116 [dir_watcher.py:_on_file_created():217] file/dir created: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/files/code
+2022-05-27 19:16:10,786 INFO    Thread-13 :378116 [upload_job.py:push():137] Uploaded file /tmp/tmpr60is3pfwandb/y6tuz6yf-diff.patch
+2022-05-27 19:16:17,994 WARNING MainThread:378116 [internal.py:is_dead():380] Internal process exiting, parent pid 377987 disappeared
+2022-05-27 19:16:17,994 ERROR   MainThread:378116 [internal.py:wandb_internal():148] Internal process shutdown.
+2022-05-27 19:16:18,709 INFO    WriterThread:378116 [datastore.py:close():281] close: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/run-3d8xb2qe.wandb
+2022-05-27 19:16:18,729 INFO    HandlerThread:378116 [handler.py:finish():739] shutting down handler
+2022-05-27 19:16:18,933 INFO    SenderThread:378116 [sender.py:finish():1075] shutting down sender
+2022-05-27 19:16:18,933 INFO    SenderThread:378116 [dir_watcher.py:finish():283] shutting down directory watcher
+2022-05-27 19:16:19,388 INFO    SenderThread:378116 [dir_watcher.py:finish():313] scan: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/files
+2022-05-27 19:16:19,389 INFO    SenderThread:378116 [dir_watcher.py:finish():327] scan save: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/files/wandb-summary.json wandb-summary.json
+2022-05-27 19:16:19,389 INFO    SenderThread:378116 [dir_watcher.py:finish():327] scan save: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/files/wandb-metadata.json wandb-metadata.json
+2022-05-27 19:16:19,389 INFO    SenderThread:378116 [dir_watcher.py:finish():327] scan save: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/files/output.log output.log
+2022-05-27 19:16:19,390 INFO    SenderThread:378116 [dir_watcher.py:finish():327] scan save: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/files/requirements.txt requirements.txt
+2022-05-27 19:16:19,396 INFO    SenderThread:378116 [dir_watcher.py:finish():327] scan save: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/files/config.yaml config.yaml
+2022-05-27 19:16:19,396 INFO    SenderThread:378116 [dir_watcher.py:finish():327] scan save: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/files/diff.patch diff.patch
+2022-05-27 19:16:19,397 INFO    SenderThread:378116 [dir_watcher.py:finish():327] scan save: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/files/code/DD_package/main.py code/DD_package/main.py
+2022-05-27 19:16:19,397 INFO    SenderThread:378116 [file_pusher.py:finish():177] shutting down file pusher
+2022-05-27 19:16:19,397 INFO    SenderThread:378116 [file_pusher.py:join():182] waiting for file pusher
+2022-05-27 19:16:19,992 INFO    Thread-16 :378116 [upload_job.py:push():137] Uploaded file /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/files/config.yaml
+2022-05-27 19:16:20,009 INFO    Thread-14 :378116 [upload_job.py:push():137] Uploaded file /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/files/wandb-summary.json
+2022-05-27 19:16:20,014 INFO    Thread-15 :378116 [upload_job.py:push():137] Uploaded file /home/soroosh/Programmes/DD/DD_package/wandb/run-20220527_191607-3d8xb2qe/files/requirements.txt
+2022-05-27 19:16:20,569 INFO    MainThread:378116 [internal.py:handle_exit():79] Internal process exited

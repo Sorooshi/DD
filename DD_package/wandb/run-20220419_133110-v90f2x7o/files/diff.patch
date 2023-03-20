@@ -1,0 +1,1138 @@
+diff --git a/DD_package/notebooks/b03_feature_importance_regression_fix_demo.ipynb b/DD_package/notebooks/b03_feature_importance_regression_fix_demo.ipynb
+index e568742..fdbf7a1 100644
+--- a/DD_package/notebooks/b03_feature_importance_regression_fix_demo.ipynb
++++ b/DD_package/notebooks/b03_feature_importance_regression_fix_demo.ipynb
+@@ -10882,7 +10882,7 @@
+   {
+    "cell_type": "code",
+    "execution_count": 81,
+-   "id": "a33187f9",
++   "id": "0cbe48d7",
+    "metadata": {},
+    "outputs": [
+     {
+@@ -10992,39 +10992,10 @@
+   },
+   {
+    "cell_type": "code",
+-   "execution_count": 75,
++   "execution_count": 86,
+    "id": "f913fa37",
+    "metadata": {},
+-   "outputs": [
+-    {
+-     "ename": "IndexError",
+-     "evalue": "index 61911 is out of bounds for axis 0 with size 22535",
+-     "output_type": "error",
+-     "traceback": [
+-      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+-      "\u001b[0;31mIndexError\u001b[0m                                Traceback (most recent call last)",
+-      "\u001b[0;32m/tmp/ipykernel_155699/2190952116.py\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[0;32mfor\u001b[0m \u001b[0mn\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mnormals_rnd\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 2\u001b[0;31m     \u001b[0mshap\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mplots\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mforce\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mshap_values\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mn\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mshow\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mFalse\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmatplotlib\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mTrue\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      3\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      4\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+-      "\u001b[0;32m~/venv_Jan2022/lib/python3.9/site-packages/shap/_explanation.py\u001b[0m in \u001b[0;36m__getitem__\u001b[0;34m(self, item)\u001b[0m\n\u001b[1;32m    418\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mnew_self\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    419\u001b[0m             \u001b[0mnew_self\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mcopy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcopy\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 420\u001b[0;31m         \u001b[0mnew_self\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_s\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mnew_self\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_s\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m__getitem__\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mitem\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    421\u001b[0m         new_self.op_history.append({\n\u001b[1;32m    422\u001b[0m             \u001b[0;34m\"name\"\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0;34m\"__getitem__\"\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+-      "\u001b[0;32m~/venv_Jan2022/lib/python3.9/site-packages/slicer/slicer.py\u001b[0m in \u001b[0;36m__getitem__\u001b[0;34m(self, item)\u001b[0m\n\u001b[1;32m    110\u001b[0m                 \u001b[0mindex_slicer\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mAtomicSlicer\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mindex_tup\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmax_dim\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;36m1\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    111\u001b[0m                 \u001b[0mslicer_index\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mindex_slicer\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mtracked\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mdim\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 112\u001b[0;31m                 \u001b[0msliced_o\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mtracked\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mslicer_index\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    113\u001b[0m                 \u001b[0msliced_dim\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mresolve_dim\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mindex_tup\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mtracked\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mdim\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    114\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+-      "\u001b[0;32m~/venv_Jan2022/lib/python3.9/site-packages/slicer/slicer_internal.py\u001b[0m in \u001b[0;36m__getitem__\u001b[0;34m(self, item)\u001b[0m\n\u001b[1;32m     67\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     68\u001b[0m         \u001b[0;31m# Slice according to object type.\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 69\u001b[0;31m         \u001b[0;32mreturn\u001b[0m \u001b[0mUnifiedDataHandler\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mslice\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mo\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mindex_tup\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mmax_dim\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m     70\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     71\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+-      "\u001b[0;32m~/venv_Jan2022/lib/python3.9/site-packages/slicer/slicer_internal.py\u001b[0m in \u001b[0;36mslice\u001b[0;34m(cls, o, index_tup, max_dim)\u001b[0m\n\u001b[1;32m    580\u001b[0m         \u001b[0mtail_slice\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mcls\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mtype_map\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mo_type\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mtail_slice\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    581\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 582\u001b[0;31m         \u001b[0mis_element\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0msliced_o\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcut\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mhead_slice\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mo\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mindex_tup\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmax_dim\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    583\u001b[0m         \u001b[0mout\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mtail_slice\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0msliced_o\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mindex_tup\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mcut\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmax_dim\u001b[0m \u001b[0;34m-\u001b[0m \u001b[0mcut\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mis_element\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    584\u001b[0m         \u001b[0;32mreturn\u001b[0m \u001b[0mout\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+-      "\u001b[0;32m~/venv_Jan2022/lib/python3.9/site-packages/slicer/slicer_internal.py\u001b[0m in \u001b[0;36mhead_slice\u001b[0;34m(cls, o, index_tup, max_dim)\u001b[0m\n\u001b[1;32m    416\u001b[0m         \u001b[0mcut_index\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mindex_tup\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0mcut\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    417\u001b[0m         \u001b[0mis_element\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0many\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;32mTrue\u001b[0m \u001b[0;32mif\u001b[0m \u001b[0misinstance\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mx\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mint\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;32melse\u001b[0m \u001b[0;32mFalse\u001b[0m \u001b[0;32mfor\u001b[0m \u001b[0mx\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mcut_index\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 418\u001b[0;31m         \u001b[0msliced_o\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mo\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mcut_index\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    419\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    420\u001b[0m         \u001b[0;32mreturn\u001b[0m \u001b[0mis_element\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0msliced_o\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcut\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+-      "\u001b[0;31mIndexError\u001b[0m: index 61911 is out of bounds for axis 0 with size 22535"
+-     ]
+-    },
+-    {
+-     "data": {
+-      "image/png": "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e7yb0SpLly7V888/H+9mAACABhw5ckR/+9vfdMcdd2j16tXatm2bFixY0Kz/ffDBB3Xo0KEYtxBIDAQ1AAAAAIA2W7lypQoKCjRv3jxNmjRJb7zxhqZOndqs/z3zzDO1ZMmSGLcQSAwENQAAAACANisqKlLPnj0lSXv37lVFRYX69+/frP8dMWKEdu7cqZKSklg2EUgInJ4bADqhvXv3atGiRSopKdHIkSN14YUXyuv1qry8XC+88IL27Nkjn8+ngQMH6sILL1ROTo4k6X//+5+WLVum0tJSZWRk6Oyzz9ZJJ50kSXr//fe1cuVKnThxQv369dNFF12kLl261Hvuxx9/XMOHD9fpp59ed9/999+vmTNnatSoUVq0aJE2btyoyspK5eXladasWcrPz683n507d+r555/XzTffXHffPffco9mzZ2vw4MGybVsrV67U2rVrVVFRocGDB+vCCy9Uenp6lN9NAADwz3/+Uzt37tSuXbu0ePFiTZkyRQUFBXWP7969W08++aSuv/565ebm6sCBA3rkkUf0jW98Q927d5fX61WfPn20bds2jR8/Pm6vA3ADKmoAoBNav369rrjiCt1www06evSoli9fLkmybVvjx4/XTTfdpJtuukler1evvPKKJKmqqkqLFi3SV7/6Vc2bN0/XXnutevfuLUnatGmTVqxYocsvv1y33HKL8vPz9dxzzzX43OPGjdP69evrbh8+fFhFRUUaNmyYJKlfv3761re+pblz52rcuHF65plnVFNT0+LXuHr1am3atElXX321fvCDHygtLU0vv/xyi+cDAACadtVVVyk/P1+f+9znNG/ePB08eFDdunWre3zAgAE69dRT9eKLL6q6ulovvPCCzj77bHXv3r1umh49eujgwYPxaD7gKgQ1ANAJnX766crNzVV6erqmT59eF5xkZGRo9OjRSk5OVmpqqqZPn66dO3fW/Z9lWTp06JCqq6uVnZ1dV9783nvvaerUqerRo4c8Ho+mTZumAwcO6Pjx4/Wee+TIkSGPffjhhxo1apS8XlPkedJJJykjI0Mej0dnnnmmampqdOTIkRa/xvfee09nn322cnJy5PV6NXPmTH388cfy+XwtnhcAAGiZiooKpaamhtw3c+ZMVVRU6MEHH1R2drZOO+20kMdTUlJUUVHRns0EXImuTwDQCQW6MklSbm5uXX/w6upqLV68WJ988kndjlJlZaV8Pp9SUlJ06aWXatWqVVq4cKEGDBig888/X927d1dRUZEWL16s1157rW6+tm2rpKSkXven1NRUDR8+XBs2bNDUqVO1YcMGXXTRRXWPr1q1SuvWrVNJSYksy1JlZaXKyspa/BqLior01FNPybKsuvs8Ho9OnDgR8voBAED0paenq7KyMuS+pKQkjR8/XosWLdL5558f8h0tmerdtLS09mwm4EoENQDQCRUXF9ddLyoqUnZ2tiQTkhw9elTXXXedsrKydODAAf3tb3+rm3bo0KEaOnSoqqur9eabb2rhwoW65pprlJOTo2nTptWNV9OUsWPHatmyZcrPz1dNTY0GDRokSSosLNTKlSt15ZVXqmfPnrIsS3feeWeD80hOTlZ1dXXdbZ/Pp9LS0rrbOTk5uvjiizVw4MDmvzEAACAqevXqpaNHj4bcV1xcrGXLlumUU07Ra6+9puuuu66uolYy3aGbuy8BdGR0fQKATmjNmjUqLi5WeXm5VqxYobFjx0oyv2R5vV6lpaWpvLxcS5curfufEydOaPPmzXXTpKSkyOMxXyMTJ07UW2+9pUOHDkky5c4fffRRo88/bNgwHT9+XEuWLNGYMWPqflGrqqqSx+NRZmamfD6fli1bVu/XuIBu3bqppqZGW7ZsUW1trZYvX67a2tq6xydOnKg333yzrotVaWmpNm3a1Or3DAAANN+wYcNUWFhYd9u2bb344os65ZRTNHv2bGVlZYWcjrumpkb79+/XkCFD4tFcwFWoqAGATmjcuHF67LHHVFJSohEjRmj69OmSpDPOOEPPPfec7rrrLmVnZ2vy5Ml14YZt21q1apWef/55WZal3r1764ILLpAkjRo1SlVVVXr22WdVVFSk1NRUDRkyRGPGjGnw+b1er0aNGqX3339f55xzTt39Q4YM0dChQ/WXv/xFycnJmjx5snJzcxucR1pami644AItXLhQtm1rypQpIV2azjjjDEmqe52ZmZkaO3asRo4c2fY3EAAARNSnTx+lpqZqz5496t+/v1avXq3S0lKdffbZsixLl1xyie6//34NHz5c+fn52rx5swoKCuqqfIHOzLJtO95tAADEDhv55rOangQAAPg1uY+xbds2vfvuu5ozZ06TM3vwwQd18cUX152ooBF8V6NTIKgBgI6NjXzzsfMHAEDzxWMf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\n",
+-      "text/plain": [
+-       "<Figure size 1440x216 with 1 Axes>"
+-      ]
+-     },
+-     "metadata": {
+-      "needs_background": "light"
+-     },
+-     "output_type": "display_data"
+-    }
+-   ],
++   "outputs": [],
+    "source": [
+     "for n in normals_rnd:\n",
+     "    shap.plots.force(shap_values[n], show=False, matplotlib=True)\n",
+@@ -11034,27 +11005,10 @@
+   },
+   {
+    "cell_type": "code",
+-   "execution_count": 76,
++   "execution_count": 83,
+    "id": "44e99272",
+    "metadata": {},
+-   "outputs": [
+-    {
+-     "ename": "IndexError",
+-     "evalue": "index 200153 is out of bounds for axis 0 with size 22535",
+-     "output_type": "error",
+-     "traceback": [
+-      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+-      "\u001b[0;31mIndexError\u001b[0m                                Traceback (most recent call last)",
+-      "\u001b[0;32m/tmp/ipykernel_155699/3530184698.py\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[0;32mfor\u001b[0m \u001b[0mr\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mat_risks_rnd\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 2\u001b[0;31m     \u001b[0mshap\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mplots\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mforce\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mshap_values\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mr\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mshow\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mFalse\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmatplotlib\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mTrue\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      3\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      4\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+-      "\u001b[0;32m~/venv_Jan2022/lib/python3.9/site-packages/shap/_explanation.py\u001b[0m in \u001b[0;36m__getitem__\u001b[0;34m(self, item)\u001b[0m\n\u001b[1;32m    418\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mnew_self\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    419\u001b[0m             \u001b[0mnew_self\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mcopy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcopy\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 420\u001b[0;31m         \u001b[0mnew_self\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_s\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mnew_self\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_s\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m__getitem__\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mitem\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    421\u001b[0m         new_self.op_history.append({\n\u001b[1;32m    422\u001b[0m             \u001b[0;34m\"name\"\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0;34m\"__getitem__\"\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+-      "\u001b[0;32m~/venv_Jan2022/lib/python3.9/site-packages/slicer/slicer.py\u001b[0m in \u001b[0;36m__getitem__\u001b[0;34m(self, item)\u001b[0m\n\u001b[1;32m    110\u001b[0m                 \u001b[0mindex_slicer\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mAtomicSlicer\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mindex_tup\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmax_dim\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;36m1\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    111\u001b[0m                 \u001b[0mslicer_index\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mindex_slicer\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mtracked\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mdim\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 112\u001b[0;31m                 \u001b[0msliced_o\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mtracked\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mslicer_index\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    113\u001b[0m                 \u001b[0msliced_dim\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mresolve_dim\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mindex_tup\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mtracked\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mdim\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    114\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+-      "\u001b[0;32m~/venv_Jan2022/lib/python3.9/site-packages/slicer/slicer_internal.py\u001b[0m in \u001b[0;36m__getitem__\u001b[0;34m(self, item)\u001b[0m\n\u001b[1;32m     67\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     68\u001b[0m         \u001b[0;31m# Slice according to object type.\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 69\u001b[0;31m         \u001b[0;32mreturn\u001b[0m \u001b[0mUnifiedDataHandler\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mslice\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mo\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mindex_tup\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mmax_dim\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m     70\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     71\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+-      "\u001b[0;32m~/venv_Jan2022/lib/python3.9/site-packages/slicer/slicer_internal.py\u001b[0m in \u001b[0;36mslice\u001b[0;34m(cls, o, index_tup, max_dim)\u001b[0m\n\u001b[1;32m    580\u001b[0m         \u001b[0mtail_slice\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mcls\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mtype_map\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mo_type\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mtail_slice\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    581\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 582\u001b[0;31m         \u001b[0mis_element\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0msliced_o\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcut\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mhead_slice\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mo\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mindex_tup\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmax_dim\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    583\u001b[0m         \u001b[0mout\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mtail_slice\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0msliced_o\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mindex_tup\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mcut\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmax_dim\u001b[0m \u001b[0;34m-\u001b[0m \u001b[0mcut\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mis_element\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    584\u001b[0m         \u001b[0;32mreturn\u001b[0m \u001b[0mout\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+-      "\u001b[0;32m~/venv_Jan2022/lib/python3.9/site-packages/slicer/slicer_internal.py\u001b[0m in \u001b[0;36mhead_slice\u001b[0;34m(cls, o, index_tup, max_dim)\u001b[0m\n\u001b[1;32m    416\u001b[0m         \u001b[0mcut_index\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mindex_tup\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0mcut\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    417\u001b[0m         \u001b[0mis_element\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0many\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;32mTrue\u001b[0m \u001b[0;32mif\u001b[0m \u001b[0misinstance\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mx\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mint\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;32melse\u001b[0m \u001b[0;32mFalse\u001b[0m \u001b[0;32mfor\u001b[0m \u001b[0mx\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mcut_index\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 418\u001b[0;31m         \u001b[0msliced_o\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mo\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mcut_index\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    419\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    420\u001b[0m         \u001b[0;32mreturn\u001b[0m \u001b[0mis_element\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0msliced_o\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcut\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+-      "\u001b[0;31mIndexError\u001b[0m: index 200153 is out of bounds for axis 0 with size 22535"
+-     ]
+-    }
+-   ],
++   "outputs": [],
+    "source": [
+     "for r in at_risks_rnd:\n",
+     "    shap.plots.force(shap_values[r], show=False, matplotlib=True)\n",
+@@ -11064,27 +11018,10 @@
+   },
+   {
+    "cell_type": "code",
+-   "execution_count": 77,
++   "execution_count": 84,
+    "id": "f7ddb7e8",
+    "metadata": {},
+-   "outputs": [
+-    {
+-     "ename": "IndexError",
+-     "evalue": "index 109080 is out of bounds for axis 0 with size 22535",
+-     "output_type": "error",
+-     "traceback": [
+-      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+-      "\u001b[0;31mIndexError\u001b[0m                                Traceback (most recent call last)",
+-      "\u001b[0;32m/tmp/ipykernel_155699/911887295.py\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[0;32mfor\u001b[0m \u001b[0md\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mdyslexics_rnd\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 2\u001b[0;31m     \u001b[0mshap\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mplots\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mforce\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mshap_values\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0md\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mshow\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mFalse\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmatplotlib\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mTrue\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      3\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      4\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+-      "\u001b[0;32m~/venv_Jan2022/lib/python3.9/site-packages/shap/_explanation.py\u001b[0m in \u001b[0;36m__getitem__\u001b[0;34m(self, item)\u001b[0m\n\u001b[1;32m    418\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mnew_self\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    419\u001b[0m             \u001b[0mnew_self\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mcopy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcopy\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 420\u001b[0;31m         \u001b[0mnew_self\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_s\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mnew_self\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_s\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m__getitem__\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mitem\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    421\u001b[0m         new_self.op_history.append({\n\u001b[1;32m    422\u001b[0m             \u001b[0;34m\"name\"\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0;34m\"__getitem__\"\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+-      "\u001b[0;32m~/venv_Jan2022/lib/python3.9/site-packages/slicer/slicer.py\u001b[0m in \u001b[0;36m__getitem__\u001b[0;34m(self, item)\u001b[0m\n\u001b[1;32m    110\u001b[0m                 \u001b[0mindex_slicer\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mAtomicSlicer\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mindex_tup\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmax_dim\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;36m1\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    111\u001b[0m                 \u001b[0mslicer_index\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mindex_slicer\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mtracked\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mdim\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 112\u001b[0;31m                 \u001b[0msliced_o\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mtracked\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mslicer_index\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    113\u001b[0m                 \u001b[0msliced_dim\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mresolve_dim\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mindex_tup\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mtracked\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mdim\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    114\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+-      "\u001b[0;32m~/venv_Jan2022/lib/python3.9/site-packages/slicer/slicer_internal.py\u001b[0m in \u001b[0;36m__getitem__\u001b[0;34m(self, item)\u001b[0m\n\u001b[1;32m     67\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     68\u001b[0m         \u001b[0;31m# Slice according to object type.\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 69\u001b[0;31m         \u001b[0;32mreturn\u001b[0m \u001b[0mUnifiedDataHandler\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mslice\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mo\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mindex_tup\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mmax_dim\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m     70\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     71\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+-      "\u001b[0;32m~/venv_Jan2022/lib/python3.9/site-packages/slicer/slicer_internal.py\u001b[0m in \u001b[0;36mslice\u001b[0;34m(cls, o, index_tup, max_dim)\u001b[0m\n\u001b[1;32m    580\u001b[0m         \u001b[0mtail_slice\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mcls\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mtype_map\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mo_type\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mtail_slice\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    581\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 582\u001b[0;31m         \u001b[0mis_element\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0msliced_o\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcut\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mhead_slice\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mo\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mindex_tup\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmax_dim\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    583\u001b[0m         \u001b[0mout\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mtail_slice\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0msliced_o\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mindex_tup\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mcut\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmax_dim\u001b[0m \u001b[0;34m-\u001b[0m \u001b[0mcut\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mis_element\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    584\u001b[0m         \u001b[0;32mreturn\u001b[0m \u001b[0mout\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+-      "\u001b[0;32m~/venv_Jan2022/lib/python3.9/site-packages/slicer/slicer_internal.py\u001b[0m in \u001b[0;36mhead_slice\u001b[0;34m(cls, o, index_tup, max_dim)\u001b[0m\n\u001b[1;32m    416\u001b[0m         \u001b[0mcut_index\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mindex_tup\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0mcut\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    417\u001b[0m         \u001b[0mis_element\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0many\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;32mTrue\u001b[0m \u001b[0;32mif\u001b[0m \u001b[0misinstance\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mx\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mint\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;32melse\u001b[0m \u001b[0;32mFalse\u001b[0m \u001b[0;32mfor\u001b[0m \u001b[0mx\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mcut_index\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 418\u001b[0;31m         \u001b[0msliced_o\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mo\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mcut_index\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    419\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    420\u001b[0m         \u001b[0;32mreturn\u001b[0m \u001b[0mis_element\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0msliced_o\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcut\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+-      "\u001b[0;31mIndexError\u001b[0m: index 109080 is out of bounds for axis 0 with size 22535"
+-     ]
+-    }
+-   ],
++   "outputs": [],
+    "source": [
+     "for d in dyslexics_rnd:\n",
+     "    shap.plots.force(shap_values[d], show=False, matplotlib=True)\n",
+diff --git a/Figures/Histograms/dd_demo-a_clu--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_demo-a_clu--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index ee89dda..0000000
+Binary files a/Figures/Histograms/dd_demo-a_clu--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-a_clu--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_demo-a_clu--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index fc466a7..0000000
+Binary files a/Figures/Histograms/dd_demo-a_clu--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-ab_cls--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_demo-ab_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 5bcea75..0000000
+Binary files a/Figures/Histograms/dd_demo-ab_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-ab_cls--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_demo-ab_cls--shuffled:True--exclude at risk:0.png
+index 6c1b560..94dda69 100644
+Binary files a/Figures/Histograms/dd_demo-ab_cls--shuffled:True--exclude at risk:0.png and b/Figures/Histograms/dd_demo-ab_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Histograms/dd_demo-ab_reg-False.png b/Figures/Histograms/dd_demo-ab_reg-False.png
+deleted file mode 100644
+index 0131e7a..0000000
+Binary files a/Figures/Histograms/dd_demo-ab_reg-False.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-ab_reg-True-1.png b/Figures/Histograms/dd_demo-ab_reg-True-1.png
+deleted file mode 100644
+index 4ebf13c..0000000
+Binary files a/Figures/Histograms/dd_demo-ab_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-ab_reg-True-2.png b/Figures/Histograms/dd_demo-ab_reg-True-2.png
+deleted file mode 100644
+index ff59b5a..0000000
+Binary files a/Figures/Histograms/dd_demo-ab_reg-True-2.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-ab_reg-True-4.png b/Figures/Histograms/dd_demo-ab_reg-True-4.png
+deleted file mode 100644
+index 44a704c..0000000
+Binary files a/Figures/Histograms/dd_demo-ab_reg-True-4.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-ap_clu--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_demo-ap_clu--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 885c285..0000000
+Binary files a/Figures/Histograms/dd_demo-ap_clu--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-ap_clu--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_demo-ap_clu--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index 3ec5bd8..0000000
+Binary files a/Figures/Histograms/dd_demo-ap_clu--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-bg_cls--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_demo-bg_cls--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index cb1d0e4..0000000
+Binary files a/Figures/Histograms/dd_demo-bg_cls--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-br_reg--shuffled:True--exclude at risk:True.png b/Figures/Histograms/dd_demo-br_reg--shuffled:True--exclude at risk:True.png
+deleted file mode 100644
+index 515eb69..0000000
+Binary files a/Figures/Histograms/dd_demo-br_reg--shuffled:True--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-br_reg-False.png b/Figures/Histograms/dd_demo-br_reg-False.png
+deleted file mode 100644
+index fe6a2dd..0000000
+Binary files a/Figures/Histograms/dd_demo-br_reg-False.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-br_reg-True-1.png b/Figures/Histograms/dd_demo-br_reg-True-1.png
+deleted file mode 100644
+index 18cce9e..0000000
+Binary files a/Figures/Histograms/dd_demo-br_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-cnb_cls--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_demo-cnb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 272cf5a..0000000
+Binary files a/Figures/Histograms/dd_demo-cnb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-cnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_demo-cnb_cls--shuffled:True--exclude at risk:0.png
+index d5bbb88..1b6e1ae 100644
+Binary files a/Figures/Histograms/dd_demo-cnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Histograms/dd_demo-cnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Histograms/dd_demo-dbs_clu--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_demo-dbs_clu--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 4aabfc9..0000000
+Binary files a/Figures/Histograms/dd_demo-dbs_clu--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-dbs_clu--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_demo-dbs_clu--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index c0253e5..0000000
+Binary files a/Figures/Histograms/dd_demo-dbs_clu--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-gb_cls--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_demo-gb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index a5a9840..0000000
+Binary files a/Figures/Histograms/dd_demo-gb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-gb_cls--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_demo-gb_cls--shuffled:True--exclude at risk:0.png
+index 14d4609..3e14a2b 100644
+Binary files a/Figures/Histograms/dd_demo-gb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Histograms/dd_demo-gb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Histograms/dd_demo-gb_reg--shuffled:False--exclude at risk:True.png b/Figures/Histograms/dd_demo-gb_reg--shuffled:False--exclude at risk:True.png
+deleted file mode 100644
+index 6c8422f..0000000
+Binary files a/Figures/Histograms/dd_demo-gb_reg--shuffled:False--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-gb_reg-False.png b/Figures/Histograms/dd_demo-gb_reg-False.png
+deleted file mode 100644
+index f0fc80b..0000000
+Binary files a/Figures/Histograms/dd_demo-gb_reg-False.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-gb_reg-True-1.png b/Figures/Histograms/dd_demo-gb_reg-True-1.png
+deleted file mode 100644
+index 13a0296..0000000
+Binary files a/Figures/Histograms/dd_demo-gb_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-gb_reg-True-2.png b/Figures/Histograms/dd_demo-gb_reg-True-2.png
+deleted file mode 100644
+index a45bc72..0000000
+Binary files a/Figures/Histograms/dd_demo-gb_reg-True-2.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-gm_clu--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_demo-gm_clu--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 9ad5aba..0000000
+Binary files a/Figures/Histograms/dd_demo-gm_clu--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-gm_clu--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_demo-gm_clu--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index 1aa95fb..0000000
+Binary files a/Figures/Histograms/dd_demo-gm_clu--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-gnb_cls--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_demo-gnb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index abc1fe8..0000000
+Binary files a/Figures/Histograms/dd_demo-gnb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-km_clu--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_demo-km_clu--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 1caa859..0000000
+Binary files a/Figures/Histograms/dd_demo-km_clu--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-km_clu--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_demo-km_clu--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index 7adfc79..0000000
+Binary files a/Figures/Histograms/dd_demo-km_clu--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-knn_cls--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_demo-knn_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index bb9a7a3..0000000
+Binary files a/Figures/Histograms/dd_demo-knn_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-knn_reg--shuffled:True--exclude at risk:True.png b/Figures/Histograms/dd_demo-knn_reg--shuffled:True--exclude at risk:True.png
+deleted file mode 100644
+index b18259c..0000000
+Binary files a/Figures/Histograms/dd_demo-knn_reg--shuffled:True--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-knn_reg-False.png b/Figures/Histograms/dd_demo-knn_reg-False.png
+deleted file mode 100644
+index bb14800..0000000
+Binary files a/Figures/Histograms/dd_demo-knn_reg-False.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-knn_reg-True-1.png b/Figures/Histograms/dd_demo-knn_reg-True-1.png
+deleted file mode 100644
+index 31a8aab..0000000
+Binary files a/Figures/Histograms/dd_demo-knn_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-l_cls--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_demo-l_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 29546eb..0000000
+Binary files a/Figures/Histograms/dd_demo-l_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-l_cls--shuffled:False--exclude at risk:True.png b/Figures/Histograms/dd_demo-l_cls--shuffled:False--exclude at risk:True.png
+deleted file mode 100644
+index f1f2cb9..0000000
+Binary files a/Figures/Histograms/dd_demo-l_cls--shuffled:False--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-l_cls--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_demo-l_cls--shuffled:True--exclude at risk:0.png
+index 7101a8d..3b76cf9 100644
+Binary files a/Figures/Histograms/dd_demo-l_cls--shuffled:True--exclude at risk:0.png and b/Figures/Histograms/dd_demo-l_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Histograms/dd_demo-l_cls--shuffled:True--exclude at risk:True.png b/Figures/Histograms/dd_demo-l_cls--shuffled:True--exclude at risk:True.png
+index 0d66a71..31228a4 100644
+Binary files a/Figures/Histograms/dd_demo-l_cls--shuffled:True--exclude at risk:True.png and b/Figures/Histograms/dd_demo-l_cls--shuffled:True--exclude at risk:True.png differ
+diff --git a/Figures/Histograms/dd_demo-l_reg--shuffled:False--exclude at risk:True.png b/Figures/Histograms/dd_demo-l_reg--shuffled:False--exclude at risk:True.png
+index 9429764..46e9196 100644
+Binary files a/Figures/Histograms/dd_demo-l_reg--shuffled:False--exclude at risk:True.png and b/Figures/Histograms/dd_demo-l_reg--shuffled:False--exclude at risk:True.png differ
+diff --git a/Figures/Histograms/dd_demo-l_reg--shuffled:True--exclude at risk:True.png b/Figures/Histograms/dd_demo-l_reg--shuffled:True--exclude at risk:True.png
+index 8f19035..8d7f22e 100644
+Binary files a/Figures/Histograms/dd_demo-l_reg--shuffled:True--exclude at risk:True.png and b/Figures/Histograms/dd_demo-l_reg--shuffled:True--exclude at risk:True.png differ
+diff --git a/Figures/Histograms/dd_demo-l_reg-False.png b/Figures/Histograms/dd_demo-l_reg-False.png
+deleted file mode 100644
+index df98a79..0000000
+Binary files a/Figures/Histograms/dd_demo-l_reg-False.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-l_reg-True-1.png b/Figures/Histograms/dd_demo-l_reg-True-1.png
+deleted file mode 100644
+index 9660839..0000000
+Binary files a/Figures/Histograms/dd_demo-l_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-mlp_cls--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_demo-mlp_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index d8bd3ce..0000000
+Binary files a/Figures/Histograms/dd_demo-mlp_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-mlp_cls--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_demo-mlp_cls--shuffled:True--exclude at risk:0.png
+index c7a6f79..d4cee27 100644
+Binary files a/Figures/Histograms/dd_demo-mlp_cls--shuffled:True--exclude at risk:0.png and b/Figures/Histograms/dd_demo-mlp_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Histograms/dd_demo-mlp_reg-False.png b/Figures/Histograms/dd_demo-mlp_reg-False.png
+deleted file mode 100644
+index cc5446d..0000000
+Binary files a/Figures/Histograms/dd_demo-mlp_reg-False.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-mlp_reg-True.png b/Figures/Histograms/dd_demo-mlp_reg-True.png
+deleted file mode 100644
+index ef4f15a..0000000
+Binary files a/Figures/Histograms/dd_demo-mlp_reg-True.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-mnb_cls--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_demo-mnb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index ae76751..0000000
+Binary files a/Figures/Histograms/dd_demo-mnb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-ms_clu--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_demo-ms_clu--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 012844b..0000000
+Binary files a/Figures/Histograms/dd_demo-ms_clu--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-ms_clu--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_demo-ms_clu--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index 6feb9e0..0000000
+Binary files a/Figures/Histograms/dd_demo-ms_clu--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-rf_cls--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_demo-rf_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 3dd6dec..0000000
+Binary files a/Figures/Histograms/dd_demo-rf_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-rf_cls--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_demo-rf_cls--shuffled:True--exclude at risk:0.png
+index 12282bd..b77466d 100644
+Binary files a/Figures/Histograms/dd_demo-rf_cls--shuffled:True--exclude at risk:0.png and b/Figures/Histograms/dd_demo-rf_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Histograms/dd_demo-rf_cls--shuffled:True--exclude at risk:True.png b/Figures/Histograms/dd_demo-rf_cls--shuffled:True--exclude at risk:True.png
+deleted file mode 100644
+index 567ac5f..0000000
+Binary files a/Figures/Histograms/dd_demo-rf_cls--shuffled:True--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-rf_reg--shuffled:True--exclude at risk:True.png b/Figures/Histograms/dd_demo-rf_reg--shuffled:True--exclude at risk:True.png
+deleted file mode 100644
+index 30ac6fa..0000000
+Binary files a/Figures/Histograms/dd_demo-rf_reg--shuffled:True--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-rf_reg-False.png b/Figures/Histograms/dd_demo-rf_reg-False.png
+deleted file mode 100644
+index 0da5e1f..0000000
+Binary files a/Figures/Histograms/dd_demo-rf_reg-False.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-rf_reg-True-1.png b/Figures/Histograms/dd_demo-rf_reg-True-1.png
+deleted file mode 100644
+index 67a72ec..0000000
+Binary files a/Figures/Histograms/dd_demo-rf_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-rf_reg-True-2.png b/Figures/Histograms/dd_demo-rf_reg-True-2.png
+deleted file mode 100644
+index 8f4065c..0000000
+Binary files a/Figures/Histograms/dd_demo-rf_reg-True-2.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-s_clu--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_demo-s_clu--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 8438d14..0000000
+Binary files a/Figures/Histograms/dd_demo-s_clu--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-s_clu--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_demo-s_clu--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index 5ae1115..0000000
+Binary files a/Figures/Histograms/dd_demo-s_clu--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-sv_cls--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_demo-sv_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 0f676f7..0000000
+Binary files a/Figures/Histograms/dd_demo-sv_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-sv_cls--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_demo-sv_cls--shuffled:True--exclude at risk:0.png
+index 16971be..7127faf 100644
+Binary files a/Figures/Histograms/dd_demo-sv_cls--shuffled:True--exclude at risk:0.png and b/Figures/Histograms/dd_demo-sv_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Histograms/dd_demo-sv_reg--shuffled:True--exclude at risk:True.png b/Figures/Histograms/dd_demo-sv_reg--shuffled:True--exclude at risk:True.png
+deleted file mode 100644
+index 3209ac9..0000000
+Binary files a/Figures/Histograms/dd_demo-sv_reg--shuffled:True--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-sv_reg-False.png b/Figures/Histograms/dd_demo-sv_reg-False.png
+deleted file mode 100644
+index 26d5c1b..0000000
+Binary files a/Figures/Histograms/dd_demo-sv_reg-False.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-sv_reg-True-1.png b/Figures/Histograms/dd_demo-sv_reg-True-1.png
+deleted file mode 100644
+index 403a69c..0000000
+Binary files a/Figures/Histograms/dd_demo-sv_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-sv_reg-True-2.png b/Figures/Histograms/dd_demo-sv_reg-True-2.png
+deleted file mode 100644
+index 2919f14..0000000
+Binary files a/Figures/Histograms/dd_demo-sv_reg-True-2.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-sv_reg-True-5.png b/Figures/Histograms/dd_demo-sv_reg-True-5.png
+deleted file mode 100644
+index 5a0b43b..0000000
+Binary files a/Figures/Histograms/dd_demo-sv_reg-True-5.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-xgb_cls--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_demo-xgb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 52526a4..0000000
+Binary files a/Figures/Histograms/dd_demo-xgb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-xgb_cls--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_demo-xgb_cls--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index 953ed49..0000000
+Binary files a/Figures/Histograms/dd_demo-xgb_cls--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-xgb_reg-False.png b/Figures/Histograms/dd_demo-xgb_reg-False.png
+deleted file mode 100644
+index dd1eeca..0000000
+Binary files a/Figures/Histograms/dd_demo-xgb_reg-False.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-xgb_reg-True-1.png b/Figures/Histograms/dd_demo-xgb_reg-True-1.png
+deleted file mode 100644
+index 97b51d0..0000000
+Binary files a/Figures/Histograms/dd_demo-xgb_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_demo-xgb_reg-True-2.png b/Figures/Histograms/dd_demo-xgb_reg-True-2.png
+deleted file mode 100644
+index 1f650a1..0000000
+Binary files a/Figures/Histograms/dd_demo-xgb_reg-True-2.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_fix_demo-ab_cls--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_fix_demo-ab_cls--shuffled:False--exclude at risk:0.png
+index 9f6f41e..17cd2ab 100644
+Binary files a/Figures/Histograms/dd_fix_demo-ab_cls--shuffled:False--exclude at risk:0.png and b/Figures/Histograms/dd_fix_demo-ab_cls--shuffled:False--exclude at risk:0.png differ
+diff --git a/Figures/Histograms/dd_fix_demo-ab_cls--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_fix_demo-ab_cls--shuffled:True--exclude at risk:0.png
+index cc185f5..a4c6409 100644
+Binary files a/Figures/Histograms/dd_fix_demo-ab_cls--shuffled:True--exclude at risk:0.png and b/Figures/Histograms/dd_fix_demo-ab_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Histograms/dd_fix_demo-cnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_fix_demo-cnb_cls--shuffled:True--exclude at risk:0.png
+index bb8003f..fade4c3 100644
+Binary files a/Figures/Histograms/dd_fix_demo-cnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Histograms/dd_fix_demo-cnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Histograms/dd_fix_demo-gnb_cls--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_fix_demo-gnb_cls--shuffled:False--exclude at risk:0.png
+index 8f513d3..ef158bb 100644
+Binary files a/Figures/Histograms/dd_fix_demo-gnb_cls--shuffled:False--exclude at risk:0.png and b/Figures/Histograms/dd_fix_demo-gnb_cls--shuffled:False--exclude at risk:0.png differ
+diff --git a/Figures/Histograms/dd_fix_demo-gnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_fix_demo-gnb_cls--shuffled:True--exclude at risk:0.png
+index 98b7ad5..d298101 100644
+Binary files a/Figures/Histograms/dd_fix_demo-gnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Histograms/dd_fix_demo-gnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Histograms/dd_fix_demo-l_cls--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_fix_demo-l_cls--shuffled:False--exclude at risk:0.png
+index de10271..887b49b 100644
+Binary files a/Figures/Histograms/dd_fix_demo-l_cls--shuffled:False--exclude at risk:0.png and b/Figures/Histograms/dd_fix_demo-l_cls--shuffled:False--exclude at risk:0.png differ
+diff --git a/Figures/Histograms/dd_fix_demo-l_cls--shuffled:False--exclude at risk:True.png b/Figures/Histograms/dd_fix_demo-l_cls--shuffled:False--exclude at risk:True.png
+index 1ad2462..254ef2f 100644
+Binary files a/Figures/Histograms/dd_fix_demo-l_cls--shuffled:False--exclude at risk:True.png and b/Figures/Histograms/dd_fix_demo-l_cls--shuffled:False--exclude at risk:True.png differ
+diff --git a/Figures/Histograms/dd_fix_demo-l_cls--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_fix_demo-l_cls--shuffled:True--exclude at risk:0.png
+index 6fb2cd1..203e627 100644
+Binary files a/Figures/Histograms/dd_fix_demo-l_cls--shuffled:True--exclude at risk:0.png and b/Figures/Histograms/dd_fix_demo-l_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Histograms/dd_fix_demo-l_cls--shuffled:True--exclude at risk:True.png b/Figures/Histograms/dd_fix_demo-l_cls--shuffled:True--exclude at risk:True.png
+index 1fe88a5..ed647bc 100644
+Binary files a/Figures/Histograms/dd_fix_demo-l_cls--shuffled:True--exclude at risk:True.png and b/Figures/Histograms/dd_fix_demo-l_cls--shuffled:True--exclude at risk:True.png differ
+diff --git a/Figures/Histograms/dd_fix_demo-mnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_fix_demo-mnb_cls--shuffled:True--exclude at risk:0.png
+index 5cdbf1a..193c29a 100644
+Binary files a/Figures/Histograms/dd_fix_demo-mnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Histograms/dd_fix_demo-mnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Histograms/dd_ia_demo-ab_cls--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_ia_demo-ab_cls--shuffled:True--exclude at risk:0.png
+index 1402bca..5e5450d 100644
+Binary files a/Figures/Histograms/dd_ia_demo-ab_cls--shuffled:True--exclude at risk:0.png and b/Figures/Histograms/dd_ia_demo-ab_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Histograms/dd_ia_demo-cnb_cls--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_ia_demo-cnb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 6fcacf7..0000000
+Binary files a/Figures/Histograms/dd_ia_demo-cnb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_ia_demo-cnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_ia_demo-cnb_cls--shuffled:True--exclude at risk:0.png
+index 6dde4e4..3e07800 100644
+Binary files a/Figures/Histograms/dd_ia_demo-cnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Histograms/dd_ia_demo-cnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Histograms/dd_ia_demo-gnb_cls--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_ia_demo-gnb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 667c112..0000000
+Binary files a/Figures/Histograms/dd_ia_demo-gnb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_ia_demo-gnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_ia_demo-gnb_cls--shuffled:True--exclude at risk:0.png
+index b24c8c5..f55ac39 100644
+Binary files a/Figures/Histograms/dd_ia_demo-gnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Histograms/dd_ia_demo-gnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Histograms/dd_ia_demo-knn_cls--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_ia_demo-knn_cls--shuffled:True--exclude at risk:0.png
+index d119671..fd87418 100644
+Binary files a/Figures/Histograms/dd_ia_demo-knn_cls--shuffled:True--exclude at risk:0.png and b/Figures/Histograms/dd_ia_demo-knn_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Histograms/dd_ia_demo-l_cls--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_ia_demo-l_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index e5cf62f..0000000
+Binary files a/Figures/Histograms/dd_ia_demo-l_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_ia_demo-l_cls--shuffled:False--exclude at risk:True.png b/Figures/Histograms/dd_ia_demo-l_cls--shuffled:False--exclude at risk:True.png
+deleted file mode 100644
+index 319e3bf..0000000
+Binary files a/Figures/Histograms/dd_ia_demo-l_cls--shuffled:False--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_ia_demo-l_cls--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_ia_demo-l_cls--shuffled:True--exclude at risk:0.png
+index be3da55..bec2d53 100644
+Binary files a/Figures/Histograms/dd_ia_demo-l_cls--shuffled:True--exclude at risk:0.png and b/Figures/Histograms/dd_ia_demo-l_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Histograms/dd_ia_demo-l_cls--shuffled:True--exclude at risk:True.png b/Figures/Histograms/dd_ia_demo-l_cls--shuffled:True--exclude at risk:True.png
+index b98f4d3..6e0b77b 100644
+Binary files a/Figures/Histograms/dd_ia_demo-l_cls--shuffled:True--exclude at risk:True.png and b/Figures/Histograms/dd_ia_demo-l_cls--shuffled:True--exclude at risk:True.png differ
+diff --git a/Figures/Histograms/dd_ia_demo-mnb_cls--shuffled:False--exclude at risk:0.png b/Figures/Histograms/dd_ia_demo-mnb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 2ec5e7b..0000000
+Binary files a/Figures/Histograms/dd_ia_demo-mnb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Histograms/dd_ia_demo-mnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Histograms/dd_ia_demo-mnb_cls--shuffled:True--exclude at risk:0.png
+index b3179ec..32947f5 100644
+Binary files a/Figures/Histograms/dd_ia_demo-mnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Histograms/dd_ia_demo-mnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_demo-a_clu--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_demo-a_clu--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index ae70d9f..0000000
+Binary files a/Figures/Plots/dd_demo-a_clu--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-a_clu--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_demo-a_clu--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index c84ccb9..0000000
+Binary files a/Figures/Plots/dd_demo-a_clu--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-ab_cls--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_demo-ab_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index ca5f147..0000000
+Binary files a/Figures/Plots/dd_demo-ab_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-ab_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_demo-ab_cls--shuffled:True--exclude at risk:0.png
+index f9cbc95..928161e 100644
+Binary files a/Figures/Plots/dd_demo-ab_cls--shuffled:True--exclude at risk:0.png and b/Figures/Plots/dd_demo-ab_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_demo-ab_reg-False.png b/Figures/Plots/dd_demo-ab_reg-False.png
+deleted file mode 100644
+index cf4ad75..0000000
+Binary files a/Figures/Plots/dd_demo-ab_reg-False.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-ab_reg-True-1.png b/Figures/Plots/dd_demo-ab_reg-True-1.png
+deleted file mode 100644
+index 479ea3a..0000000
+Binary files a/Figures/Plots/dd_demo-ab_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-ab_reg-True-2.png b/Figures/Plots/dd_demo-ab_reg-True-2.png
+deleted file mode 100644
+index 764aaa6..0000000
+Binary files a/Figures/Plots/dd_demo-ab_reg-True-2.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-ab_reg-True-4.png b/Figures/Plots/dd_demo-ab_reg-True-4.png
+deleted file mode 100644
+index 9182328..0000000
+Binary files a/Figures/Plots/dd_demo-ab_reg-True-4.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-ap_clu--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_demo-ap_clu--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index f66590a..0000000
+Binary files a/Figures/Plots/dd_demo-ap_clu--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-ap_clu--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_demo-ap_clu--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index cb7d037..0000000
+Binary files a/Figures/Plots/dd_demo-ap_clu--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-bg_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_demo-bg_cls--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index 59cd4b3..0000000
+Binary files a/Figures/Plots/dd_demo-bg_cls--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-br_reg--shuffled:True--exclude at risk:True.png b/Figures/Plots/dd_demo-br_reg--shuffled:True--exclude at risk:True.png
+deleted file mode 100644
+index 2908734..0000000
+Binary files a/Figures/Plots/dd_demo-br_reg--shuffled:True--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-br_reg-False.png b/Figures/Plots/dd_demo-br_reg-False.png
+deleted file mode 100644
+index 7b412bf..0000000
+Binary files a/Figures/Plots/dd_demo-br_reg-False.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-br_reg-True-1.png b/Figures/Plots/dd_demo-br_reg-True-1.png
+deleted file mode 100644
+index 2b0aa1f..0000000
+Binary files a/Figures/Plots/dd_demo-br_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-cnb_cls--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_demo-cnb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 3f7fad1..0000000
+Binary files a/Figures/Plots/dd_demo-cnb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-cnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_demo-cnb_cls--shuffled:True--exclude at risk:0.png
+index 33e2b64..5cdf20f 100644
+Binary files a/Figures/Plots/dd_demo-cnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Plots/dd_demo-cnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_demo-dbs_clu--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_demo-dbs_clu--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 5498800..0000000
+Binary files a/Figures/Plots/dd_demo-dbs_clu--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-dbs_clu--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_demo-dbs_clu--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index 7e20e71..0000000
+Binary files a/Figures/Plots/dd_demo-dbs_clu--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-gb_cls--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_demo-gb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 105a973..0000000
+Binary files a/Figures/Plots/dd_demo-gb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-gb_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_demo-gb_cls--shuffled:True--exclude at risk:0.png
+index 8e7c2f4..0be6a26 100644
+Binary files a/Figures/Plots/dd_demo-gb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Plots/dd_demo-gb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_demo-gb_reg--shuffled:False--exclude at risk:True.png b/Figures/Plots/dd_demo-gb_reg--shuffled:False--exclude at risk:True.png
+deleted file mode 100644
+index 437ea15..0000000
+Binary files a/Figures/Plots/dd_demo-gb_reg--shuffled:False--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-gb_reg-False.png b/Figures/Plots/dd_demo-gb_reg-False.png
+deleted file mode 100644
+index 2136b80..0000000
+Binary files a/Figures/Plots/dd_demo-gb_reg-False.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-gb_reg-True-1.png b/Figures/Plots/dd_demo-gb_reg-True-1.png
+deleted file mode 100644
+index dc60f11..0000000
+Binary files a/Figures/Plots/dd_demo-gb_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-gb_reg-True-2.png b/Figures/Plots/dd_demo-gb_reg-True-2.png
+deleted file mode 100644
+index 8bd9e58..0000000
+Binary files a/Figures/Plots/dd_demo-gb_reg-True-2.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-gm_clu--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_demo-gm_clu--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 8e4a42b..0000000
+Binary files a/Figures/Plots/dd_demo-gm_clu--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-gm_clu--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_demo-gm_clu--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index eb47b04..0000000
+Binary files a/Figures/Plots/dd_demo-gm_clu--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-gnb_cls--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_demo-gnb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 2d91161..0000000
+Binary files a/Figures/Plots/dd_demo-gnb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-km_clu--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_demo-km_clu--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index f345c6e..0000000
+Binary files a/Figures/Plots/dd_demo-km_clu--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-km_clu--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_demo-km_clu--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index 060921d..0000000
+Binary files a/Figures/Plots/dd_demo-km_clu--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-knn_cls--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_demo-knn_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 9b3bc3a..0000000
+Binary files a/Figures/Plots/dd_demo-knn_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-knn_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_demo-knn_cls--shuffled:True--exclude at risk:0.png
+index 9069fc3..86ccafe 100644
+Binary files a/Figures/Plots/dd_demo-knn_cls--shuffled:True--exclude at risk:0.png and b/Figures/Plots/dd_demo-knn_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_demo-knn_reg--shuffled:True--exclude at risk:True.png b/Figures/Plots/dd_demo-knn_reg--shuffled:True--exclude at risk:True.png
+deleted file mode 100644
+index 64edb0e..0000000
+Binary files a/Figures/Plots/dd_demo-knn_reg--shuffled:True--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-knn_reg-False.png b/Figures/Plots/dd_demo-knn_reg-False.png
+deleted file mode 100644
+index a3a716f..0000000
+Binary files a/Figures/Plots/dd_demo-knn_reg-False.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-knn_reg-True-1.png b/Figures/Plots/dd_demo-knn_reg-True-1.png
+deleted file mode 100644
+index 14f8d3e..0000000
+Binary files a/Figures/Plots/dd_demo-knn_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-l_cls--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_demo-l_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index e5daee1..0000000
+Binary files a/Figures/Plots/dd_demo-l_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-l_cls--shuffled:False--exclude at risk:True.png b/Figures/Plots/dd_demo-l_cls--shuffled:False--exclude at risk:True.png
+deleted file mode 100644
+index 53c9206..0000000
+Binary files a/Figures/Plots/dd_demo-l_cls--shuffled:False--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-l_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_demo-l_cls--shuffled:True--exclude at risk:0.png
+index 8fe49ab..fcc5ac0 100644
+Binary files a/Figures/Plots/dd_demo-l_cls--shuffled:True--exclude at risk:0.png and b/Figures/Plots/dd_demo-l_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_demo-l_cls--shuffled:True--exclude at risk:True.png b/Figures/Plots/dd_demo-l_cls--shuffled:True--exclude at risk:True.png
+index a132834..a6ff805 100644
+Binary files a/Figures/Plots/dd_demo-l_cls--shuffled:True--exclude at risk:True.png and b/Figures/Plots/dd_demo-l_cls--shuffled:True--exclude at risk:True.png differ
+diff --git a/Figures/Plots/dd_demo-l_reg--shuffled:False--exclude at risk:True.png b/Figures/Plots/dd_demo-l_reg--shuffled:False--exclude at risk:True.png
+index ed38960..4817ba8 100644
+Binary files a/Figures/Plots/dd_demo-l_reg--shuffled:False--exclude at risk:True.png and b/Figures/Plots/dd_demo-l_reg--shuffled:False--exclude at risk:True.png differ
+diff --git a/Figures/Plots/dd_demo-l_reg--shuffled:True--exclude at risk:True.png b/Figures/Plots/dd_demo-l_reg--shuffled:True--exclude at risk:True.png
+index 7848ff0..321a226 100644
+Binary files a/Figures/Plots/dd_demo-l_reg--shuffled:True--exclude at risk:True.png and b/Figures/Plots/dd_demo-l_reg--shuffled:True--exclude at risk:True.png differ
+diff --git a/Figures/Plots/dd_demo-l_reg-False.png b/Figures/Plots/dd_demo-l_reg-False.png
+deleted file mode 100644
+index 015899e..0000000
+Binary files a/Figures/Plots/dd_demo-l_reg-False.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-l_reg-True-1.png b/Figures/Plots/dd_demo-l_reg-True-1.png
+deleted file mode 100644
+index 94fd9b2..0000000
+Binary files a/Figures/Plots/dd_demo-l_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-mlp_cls--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_demo-mlp_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index d149b98..0000000
+Binary files a/Figures/Plots/dd_demo-mlp_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-mlp_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_demo-mlp_cls--shuffled:True--exclude at risk:0.png
+index f643b3b..d620479 100644
+Binary files a/Figures/Plots/dd_demo-mlp_cls--shuffled:True--exclude at risk:0.png and b/Figures/Plots/dd_demo-mlp_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_demo-mlp_reg-False.png b/Figures/Plots/dd_demo-mlp_reg-False.png
+deleted file mode 100644
+index b054ae8..0000000
+Binary files a/Figures/Plots/dd_demo-mlp_reg-False.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-mlp_reg-True.png b/Figures/Plots/dd_demo-mlp_reg-True.png
+deleted file mode 100644
+index a4c2d4f..0000000
+Binary files a/Figures/Plots/dd_demo-mlp_reg-True.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-mnb_cls--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_demo-mnb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index e366a8b..0000000
+Binary files a/Figures/Plots/dd_demo-mnb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-mnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_demo-mnb_cls--shuffled:True--exclude at risk:0.png
+index ea4fa07..3b692f5 100644
+Binary files a/Figures/Plots/dd_demo-mnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Plots/dd_demo-mnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_demo-ms_clu--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_demo-ms_clu--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 0d5b2c9..0000000
+Binary files a/Figures/Plots/dd_demo-ms_clu--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-ms_clu--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_demo-ms_clu--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index 578a44a..0000000
+Binary files a/Figures/Plots/dd_demo-ms_clu--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-rf_cls--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_demo-rf_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 6eb87e1..0000000
+Binary files a/Figures/Plots/dd_demo-rf_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-rf_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_demo-rf_cls--shuffled:True--exclude at risk:0.png
+index 678cbaa..6203ab0 100644
+Binary files a/Figures/Plots/dd_demo-rf_cls--shuffled:True--exclude at risk:0.png and b/Figures/Plots/dd_demo-rf_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_demo-rf_cls--shuffled:True--exclude at risk:True.png b/Figures/Plots/dd_demo-rf_cls--shuffled:True--exclude at risk:True.png
+deleted file mode 100644
+index 909176c..0000000
+Binary files a/Figures/Plots/dd_demo-rf_cls--shuffled:True--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-rf_reg--shuffled:True--exclude at risk:True.png b/Figures/Plots/dd_demo-rf_reg--shuffled:True--exclude at risk:True.png
+deleted file mode 100644
+index 4b73787..0000000
+Binary files a/Figures/Plots/dd_demo-rf_reg--shuffled:True--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-rf_reg-False.png b/Figures/Plots/dd_demo-rf_reg-False.png
+deleted file mode 100644
+index 714eb06..0000000
+Binary files a/Figures/Plots/dd_demo-rf_reg-False.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-rf_reg-True-1.png b/Figures/Plots/dd_demo-rf_reg-True-1.png
+deleted file mode 100644
+index 0ee94e4..0000000
+Binary files a/Figures/Plots/dd_demo-rf_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-rf_reg-True-2.png b/Figures/Plots/dd_demo-rf_reg-True-2.png
+deleted file mode 100644
+index fc7b841..0000000
+Binary files a/Figures/Plots/dd_demo-rf_reg-True-2.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-s_clu--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_demo-s_clu--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index de6bba7..0000000
+Binary files a/Figures/Plots/dd_demo-s_clu--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-s_clu--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_demo-s_clu--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index bcfa8b5..0000000
+Binary files a/Figures/Plots/dd_demo-s_clu--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-sv_cls--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_demo-sv_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 1805d68..0000000
+Binary files a/Figures/Plots/dd_demo-sv_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-sv_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_demo-sv_cls--shuffled:True--exclude at risk:0.png
+index badf443..7413edc 100644
+Binary files a/Figures/Plots/dd_demo-sv_cls--shuffled:True--exclude at risk:0.png and b/Figures/Plots/dd_demo-sv_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_demo-sv_reg--shuffled:True--exclude at risk:True.png b/Figures/Plots/dd_demo-sv_reg--shuffled:True--exclude at risk:True.png
+deleted file mode 100644
+index 3d195ae..0000000
+Binary files a/Figures/Plots/dd_demo-sv_reg--shuffled:True--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-sv_reg-False.png b/Figures/Plots/dd_demo-sv_reg-False.png
+deleted file mode 100644
+index 35c0a51..0000000
+Binary files a/Figures/Plots/dd_demo-sv_reg-False.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-sv_reg-True-1.png b/Figures/Plots/dd_demo-sv_reg-True-1.png
+deleted file mode 100644
+index dfebe0f..0000000
+Binary files a/Figures/Plots/dd_demo-sv_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-sv_reg-True-2.png b/Figures/Plots/dd_demo-sv_reg-True-2.png
+deleted file mode 100644
+index 1d5fe70..0000000
+Binary files a/Figures/Plots/dd_demo-sv_reg-True-2.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-sv_reg-True-5.png b/Figures/Plots/dd_demo-sv_reg-True-5.png
+deleted file mode 100644
+index 64a890c..0000000
+Binary files a/Figures/Plots/dd_demo-sv_reg-True-5.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-xgb_cls--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_demo-xgb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index c522da5..0000000
+Binary files a/Figures/Plots/dd_demo-xgb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-xgb_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_demo-xgb_cls--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index 02f886f..0000000
+Binary files a/Figures/Plots/dd_demo-xgb_cls--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-xgb_reg-False.png b/Figures/Plots/dd_demo-xgb_reg-False.png
+deleted file mode 100644
+index f8b7d0a..0000000
+Binary files a/Figures/Plots/dd_demo-xgb_reg-False.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-xgb_reg-True-1.png b/Figures/Plots/dd_demo-xgb_reg-True-1.png
+deleted file mode 100644
+index 0fcacfa..0000000
+Binary files a/Figures/Plots/dd_demo-xgb_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Plots/dd_demo-xgb_reg-True-2.png b/Figures/Plots/dd_demo-xgb_reg-True-2.png
+deleted file mode 100644
+index 761998e..0000000
+Binary files a/Figures/Plots/dd_demo-xgb_reg-True-2.png and /dev/null differ
+diff --git a/Figures/Plots/dd_fix_demo-ab_cls--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_fix_demo-ab_cls--shuffled:False--exclude at risk:0.png
+index bb90996..6602ff8 100644
+Binary files a/Figures/Plots/dd_fix_demo-ab_cls--shuffled:False--exclude at risk:0.png and b/Figures/Plots/dd_fix_demo-ab_cls--shuffled:False--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_fix_demo-ab_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_fix_demo-ab_cls--shuffled:True--exclude at risk:0.png
+index 83314a9..deb5da5 100644
+Binary files a/Figures/Plots/dd_fix_demo-ab_cls--shuffled:True--exclude at risk:0.png and b/Figures/Plots/dd_fix_demo-ab_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_fix_demo-cnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_fix_demo-cnb_cls--shuffled:True--exclude at risk:0.png
+index 85e5c3f..6a6aa1a 100644
+Binary files a/Figures/Plots/dd_fix_demo-cnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Plots/dd_fix_demo-cnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_fix_demo-gnb_cls--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_fix_demo-gnb_cls--shuffled:False--exclude at risk:0.png
+index fcf9dda..d6ba90e 100644
+Binary files a/Figures/Plots/dd_fix_demo-gnb_cls--shuffled:False--exclude at risk:0.png and b/Figures/Plots/dd_fix_demo-gnb_cls--shuffled:False--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_fix_demo-gnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_fix_demo-gnb_cls--shuffled:True--exclude at risk:0.png
+index f4647f0..74679b1 100644
+Binary files a/Figures/Plots/dd_fix_demo-gnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Plots/dd_fix_demo-gnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_fix_demo-l_cls--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_fix_demo-l_cls--shuffled:False--exclude at risk:0.png
+index 98ebeea..2ecc59a 100644
+Binary files a/Figures/Plots/dd_fix_demo-l_cls--shuffled:False--exclude at risk:0.png and b/Figures/Plots/dd_fix_demo-l_cls--shuffled:False--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_fix_demo-l_cls--shuffled:False--exclude at risk:True.png b/Figures/Plots/dd_fix_demo-l_cls--shuffled:False--exclude at risk:True.png
+index acac66a..5b4ed44 100644
+Binary files a/Figures/Plots/dd_fix_demo-l_cls--shuffled:False--exclude at risk:True.png and b/Figures/Plots/dd_fix_demo-l_cls--shuffled:False--exclude at risk:True.png differ
+diff --git a/Figures/Plots/dd_fix_demo-l_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_fix_demo-l_cls--shuffled:True--exclude at risk:0.png
+index 2e8a6a7..2fb71bc 100644
+Binary files a/Figures/Plots/dd_fix_demo-l_cls--shuffled:True--exclude at risk:0.png and b/Figures/Plots/dd_fix_demo-l_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_fix_demo-l_cls--shuffled:True--exclude at risk:True.png b/Figures/Plots/dd_fix_demo-l_cls--shuffled:True--exclude at risk:True.png
+index 8e0139a..fbd5a2b 100644
+Binary files a/Figures/Plots/dd_fix_demo-l_cls--shuffled:True--exclude at risk:True.png and b/Figures/Plots/dd_fix_demo-l_cls--shuffled:True--exclude at risk:True.png differ
+diff --git a/Figures/Plots/dd_fix_demo-mnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_fix_demo-mnb_cls--shuffled:True--exclude at risk:0.png
+index 2dc42ad..732a1f5 100644
+Binary files a/Figures/Plots/dd_fix_demo-mnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Plots/dd_fix_demo-mnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_ia_demo-ab_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_ia_demo-ab_cls--shuffled:True--exclude at risk:0.png
+index 888612d..aff5d62 100644
+Binary files a/Figures/Plots/dd_ia_demo-ab_cls--shuffled:True--exclude at risk:0.png and b/Figures/Plots/dd_ia_demo-ab_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_ia_demo-cnb_cls--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_ia_demo-cnb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 27dfa36..0000000
+Binary files a/Figures/Plots/dd_ia_demo-cnb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_ia_demo-cnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_ia_demo-cnb_cls--shuffled:True--exclude at risk:0.png
+index cbcf892..b8a0430 100644
+Binary files a/Figures/Plots/dd_ia_demo-cnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Plots/dd_ia_demo-cnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_ia_demo-gnb_cls--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_ia_demo-gnb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 55f6ab4..0000000
+Binary files a/Figures/Plots/dd_ia_demo-gnb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_ia_demo-gnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_ia_demo-gnb_cls--shuffled:True--exclude at risk:0.png
+index d45232a..6b6fc4f 100644
+Binary files a/Figures/Plots/dd_ia_demo-gnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Plots/dd_ia_demo-gnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_ia_demo-knn_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_ia_demo-knn_cls--shuffled:True--exclude at risk:0.png
+index be7c98a..6874b43 100644
+Binary files a/Figures/Plots/dd_ia_demo-knn_cls--shuffled:True--exclude at risk:0.png and b/Figures/Plots/dd_ia_demo-knn_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_ia_demo-l_cls--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_ia_demo-l_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 0afed08..0000000
+Binary files a/Figures/Plots/dd_ia_demo-l_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_ia_demo-l_cls--shuffled:False--exclude at risk:True.png b/Figures/Plots/dd_ia_demo-l_cls--shuffled:False--exclude at risk:True.png
+deleted file mode 100644
+index 1121345..0000000
+Binary files a/Figures/Plots/dd_ia_demo-l_cls--shuffled:False--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Plots/dd_ia_demo-l_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_ia_demo-l_cls--shuffled:True--exclude at risk:0.png
+index 0f19286..8a6961a 100644
+Binary files a/Figures/Plots/dd_ia_demo-l_cls--shuffled:True--exclude at risk:0.png and b/Figures/Plots/dd_ia_demo-l_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Plots/dd_ia_demo-l_cls--shuffled:True--exclude at risk:True.png b/Figures/Plots/dd_ia_demo-l_cls--shuffled:True--exclude at risk:True.png
+index c09bfc6..f7b6ffb 100644
+Binary files a/Figures/Plots/dd_ia_demo-l_cls--shuffled:True--exclude at risk:True.png and b/Figures/Plots/dd_ia_demo-l_cls--shuffled:True--exclude at risk:True.png differ
+diff --git a/Figures/Plots/dd_ia_demo-mnb_cls--shuffled:False--exclude at risk:0.png b/Figures/Plots/dd_ia_demo-mnb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 40cfd0a..0000000
+Binary files a/Figures/Plots/dd_ia_demo-mnb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Plots/dd_ia_demo-mnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Plots/dd_ia_demo-mnb_cls--shuffled:True--exclude at risk:0.png
+index 44b2083..f23e721 100644
+Binary files a/Figures/Plots/dd_ia_demo-mnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Plots/dd_ia_demo-mnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_demo-a_clu--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_demo-a_clu--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 32b0473..0000000
+Binary files a/Figures/Scatters/dd_demo-a_clu--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-a_clu--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_demo-a_clu--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index 6059cc9..0000000
+Binary files a/Figures/Scatters/dd_demo-a_clu--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-ab_cls--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_demo-ab_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index eab464a..0000000
+Binary files a/Figures/Scatters/dd_demo-ab_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-ab_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_demo-ab_cls--shuffled:True--exclude at risk:0.png
+index 5f44bfe..d15d8eb 100644
+Binary files a/Figures/Scatters/dd_demo-ab_cls--shuffled:True--exclude at risk:0.png and b/Figures/Scatters/dd_demo-ab_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_demo-ab_reg-False.png b/Figures/Scatters/dd_demo-ab_reg-False.png
+deleted file mode 100644
+index 1979da0..0000000
+Binary files a/Figures/Scatters/dd_demo-ab_reg-False.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-ab_reg-True-1.png b/Figures/Scatters/dd_demo-ab_reg-True-1.png
+deleted file mode 100644
+index 08d9381..0000000
+Binary files a/Figures/Scatters/dd_demo-ab_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-ab_reg-True-2.png b/Figures/Scatters/dd_demo-ab_reg-True-2.png
+deleted file mode 100644
+index 808aad1..0000000
+Binary files a/Figures/Scatters/dd_demo-ab_reg-True-2.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-ab_reg-True-4.png b/Figures/Scatters/dd_demo-ab_reg-True-4.png
+deleted file mode 100644
+index 5ce0d6b..0000000
+Binary files a/Figures/Scatters/dd_demo-ab_reg-True-4.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-ap_clu--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_demo-ap_clu--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index ac003a1..0000000
+Binary files a/Figures/Scatters/dd_demo-ap_clu--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-ap_clu--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_demo-ap_clu--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index 1bd2b73..0000000
+Binary files a/Figures/Scatters/dd_demo-ap_clu--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-bg_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_demo-bg_cls--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index a1f66df..0000000
+Binary files a/Figures/Scatters/dd_demo-bg_cls--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-br_reg--shuffled:True--exclude at risk:True.png b/Figures/Scatters/dd_demo-br_reg--shuffled:True--exclude at risk:True.png
+deleted file mode 100644
+index 1ead3bb..0000000
+Binary files a/Figures/Scatters/dd_demo-br_reg--shuffled:True--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-br_reg-False.png b/Figures/Scatters/dd_demo-br_reg-False.png
+deleted file mode 100644
+index 25ad468..0000000
+Binary files a/Figures/Scatters/dd_demo-br_reg-False.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-br_reg-True-1.png b/Figures/Scatters/dd_demo-br_reg-True-1.png
+deleted file mode 100644
+index f74ed21..0000000
+Binary files a/Figures/Scatters/dd_demo-br_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-cnb_cls--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_demo-cnb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 3e2de9b..0000000
+Binary files a/Figures/Scatters/dd_demo-cnb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-cnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_demo-cnb_cls--shuffled:True--exclude at risk:0.png
+index 02ae042..aaf0413 100644
+Binary files a/Figures/Scatters/dd_demo-cnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Scatters/dd_demo-cnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_demo-dbs_clu--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_demo-dbs_clu--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 2010469..0000000
+Binary files a/Figures/Scatters/dd_demo-dbs_clu--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-dbs_clu--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_demo-dbs_clu--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index 790a6d7..0000000
+Binary files a/Figures/Scatters/dd_demo-dbs_clu--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-gb_cls--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_demo-gb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 640e22f..0000000
+Binary files a/Figures/Scatters/dd_demo-gb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-gb_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_demo-gb_cls--shuffled:True--exclude at risk:0.png
+index 6e04c17..8982b90 100644
+Binary files a/Figures/Scatters/dd_demo-gb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Scatters/dd_demo-gb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_demo-gb_reg--shuffled:False--exclude at risk:True.png b/Figures/Scatters/dd_demo-gb_reg--shuffled:False--exclude at risk:True.png
+deleted file mode 100644
+index f2f2434..0000000
+Binary files a/Figures/Scatters/dd_demo-gb_reg--shuffled:False--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-gb_reg-False.png b/Figures/Scatters/dd_demo-gb_reg-False.png
+deleted file mode 100644
+index bec101b..0000000
+Binary files a/Figures/Scatters/dd_demo-gb_reg-False.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-gb_reg-True-1.png b/Figures/Scatters/dd_demo-gb_reg-True-1.png
+deleted file mode 100644
+index 9265b09..0000000
+Binary files a/Figures/Scatters/dd_demo-gb_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-gb_reg-True-2.png b/Figures/Scatters/dd_demo-gb_reg-True-2.png
+deleted file mode 100644
+index 1c66ee1..0000000
+Binary files a/Figures/Scatters/dd_demo-gb_reg-True-2.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-gm_clu--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_demo-gm_clu--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 7f31c80..0000000
+Binary files a/Figures/Scatters/dd_demo-gm_clu--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-gm_clu--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_demo-gm_clu--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index a478d22..0000000
+Binary files a/Figures/Scatters/dd_demo-gm_clu--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-gnb_cls--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_demo-gnb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 0a80bf8..0000000
+Binary files a/Figures/Scatters/dd_demo-gnb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-km_clu--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_demo-km_clu--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 5c9a869..0000000
+Binary files a/Figures/Scatters/dd_demo-km_clu--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-km_clu--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_demo-km_clu--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index 901b4ed..0000000
+Binary files a/Figures/Scatters/dd_demo-km_clu--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-knn_cls--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_demo-knn_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 4ea1bae..0000000
+Binary files a/Figures/Scatters/dd_demo-knn_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-knn_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_demo-knn_cls--shuffled:True--exclude at risk:0.png
+index a548d49..11a5c79 100644
+Binary files a/Figures/Scatters/dd_demo-knn_cls--shuffled:True--exclude at risk:0.png and b/Figures/Scatters/dd_demo-knn_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_demo-knn_reg--shuffled:True--exclude at risk:True.png b/Figures/Scatters/dd_demo-knn_reg--shuffled:True--exclude at risk:True.png
+deleted file mode 100644
+index 9e321df..0000000
+Binary files a/Figures/Scatters/dd_demo-knn_reg--shuffled:True--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-knn_reg-False.png b/Figures/Scatters/dd_demo-knn_reg-False.png
+deleted file mode 100644
+index 0c9b0d8..0000000
+Binary files a/Figures/Scatters/dd_demo-knn_reg-False.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-knn_reg-True-1.png b/Figures/Scatters/dd_demo-knn_reg-True-1.png
+deleted file mode 100644
+index 654baa7..0000000
+Binary files a/Figures/Scatters/dd_demo-knn_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-l_cls--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_demo-l_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 5954960..0000000
+Binary files a/Figures/Scatters/dd_demo-l_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-l_cls--shuffled:False--exclude at risk:True.png b/Figures/Scatters/dd_demo-l_cls--shuffled:False--exclude at risk:True.png
+deleted file mode 100644
+index d97b07f..0000000
+Binary files a/Figures/Scatters/dd_demo-l_cls--shuffled:False--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-l_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_demo-l_cls--shuffled:True--exclude at risk:0.png
+index a4a595c..861da40 100644
+Binary files a/Figures/Scatters/dd_demo-l_cls--shuffled:True--exclude at risk:0.png and b/Figures/Scatters/dd_demo-l_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_demo-l_cls--shuffled:True--exclude at risk:True.png b/Figures/Scatters/dd_demo-l_cls--shuffled:True--exclude at risk:True.png
+index 9466d90..679739f 100644
+Binary files a/Figures/Scatters/dd_demo-l_cls--shuffled:True--exclude at risk:True.png and b/Figures/Scatters/dd_demo-l_cls--shuffled:True--exclude at risk:True.png differ
+diff --git a/Figures/Scatters/dd_demo-l_reg--shuffled:False--exclude at risk:True.png b/Figures/Scatters/dd_demo-l_reg--shuffled:False--exclude at risk:True.png
+index 1bd1d51..7564a9f 100644
+Binary files a/Figures/Scatters/dd_demo-l_reg--shuffled:False--exclude at risk:True.png and b/Figures/Scatters/dd_demo-l_reg--shuffled:False--exclude at risk:True.png differ
+diff --git a/Figures/Scatters/dd_demo-l_reg--shuffled:True--exclude at risk:True.png b/Figures/Scatters/dd_demo-l_reg--shuffled:True--exclude at risk:True.png
+index ed200b4..a44be39 100644
+Binary files a/Figures/Scatters/dd_demo-l_reg--shuffled:True--exclude at risk:True.png and b/Figures/Scatters/dd_demo-l_reg--shuffled:True--exclude at risk:True.png differ
+diff --git a/Figures/Scatters/dd_demo-l_reg-False.png b/Figures/Scatters/dd_demo-l_reg-False.png
+deleted file mode 100644
+index 99b9b2e..0000000
+Binary files a/Figures/Scatters/dd_demo-l_reg-False.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-l_reg-True-1.png b/Figures/Scatters/dd_demo-l_reg-True-1.png
+deleted file mode 100644
+index 74f9361..0000000
+Binary files a/Figures/Scatters/dd_demo-l_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-mlp_cls--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_demo-mlp_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 31acb01..0000000
+Binary files a/Figures/Scatters/dd_demo-mlp_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-mlp_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_demo-mlp_cls--shuffled:True--exclude at risk:0.png
+index 2aa5c7f..ea1ebe6 100644
+Binary files a/Figures/Scatters/dd_demo-mlp_cls--shuffled:True--exclude at risk:0.png and b/Figures/Scatters/dd_demo-mlp_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_demo-mlp_reg-False.png b/Figures/Scatters/dd_demo-mlp_reg-False.png
+deleted file mode 100644
+index 1574981..0000000
+Binary files a/Figures/Scatters/dd_demo-mlp_reg-False.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-mlp_reg-True.png b/Figures/Scatters/dd_demo-mlp_reg-True.png
+deleted file mode 100644
+index e073a3e..0000000
+Binary files a/Figures/Scatters/dd_demo-mlp_reg-True.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-mnb_cls--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_demo-mnb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 28e7033..0000000
+Binary files a/Figures/Scatters/dd_demo-mnb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-mnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_demo-mnb_cls--shuffled:True--exclude at risk:0.png
+index 6b992a9..6aeb072 100644
+Binary files a/Figures/Scatters/dd_demo-mnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Scatters/dd_demo-mnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_demo-ms_clu--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_demo-ms_clu--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index fa03777..0000000
+Binary files a/Figures/Scatters/dd_demo-ms_clu--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-ms_clu--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_demo-ms_clu--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index e2e4f63..0000000
+Binary files a/Figures/Scatters/dd_demo-ms_clu--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-rf_cls--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_demo-rf_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index a0c644e..0000000
+Binary files a/Figures/Scatters/dd_demo-rf_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-rf_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_demo-rf_cls--shuffled:True--exclude at risk:0.png
+index 576173a..80c5dcc 100644
+Binary files a/Figures/Scatters/dd_demo-rf_cls--shuffled:True--exclude at risk:0.png and b/Figures/Scatters/dd_demo-rf_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_demo-rf_cls--shuffled:True--exclude at risk:True.png b/Figures/Scatters/dd_demo-rf_cls--shuffled:True--exclude at risk:True.png
+deleted file mode 100644
+index 6276d9f..0000000
+Binary files a/Figures/Scatters/dd_demo-rf_cls--shuffled:True--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-rf_reg--shuffled:True--exclude at risk:True.png b/Figures/Scatters/dd_demo-rf_reg--shuffled:True--exclude at risk:True.png
+deleted file mode 100644
+index 1d4b39f..0000000
+Binary files a/Figures/Scatters/dd_demo-rf_reg--shuffled:True--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-rf_reg-False.png b/Figures/Scatters/dd_demo-rf_reg-False.png
+deleted file mode 100644
+index f34a3b9..0000000
+Binary files a/Figures/Scatters/dd_demo-rf_reg-False.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-rf_reg-True-1.png b/Figures/Scatters/dd_demo-rf_reg-True-1.png
+deleted file mode 100644
+index fd76697..0000000
+Binary files a/Figures/Scatters/dd_demo-rf_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-rf_reg-True-2.png b/Figures/Scatters/dd_demo-rf_reg-True-2.png
+deleted file mode 100644
+index 690f2e6..0000000
+Binary files a/Figures/Scatters/dd_demo-rf_reg-True-2.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-s_clu--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_demo-s_clu--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 13ea90b..0000000
+Binary files a/Figures/Scatters/dd_demo-s_clu--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-s_clu--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_demo-s_clu--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index 92e5200..0000000
+Binary files a/Figures/Scatters/dd_demo-s_clu--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-sv_cls--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_demo-sv_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index e889079..0000000
+Binary files a/Figures/Scatters/dd_demo-sv_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-sv_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_demo-sv_cls--shuffled:True--exclude at risk:0.png
+index 50eb78c..37184a3 100644
+Binary files a/Figures/Scatters/dd_demo-sv_cls--shuffled:True--exclude at risk:0.png and b/Figures/Scatters/dd_demo-sv_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_demo-sv_reg--shuffled:True--exclude at risk:True.png b/Figures/Scatters/dd_demo-sv_reg--shuffled:True--exclude at risk:True.png
+deleted file mode 100644
+index b41cb4d..0000000
+Binary files a/Figures/Scatters/dd_demo-sv_reg--shuffled:True--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-sv_reg-False.png b/Figures/Scatters/dd_demo-sv_reg-False.png
+deleted file mode 100644
+index 3262239..0000000
+Binary files a/Figures/Scatters/dd_demo-sv_reg-False.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-sv_reg-True-1.png b/Figures/Scatters/dd_demo-sv_reg-True-1.png
+deleted file mode 100644
+index c28ca65..0000000
+Binary files a/Figures/Scatters/dd_demo-sv_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-sv_reg-True-2.png b/Figures/Scatters/dd_demo-sv_reg-True-2.png
+deleted file mode 100644
+index 4f76f79..0000000
+Binary files a/Figures/Scatters/dd_demo-sv_reg-True-2.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-sv_reg-True-5.png b/Figures/Scatters/dd_demo-sv_reg-True-5.png
+deleted file mode 100644
+index 30f9bd3..0000000
+Binary files a/Figures/Scatters/dd_demo-sv_reg-True-5.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-xgb_cls--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_demo-xgb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 74396b9..0000000
+Binary files a/Figures/Scatters/dd_demo-xgb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-xgb_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_demo-xgb_cls--shuffled:True--exclude at risk:0.png
+deleted file mode 100644
+index 8e5373d..0000000
+Binary files a/Figures/Scatters/dd_demo-xgb_cls--shuffled:True--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-xgb_reg-False.png b/Figures/Scatters/dd_demo-xgb_reg-False.png
+deleted file mode 100644
+index 681588c..0000000
+Binary files a/Figures/Scatters/dd_demo-xgb_reg-False.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-xgb_reg-True-1.png b/Figures/Scatters/dd_demo-xgb_reg-True-1.png
+deleted file mode 100644
+index 30a6b64..0000000
+Binary files a/Figures/Scatters/dd_demo-xgb_reg-True-1.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_demo-xgb_reg-True-2.png b/Figures/Scatters/dd_demo-xgb_reg-True-2.png
+deleted file mode 100644
+index c927f1a..0000000
+Binary files a/Figures/Scatters/dd_demo-xgb_reg-True-2.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_fix_demo-ab_cls--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_fix_demo-ab_cls--shuffled:False--exclude at risk:0.png
+index 83b3cfe..a71d1fb 100644
+Binary files a/Figures/Scatters/dd_fix_demo-ab_cls--shuffled:False--exclude at risk:0.png and b/Figures/Scatters/dd_fix_demo-ab_cls--shuffled:False--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_fix_demo-ab_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_fix_demo-ab_cls--shuffled:True--exclude at risk:0.png
+index 9a9ed4a..a376625 100644
+Binary files a/Figures/Scatters/dd_fix_demo-ab_cls--shuffled:True--exclude at risk:0.png and b/Figures/Scatters/dd_fix_demo-ab_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_fix_demo-cnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_fix_demo-cnb_cls--shuffled:True--exclude at risk:0.png
+index 9afba49..e6e94dc 100644
+Binary files a/Figures/Scatters/dd_fix_demo-cnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Scatters/dd_fix_demo-cnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_fix_demo-gnb_cls--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_fix_demo-gnb_cls--shuffled:False--exclude at risk:0.png
+index 5610907..820644c 100644
+Binary files a/Figures/Scatters/dd_fix_demo-gnb_cls--shuffled:False--exclude at risk:0.png and b/Figures/Scatters/dd_fix_demo-gnb_cls--shuffled:False--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_fix_demo-gnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_fix_demo-gnb_cls--shuffled:True--exclude at risk:0.png
+index 30e2fa8..e563b31 100644
+Binary files a/Figures/Scatters/dd_fix_demo-gnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Scatters/dd_fix_demo-gnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_fix_demo-l_cls--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_fix_demo-l_cls--shuffled:False--exclude at risk:0.png
+index 58550f4..1060855 100644
+Binary files a/Figures/Scatters/dd_fix_demo-l_cls--shuffled:False--exclude at risk:0.png and b/Figures/Scatters/dd_fix_demo-l_cls--shuffled:False--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_fix_demo-l_cls--shuffled:False--exclude at risk:True.png b/Figures/Scatters/dd_fix_demo-l_cls--shuffled:False--exclude at risk:True.png
+index e247487..bcf2dc1 100644
+Binary files a/Figures/Scatters/dd_fix_demo-l_cls--shuffled:False--exclude at risk:True.png and b/Figures/Scatters/dd_fix_demo-l_cls--shuffled:False--exclude at risk:True.png differ
+diff --git a/Figures/Scatters/dd_fix_demo-l_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_fix_demo-l_cls--shuffled:True--exclude at risk:0.png
+index 4520622..6dde1c6 100644
+Binary files a/Figures/Scatters/dd_fix_demo-l_cls--shuffled:True--exclude at risk:0.png and b/Figures/Scatters/dd_fix_demo-l_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_fix_demo-l_cls--shuffled:True--exclude at risk:True.png b/Figures/Scatters/dd_fix_demo-l_cls--shuffled:True--exclude at risk:True.png
+index 1d393c7..616c514 100644
+Binary files a/Figures/Scatters/dd_fix_demo-l_cls--shuffled:True--exclude at risk:True.png and b/Figures/Scatters/dd_fix_demo-l_cls--shuffled:True--exclude at risk:True.png differ
+diff --git a/Figures/Scatters/dd_fix_demo-mnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_fix_demo-mnb_cls--shuffled:True--exclude at risk:0.png
+index daff4e5..226ac75 100644
+Binary files a/Figures/Scatters/dd_fix_demo-mnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Scatters/dd_fix_demo-mnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_ia_demo-ab_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_ia_demo-ab_cls--shuffled:True--exclude at risk:0.png
+index c725103..eeaa997 100644
+Binary files a/Figures/Scatters/dd_ia_demo-ab_cls--shuffled:True--exclude at risk:0.png and b/Figures/Scatters/dd_ia_demo-ab_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_ia_demo-cnb_cls--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_ia_demo-cnb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index a49052e..0000000
+Binary files a/Figures/Scatters/dd_ia_demo-cnb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_ia_demo-cnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_ia_demo-cnb_cls--shuffled:True--exclude at risk:0.png
+index 0203506..991e78c 100644
+Binary files a/Figures/Scatters/dd_ia_demo-cnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Scatters/dd_ia_demo-cnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_ia_demo-gnb_cls--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_ia_demo-gnb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 6e86759..0000000
+Binary files a/Figures/Scatters/dd_ia_demo-gnb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_ia_demo-gnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_ia_demo-gnb_cls--shuffled:True--exclude at risk:0.png
+index e05ef5c..d5dc4db 100644
+Binary files a/Figures/Scatters/dd_ia_demo-gnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Scatters/dd_ia_demo-gnb_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_ia_demo-knn_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_ia_demo-knn_cls--shuffled:True--exclude at risk:0.png
+index 3900fd6..db2cd23 100644
+Binary files a/Figures/Scatters/dd_ia_demo-knn_cls--shuffled:True--exclude at risk:0.png and b/Figures/Scatters/dd_ia_demo-knn_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_ia_demo-l_cls--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_ia_demo-l_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index 7a89041..0000000
+Binary files a/Figures/Scatters/dd_ia_demo-l_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_ia_demo-l_cls--shuffled:False--exclude at risk:True.png b/Figures/Scatters/dd_ia_demo-l_cls--shuffled:False--exclude at risk:True.png
+deleted file mode 100644
+index 4321965..0000000
+Binary files a/Figures/Scatters/dd_ia_demo-l_cls--shuffled:False--exclude at risk:True.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_ia_demo-l_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_ia_demo-l_cls--shuffled:True--exclude at risk:0.png
+index 9065072..6ae8958 100644
+Binary files a/Figures/Scatters/dd_ia_demo-l_cls--shuffled:True--exclude at risk:0.png and b/Figures/Scatters/dd_ia_demo-l_cls--shuffled:True--exclude at risk:0.png differ
+diff --git a/Figures/Scatters/dd_ia_demo-l_cls--shuffled:True--exclude at risk:True.png b/Figures/Scatters/dd_ia_demo-l_cls--shuffled:True--exclude at risk:True.png
+index 509a131..282f3ed 100644
+Binary files a/Figures/Scatters/dd_ia_demo-l_cls--shuffled:True--exclude at risk:True.png and b/Figures/Scatters/dd_ia_demo-l_cls--shuffled:True--exclude at risk:True.png differ
+diff --git a/Figures/Scatters/dd_ia_demo-mnb_cls--shuffled:False--exclude at risk:0.png b/Figures/Scatters/dd_ia_demo-mnb_cls--shuffled:False--exclude at risk:0.png
+deleted file mode 100644
+index b619b51..0000000
+Binary files a/Figures/Scatters/dd_ia_demo-mnb_cls--shuffled:False--exclude at risk:0.png and /dev/null differ
+diff --git a/Figures/Scatters/dd_ia_demo-mnb_cls--shuffled:True--exclude at risk:0.png b/Figures/Scatters/dd_ia_demo-mnb_cls--shuffled:True--exclude at risk:0.png
+index 0155ecf..6f2cfe0 100644
+Binary files a/Figures/Scatters/dd_ia_demo-mnb_cls--shuffled:True--exclude at risk:0.png and b/Figures/Scatters/dd_ia_demo-mnb_cls--shuffled:True--exclude at risk:0.png differ

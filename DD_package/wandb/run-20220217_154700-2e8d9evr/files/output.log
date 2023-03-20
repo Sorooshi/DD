@@ -1,0 +1,22 @@
+Traceback (most recent call last):
+  File "/home/soroosh/Programmes/DD/DD_package/main.py", line 268, in <module>
+    reg_est.train_test_tuned_estimator()
+  File "/home/soroosh/Programmes/DD/DD_package/dd_package/models/regression_estimators.py", line 261, in train_test_tuned_estimator
+    run = util.wandb_true_pred_plots(
+  File "/home/soroosh/Programmes/DD/DD_package/dd_package/common/utils.py", line 269, in wandb_true_pred_plots
+    plt.savefig(
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/matplotlib/pyplot.py", line 966, in savefig
+    res = fig.savefig(*args, **kwargs)
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/matplotlib/figure.py", line 3015, in savefig
+    self.canvas.print_figure(fname, **kwargs)
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 2255, in print_figure
+    result = print_method(
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/matplotlib/backend_bases.py", line 1669, in wrapper
+    return func(*args, **kwargs)
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/matplotlib/backends/backend_agg.py", line 509, in print_png
+    mpl.image.imsave(
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/matplotlib/image.py", line 1616, in imsave
+    image.save(fname, **pil_kwargs)
+  File "/home/soroosh/anaconda3/lib/python3.9/site-packages/PIL/Image.py", line 2237, in save
+    fp = builtins.open(filename, "w+b")
+FileNotFoundError: [Errno 2] No such file or directory: 'Figures/Plots/dd_demo-l_reg-True-dd_demo.png'

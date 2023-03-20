@@ -1,0 +1,160 @@
+2022-03-11 00:03:21,446 INFO    MainThread:218833 [internal.py:wandb_internal():89] W&B internal server running at pid: 218833, started at: 2022-03-11 00:03:21.446068
+2022-03-11 00:03:21,448 INFO    WriterThread:218833 [datastore.py:open_for_write():77] open: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/run-3vxo7y7v.wandb
+2022-03-11 00:03:21,449 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: check_version
+2022-03-11 00:03:21,450 DEBUG   SenderThread:218833 [sender.py:send():235] send: header
+2022-03-11 00:03:21,450 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: check_version
+2022-03-11 00:03:21,686 DEBUG   SenderThread:218833 [sender.py:send():235] send: run
+2022-03-11 00:03:21,934 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: run_start
+2022-03-11 00:03:22,287 INFO    SenderThread:218833 [dir_watcher.py:__init__():169] watching files in: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files
+2022-03-11 00:03:22,287 INFO    SenderThread:218833 [sender.py:_start_run_threads():809] run started: 3vxo7y7v with start time 1646946200
+2022-03-11 00:03:22,287 DEBUG   SenderThread:218833 [sender.py:send():235] send: summary
+2022-03-11 00:03:22,287 INFO    SenderThread:218833 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-03-11 00:03:23,289 INFO    Thread-8  :218833 [dir_watcher.py:_on_file_created():217] file/dir created: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/wandb-summary.json
+2022-03-11 00:03:24,232 DEBUG   HandlerThread:218833 [meta.py:__init__():36] meta init
+2022-03-11 00:03:24,232 DEBUG   HandlerThread:218833 [meta.py:__init__():50] meta init done
+2022-03-11 00:03:24,232 DEBUG   HandlerThread:218833 [meta.py:probe():210] probe
+2022-03-11 00:03:24,233 DEBUG   HandlerThread:218833 [meta.py:_setup_git():200] setup git
+2022-03-11 00:03:24,285 DEBUG   HandlerThread:218833 [meta.py:_setup_git():207] setup git done
+2022-03-11 00:03:24,285 DEBUG   HandlerThread:218833 [meta.py:_save_code():88] save code
+2022-03-11 00:03:24,304 DEBUG   HandlerThread:218833 [meta.py:_save_code():109] save code done
+2022-03-11 00:03:24,304 DEBUG   HandlerThread:218833 [meta.py:_save_patches():126] save patches
+2022-03-11 00:03:24,736 DEBUG   HandlerThread:218833 [meta.py:_save_patches():168] save patches done
+2022-03-11 00:03:24,736 DEBUG   HandlerThread:218833 [meta.py:_save_pip():54] save pip
+2022-03-11 00:03:24,737 DEBUG   HandlerThread:218833 [meta.py:_save_pip():68] save pip done
+2022-03-11 00:03:24,737 DEBUG   HandlerThread:218833 [meta.py:probe():248] probe done
+2022-03-11 00:03:24,740 DEBUG   SenderThread:218833 [sender.py:send():235] send: files
+2022-03-11 00:03:24,740 INFO    SenderThread:218833 [sender.py:_save_file():944] saving file wandb-metadata.json with policy now
+2022-03-11 00:03:24,741 INFO    SenderThread:218833 [sender.py:_save_file():944] saving file code/DD_package/main.py with policy now
+2022-03-11 00:03:24,741 INFO    SenderThread:218833 [sender.py:_save_file():944] saving file diff.patch with policy now
+2022-03-11 00:03:24,741 INFO    SenderThread:218833 [sender.py:_save_file():944] saving file upstream_diff_aa46ec3fb87aeff58441fe40adbfb2ec2f19ca58.patch with policy now
+2022-03-11 00:03:24,775 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: stop_status
+2022-03-11 00:03:24,776 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: stop_status
+2022-03-11 00:03:25,154 DEBUG   SenderThread:218833 [sender.py:send():235] send: history
+2022-03-11 00:03:25,155 DEBUG   SenderThread:218833 [sender.py:send():235] send: summary
+2022-03-11 00:03:25,156 INFO    SenderThread:218833 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-03-11 00:03:25,297 INFO    Thread-8  :218833 [dir_watcher.py:_on_file_modified():230] file/dir modified: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/wandb-summary.json
+2022-03-11 00:03:25,297 INFO    Thread-8  :218833 [dir_watcher.py:_on_file_created():217] file/dir created: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/code/DD_package/main.py
+2022-03-11 00:03:25,298 INFO    Thread-8  :218833 [dir_watcher.py:_on_file_created():217] file/dir created: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/requirements.txt
+2022-03-11 00:03:25,298 INFO    Thread-8  :218833 [dir_watcher.py:_on_file_created():217] file/dir created: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/upstream_diff_aa46ec3fb87aeff58441fe40adbfb2ec2f19ca58.patch
+2022-03-11 00:03:25,298 INFO    Thread-8  :218833 [dir_watcher.py:_on_file_created():217] file/dir created: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/wandb-metadata.json
+2022-03-11 00:03:25,298 INFO    Thread-8  :218833 [dir_watcher.py:_on_file_created():217] file/dir created: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/diff.patch
+2022-03-11 00:03:25,298 INFO    Thread-8  :218833 [dir_watcher.py:_on_file_created():217] file/dir created: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/output.log
+2022-03-11 00:03:25,298 INFO    Thread-8  :218833 [dir_watcher.py:_on_file_created():217] file/dir created: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/code
+2022-03-11 00:03:25,298 INFO    Thread-8  :218833 [dir_watcher.py:_on_file_created():217] file/dir created: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/code/DD_package
+2022-03-11 00:03:25,559 INFO    Thread-11 :218833 [upload_job.py:push():137] Uploaded file /tmp/tmpz2tikw8kwandb/1pyorfdz-wandb-metadata.json
+2022-03-11 00:03:25,560 INFO    Thread-12 :218833 [upload_job.py:push():137] Uploaded file /tmp/tmpz2tikw8kwandb/2jtjkyn8-code/DD_package/main.py
+2022-03-11 00:03:26,020 INFO    Thread-14 :218833 [upload_job.py:push():137] Uploaded file /tmp/tmpz2tikw8kwandb/1k3bixes-upstream_diff_aa46ec3fb87aeff58441fe40adbfb2ec2f19ca58.patch
+2022-03-11 00:03:26,175 INFO    Thread-13 :218833 [upload_job.py:push():137] Uploaded file /tmp/tmpz2tikw8kwandb/25bfwk1w-diff.patch
+2022-03-11 00:03:27,280 DEBUG   SenderThread:218833 [sender.py:send():235] send: telemetry
+2022-03-11 00:03:27,280 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: poll_exit
+2022-03-11 00:03:27,281 DEBUG   SenderThread:218833 [sender.py:send():235] send: exit
+2022-03-11 00:03:27,281 INFO    SenderThread:218833 [sender.py:send_exit():371] handling exit code: 0
+2022-03-11 00:03:27,281 INFO    SenderThread:218833 [sender.py:send_exit():373] handling runtime: 5
+2022-03-11 00:03:27,281 INFO    SenderThread:218833 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-03-11 00:03:27,281 INFO    SenderThread:218833 [sender.py:send_exit():379] send defer
+2022-03-11 00:03:27,281 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: poll_exit
+2022-03-11 00:03:27,282 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: defer
+2022-03-11 00:03:27,282 INFO    HandlerThread:218833 [handler.py:handle_request_defer():154] handle defer: 0
+2022-03-11 00:03:27,284 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: defer
+2022-03-11 00:03:27,284 INFO    SenderThread:218833 [sender.py:send_request_defer():388] handle sender defer: 0
+2022-03-11 00:03:27,284 INFO    SenderThread:218833 [sender.py:transition_state():392] send defer: 1
+2022-03-11 00:03:27,284 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: defer
+2022-03-11 00:03:27,284 INFO    HandlerThread:218833 [handler.py:handle_request_defer():154] handle defer: 1
+2022-03-11 00:03:27,299 INFO    Thread-8  :218833 [dir_watcher.py:_on_file_modified():230] file/dir modified: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/wandb-summary.json
+2022-03-11 00:03:27,382 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: defer
+2022-03-11 00:03:27,382 INFO    SenderThread:218833 [sender.py:send_request_defer():388] handle sender defer: 1
+2022-03-11 00:03:27,382 INFO    SenderThread:218833 [sender.py:transition_state():392] send defer: 2
+2022-03-11 00:03:27,382 DEBUG   SenderThread:218833 [sender.py:send():235] send: stats
+2022-03-11 00:03:27,382 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: defer
+2022-03-11 00:03:27,382 INFO    HandlerThread:218833 [handler.py:handle_request_defer():154] handle defer: 2
+2022-03-11 00:03:27,382 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: defer
+2022-03-11 00:03:27,383 INFO    SenderThread:218833 [sender.py:send_request_defer():388] handle sender defer: 2
+2022-03-11 00:03:27,383 INFO    SenderThread:218833 [sender.py:transition_state():392] send defer: 3
+2022-03-11 00:03:27,383 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: defer
+2022-03-11 00:03:27,383 INFO    HandlerThread:218833 [handler.py:handle_request_defer():154] handle defer: 3
+2022-03-11 00:03:27,383 DEBUG   SenderThread:218833 [sender.py:send():235] send: summary
+2022-03-11 00:03:27,383 INFO    SenderThread:218833 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-03-11 00:03:27,383 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: defer
+2022-03-11 00:03:27,383 INFO    SenderThread:218833 [sender.py:send_request_defer():388] handle sender defer: 3
+2022-03-11 00:03:27,383 INFO    SenderThread:218833 [sender.py:transition_state():392] send defer: 4
+2022-03-11 00:03:27,384 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: defer
+2022-03-11 00:03:27,384 INFO    HandlerThread:218833 [handler.py:handle_request_defer():154] handle defer: 4
+2022-03-11 00:03:27,384 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: defer
+2022-03-11 00:03:27,384 INFO    SenderThread:218833 [sender.py:send_request_defer():388] handle sender defer: 4
+2022-03-11 00:03:27,390 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: poll_exit
+2022-03-11 00:03:27,619 INFO    SenderThread:218833 [sender.py:transition_state():392] send defer: 5
+2022-03-11 00:03:27,619 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: poll_exit
+2022-03-11 00:03:27,620 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: defer
+2022-03-11 00:03:27,620 INFO    HandlerThread:218833 [handler.py:handle_request_defer():154] handle defer: 5
+2022-03-11 00:03:27,621 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: defer
+2022-03-11 00:03:27,621 INFO    SenderThread:218833 [sender.py:send_request_defer():388] handle sender defer: 5
+2022-03-11 00:03:27,621 INFO    SenderThread:218833 [dir_watcher.py:finish():283] shutting down directory watcher
+2022-03-11 00:03:27,722 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: poll_exit
+2022-03-11 00:03:28,299 INFO    Thread-8  :218833 [dir_watcher.py:_on_file_modified():230] file/dir modified: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/wandb-summary.json
+2022-03-11 00:03:28,300 INFO    SenderThread:218833 [dir_watcher.py:_on_file_modified():230] file/dir modified: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/config.yaml
+2022-03-11 00:03:28,300 INFO    SenderThread:218833 [dir_watcher.py:finish():313] scan: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files
+2022-03-11 00:03:28,300 INFO    SenderThread:218833 [dir_watcher.py:finish():327] scan save: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/wandb-summary.json wandb-summary.json
+2022-03-11 00:03:28,300 INFO    SenderThread:218833 [dir_watcher.py:finish():327] scan save: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/wandb-metadata.json wandb-metadata.json
+2022-03-11 00:03:28,301 INFO    SenderThread:218833 [dir_watcher.py:finish():327] scan save: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/output.log output.log
+2022-03-11 00:03:28,301 INFO    SenderThread:218833 [dir_watcher.py:finish():327] scan save: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/requirements.txt requirements.txt
+2022-03-11 00:03:28,301 INFO    SenderThread:218833 [dir_watcher.py:finish():327] scan save: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/config.yaml config.yaml
+2022-03-11 00:03:28,301 INFO    SenderThread:218833 [dir_watcher.py:finish():327] scan save: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/diff.patch diff.patch
+2022-03-11 00:03:28,301 INFO    SenderThread:218833 [dir_watcher.py:finish():327] scan save: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/upstream_diff_aa46ec3fb87aeff58441fe40adbfb2ec2f19ca58.patch upstream_diff_aa46ec3fb87aeff58441fe40adbfb2ec2f19ca58.patch
+2022-03-11 00:03:28,301 INFO    SenderThread:218833 [dir_watcher.py:finish():327] scan save: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/code/DD_package/main.py code/DD_package/main.py
+2022-03-11 00:03:28,302 INFO    SenderThread:218833 [sender.py:transition_state():392] send defer: 6
+2022-03-11 00:03:28,302 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: poll_exit
+2022-03-11 00:03:28,311 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: defer
+2022-03-11 00:03:28,312 INFO    HandlerThread:218833 [handler.py:handle_request_defer():154] handle defer: 6
+2022-03-11 00:03:28,312 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: defer
+2022-03-11 00:03:28,313 INFO    SenderThread:218833 [sender.py:send_request_defer():388] handle sender defer: 6
+2022-03-11 00:03:28,313 INFO    SenderThread:218833 [file_pusher.py:finish():177] shutting down file pusher
+2022-03-11 00:03:28,405 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: poll_exit
+2022-03-11 00:03:28,406 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: poll_exit
+2022-03-11 00:03:28,507 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: poll_exit
+2022-03-11 00:03:28,507 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: poll_exit
+2022-03-11 00:03:28,609 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: poll_exit
+2022-03-11 00:03:28,609 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: poll_exit
+2022-03-11 00:03:28,712 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: poll_exit
+2022-03-11 00:03:28,713 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: poll_exit
+2022-03-11 00:03:28,817 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: poll_exit
+2022-03-11 00:03:28,817 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: poll_exit
+2022-03-11 00:03:28,919 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: poll_exit
+2022-03-11 00:03:28,920 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: poll_exit
+2022-03-11 00:03:28,973 INFO    Thread-15 :218833 [upload_job.py:push():137] Uploaded file /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/wandb-summary.json
+2022-03-11 00:03:28,986 INFO    Thread-17 :218833 [upload_job.py:push():137] Uploaded file /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/config.yaml
+2022-03-11 00:03:29,005 INFO    Thread-16 :218833 [upload_job.py:push():137] Uploaded file /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/files/requirements.txt
+2022-03-11 00:03:29,021 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: poll_exit
+2022-03-11 00:03:29,022 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: poll_exit
+2022-03-11 00:03:29,124 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: poll_exit
+2022-03-11 00:03:29,125 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: poll_exit
+2022-03-11 00:03:29,206 INFO    Thread-7  :218833 [sender.py:transition_state():392] send defer: 7
+2022-03-11 00:03:29,208 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: defer
+2022-03-11 00:03:29,208 INFO    HandlerThread:218833 [handler.py:handle_request_defer():154] handle defer: 7
+2022-03-11 00:03:29,208 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: defer
+2022-03-11 00:03:29,208 INFO    SenderThread:218833 [sender.py:send_request_defer():388] handle sender defer: 7
+2022-03-11 00:03:29,228 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: poll_exit
+2022-03-11 00:03:29,736 INFO    SenderThread:218833 [sender.py:transition_state():392] send defer: 8
+2022-03-11 00:03:29,736 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: poll_exit
+2022-03-11 00:03:29,738 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: defer
+2022-03-11 00:03:29,738 INFO    HandlerThread:218833 [handler.py:handle_request_defer():154] handle defer: 8
+2022-03-11 00:03:29,738 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: defer
+2022-03-11 00:03:29,738 INFO    SenderThread:218833 [sender.py:send_request_defer():388] handle sender defer: 8
+2022-03-11 00:03:29,738 INFO    SenderThread:218833 [sender.py:transition_state():392] send defer: 9
+2022-03-11 00:03:29,739 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: defer
+2022-03-11 00:03:29,739 INFO    HandlerThread:218833 [handler.py:handle_request_defer():154] handle defer: 9
+2022-03-11 00:03:29,739 DEBUG   SenderThread:218833 [sender.py:send():235] send: final
+2022-03-11 00:03:29,739 DEBUG   SenderThread:218833 [sender.py:send():235] send: footer
+2022-03-11 00:03:29,739 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: defer
+2022-03-11 00:03:29,739 INFO    SenderThread:218833 [sender.py:send_request_defer():388] handle sender defer: 9
+2022-03-11 00:03:29,838 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: poll_exit
+2022-03-11 00:03:29,838 DEBUG   SenderThread:218833 [sender.py:send_request():249] send_request: poll_exit
+2022-03-11 00:03:29,839 INFO    SenderThread:218833 [file_pusher.py:join():182] waiting for file pusher
+2022-03-11 00:03:30,251 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: get_summary
+2022-03-11 00:03:30,252 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: sampled_history
+2022-03-11 00:03:30,253 DEBUG   HandlerThread:218833 [handler.py:handle_request():131] handle_request: shutdown
+2022-03-11 00:03:30,253 INFO    HandlerThread:218833 [handler.py:finish():739] shutting down handler
+2022-03-11 00:03:30,739 INFO    WriterThread:218833 [datastore.py:close():281] close: /home/soroosh/Programmes/DD/DD_package/wandb/run-20220311_000320-3vxo7y7v/run-3vxo7y7v.wandb
+2022-03-11 00:03:31,254 INFO    SenderThread:218833 [sender.py:finish():1075] shutting down sender
+2022-03-11 00:03:31,254 INFO    SenderThread:218833 [file_pusher.py:finish():177] shutting down file pusher
+2022-03-11 00:03:31,254 INFO    SenderThread:218833 [file_pusher.py:join():182] waiting for file pusher
+2022-03-11 00:03:31,256 INFO    MainThread:218833 [internal.py:handle_exit():79] Internal process exited
