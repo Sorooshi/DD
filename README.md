@@ -1,7 +1,8 @@
-# Dyslexia Detection Using Artificial Intelligence and Eye Movement Data
+# Identifying Dyslexia in School Pupils from Eye Fixation and Demographic Data Using Artificial Intelligence
 
 
-The source codes, experimental test-beds and, the datasets of our paper entitled "Dyslexia Detection Using Artificial Intelligence and Eye Movement Data,"
+The source codes, experimental test-beds and,
+the datasets of our paper entitled "Identifying Dyslexia in School Pupils from Eye Fixation and Demographic Data Using Artificial Intelligence,"
 By [Soroosh Shalileh](https://www.hse.ru/en/staff/srshalileh),
 [Dmitry Ignatov](https://www.hse.ru/en/staff/dima), 
 [Anastasiya Lopukhina](https://www.hse.ru/en/staff/lopukhina),
