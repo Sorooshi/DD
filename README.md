@@ -1,13 +1,13 @@
 # Dyslexia Detection Using Artificial Intelligence and Eye Movement Data
 
 
-The source codes, experimental test-beds and, the datasets of our paper entitled "Dyslexia Detection Using Artificial Intelligence and Eye Movement Data,"
+The source codes, experimental test-beds and, the datasets of our paper entitled "Identifying Dyslexia in School Pupils from Eye Movement and Demographic Data Using Artificial Intelligence,"
 By [Soroosh Shalileh,](https://www.hse.ru/en/staff/srshalileh),
 [Dmitry Ignatov,](https://www.hse.ru/en/staff/dima) [Anastasiya Lopukhina](https://www.hse.ru/en/staff/lopukhina) and [Olga Dragoy](https://www.hse.ru/en/staff/dragoy).
 
 Center for Language and Brain, HSE University, Myasnitskaya Ulitsa, 20, Moscow, 101000, Moscow, RF. 
 
-Submitted to Journal: Engineering Applications of Artificial Intelligence
+Submitted to Journal: PloS One Journal
 
 
 - The first artificial intelligence-based solution with robust results to detect dyslexia from eye-movement data of first-grade to sixth-grade Russian-speaking school students.
