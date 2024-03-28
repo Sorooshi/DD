@@ -20,7 +20,7 @@ Published by PloS One Journal.
 
 If you use this repository, e.g., our code, data, etc., for non-commercial purposes, please cite us:
 
-
+```
 @article{shalileh2023identifying,
   title={Identifying dyslexia in school pupils from eye movement and demographic data using artificial intelligence},
   author={Shalileh, Soroosh and Ignatov, Dmitry and Lopukhina, Anastasiya and Dragoy, Olga},
@@ -31,6 +31,7 @@ If you use this repository, e.g., our code, data, etc., for non-commercial purpo
   year={2023},
   publisher={Public Library of Science San Francisco, CA USA}
 }
+``` 
 
 - Using this repository for commercial purposes/non-academic/non-research requires receiving official permission from HSE University authorities. 
 
