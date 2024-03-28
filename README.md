@@ -22,7 +22,7 @@ Published by PloS One Journal.
 ##### Purpose of the repo:
 This repository was developed as part of our AI-related research to address the research question.
 
-- Using this repository for commercial purposes/non-academic/non-research requires receiving official permission from HSE University authorities. The people who violate this will be treated according to rules and regulations.
+- Using this repository for commercial purposes/non-academic/non-research requires receiving official permission from HSE University authorities. The individuals who violate this shall be treated according to rules and regulations.
 
 ## Citation:
 
