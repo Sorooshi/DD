@@ -10,13 +10,20 @@ Center for Language and Brain, HSE University, Myasnitskaya Ulitsa, 20, Moscow, 
 Published by PloS One Journal.
 
 
-- The first artificial intelligence-based solution with robust results to detect dyslexia from eye-movement data of first-grade to sixth-grade Russian-speaking school students.
+- The first artificial intelligence-based solution with robust results to detect dyslexia from eye-movement data of first- to sixth-grade Russian-speaking school students.
 
 - A comprehensive study of the performance and hyperparameter fine-tuning of ten classifications and seven regression algorithms.
 
 - Propose the first largest eye-movement data set in this area of research consisting of three discrete target values and a continuous one.
 
-- Determine the importance of features in detecting dyslexia which is aligned with domain knowledge.
+- Determine the importance of features in detecting dyslexia which is partially aligned with domain knowledge.
+
+
+##### Purpose of the repo:
+This repository was developed as part of our AI-related research to address the research question.
+
+- Using this repository for commercial purposes/non-academic/non-research requires receiving official permission from HSE University authorities. The people who violate this will be treated according to rules and regulations.
+
 
 If you use this repository, e.g., our code, data, etc., for non-commercial purposes, please cite us:
 
@@ -33,6 +40,3 @@ If you use this repository, e.g., our code, data, etc., for non-commercial purpo
 }
 ``` 
 
-- Using this repository for commercial purposes/non-academic/non-research requires receiving official permission from HSE University authorities. 
-
-- This repository was developed as part of our AI-related research to address the research question.
