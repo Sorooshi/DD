@@ -41,4 +41,13 @@ If you use this repository, e.g., our code, data, etc., for non-commercial purpo
 }
 ``` 
 
+## DD-V2: 
+ 
+The source codes, experimental test-beds and, the datasets of our paper entitled "IDeep learning models to detect dyslexia from eye fixation parameters,"
+By [Soroosh Shalileh,](https://www.hse.ru/en/staff/srshalileh),
+[Maria Krylova,] (https://www.hse.ru/en/org/persons/401614204)
+[Olga Dragoy.](https://www.hse.ru/en/staff/dragoy)
+
+
+The paper is under the review in Q1 journal.
 
