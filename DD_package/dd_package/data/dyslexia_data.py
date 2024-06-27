@@ -183,7 +183,7 @@ class DyslexiaData:
         """ Returns x, y, pd.DataFrames, of features and targets values respectively. """
         if c_features:
             data = pd.get_dummies(
-                data=data, columns=c_features
+                data=data, columns=c_features, dtype=int,
             )
 
         if not indicators:
