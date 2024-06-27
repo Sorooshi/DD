@@ -2,7 +2,7 @@ import time
 import numpy as np
 from skopt import BayesSearchCV
 from collections import defaultdict
-import dd_package.common.utils as util
+import s_package.common.utils as util
 from sklearn.mixture import GaussianMixture
 from sklearn.metrics import adjusted_rand_score
 from skopt.space import Real, Categorical, Integer

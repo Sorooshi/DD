@@ -6,7 +6,7 @@ from sklearn.svm import SVR
 from skopt import BayesSearchCV
 from collections import defaultdict
 from sklearn.metrics import r2_score
-import dd_package.common.utils as util
+import s_package.common.utils as util
 from sklearn.ensemble import AdaBoostRegressor
 from sklearn.neural_network import MLPRegressor
 from sklearn.neighbors import KNeighborsRegressor

@@ -4,7 +4,7 @@ import xgboost as xgb
 from sklearn.svm import SVC
 from skopt import BayesSearchCV
 from collections import defaultdict
-import dd_package.common.utils as util
+import s_package.common.utils as util
 from sklearn.metrics import accuracy_score
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.neural_network import MLPClassifier

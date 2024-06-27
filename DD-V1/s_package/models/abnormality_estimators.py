@@ -4,7 +4,7 @@ import xgboost as xgb
 from skopt import BayesSearchCV
 from collections import defaultdict
 from sklearn.svm import OneClassSVM
-import dd_package.common.utils as util
+import s_package.common.utils as util
 from sklearn.ensemble import IsolationForest
 from sklearn.neighbors import LocalOutlierFactor
 from sklearn.metrics import accuracy_score

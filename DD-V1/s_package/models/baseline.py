@@ -1,6 +1,6 @@
 import numpy as np
 from collections import defaultdict
-import dd_package.common.utils as util
+import s_package.common.utils as util
 
 
 class BaseLineModel:

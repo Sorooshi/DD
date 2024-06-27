@@ -3,9 +3,9 @@ import numpy as np
 from pathlib import Path
 from types import SimpleNamespace
 
-from dd_package.models.baseline import BaseLineModel
-from dd_package.data.preprocess import preprocess_data
-from dd_package.data.dyslexia_data import DyslexiaData
+from s_package.models.baseline import BaseLineModel
+from s_package.data.preprocess import preprocess_data
+from s_package.data.dyslexia_data import DyslexiaData
 
 
 np.set_printoptions(suppress=True, precision=3, linewidth=140)
@@ -29,10 +29,10 @@ def args_parser(arguments):
 
 
 configs = {
-    "models_path": Path("/home/soroosh/Programmes/DD/Models"),
-    "results_path": Path("/home/soroosh/Programmes/DD/Results"),
-    "figures_path": Path("/home/soroosh/Programmes/DD/Figures"),
-    "params_path": Path("/home/soroosh/Programmes/DD/Params"),
+    "models_path": Path("./Models"),
+    "results_path": Path("./Results"),
+    "figures_path": Path("./Figures"),
+    "params_path": Path("./Params"),
     "n_repeats": 10,
     "n_splits": 5,
 }
