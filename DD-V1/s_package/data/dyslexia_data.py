@@ -13,7 +13,7 @@ class DyslexiaData:
     def __init__(self,
                  n_splits: int = 5,
                  n_repeats: int = 10,
-                 path: Path= Path("../datasets"),
+                 path: Path = None,
                  names: list = ["demo", "IA_report", "Fixation_report",],
                  ):
 
