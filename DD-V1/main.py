@@ -66,19 +66,19 @@ if __name__ == "__main__":
         "--data_name", type=str, default="DD_Demo",
         help="Dataset's name, e.g., DD_Demo, or DD_Demo_IA."
              "The following (lowercase) strings are supported"
-             "  1) Demographic = dd_demo, "
-             "  2) IA_report = dd_ia, "
-             "  3) Fixation_report = dd_fix, "
-             "  4) Demographic + IA_report = dd_demo_ia, "
-             "  5) Demographic + Fixation_report = dd_demo_fix,"
-             "  6) IA_report + demo.Reading_speed = dd_ia_reg,"
+             "  1) Demographic = dd_demo, "  # demographic only (reported in paper)
+             "  2) IA_report = dd_ia, "  # interest area only (reported in paper)
+             "  3) Fixation_report = dd_fix, "  # fixation only (reported in paper)
+             "  4) Demographic + IA_report = dd_demo_ia, "  # combination of demographic and IA classification (reported in paper)
+             "  5) Demographic + Fixation_report = dd_demo_fix,"  # combination of demographic and fix (reported in paper)
+             "  6) IA_report + demo.Reading_speed = dd_ia_reg,"  # combination of demographic and IA regression
              "  7) Fix_report + demo.Reading_speed = dd_fix_reg"
     )
 
     parser.add_argument(
         "--estimator_name", type=str, default="base_reg",
-        help="None case sensitive first letter abbreviated name of an estimator proceeds "
-             "  one of the three following suffixes separated with the underscore."
+        help="None case sensitive first letter abbreviated name of an estimator proceeds with "
+             "  one of the three following suffixes separated with an underscore."
              "  Possible suffixes are: regression := reg, "
              "  classification := cls, clustering := clu"
              "      E.g., Random Forest Regressor := rf_reg, or "
@@ -149,6 +149,7 @@ if __name__ == "__main__":
     dd = DyslexiaData(
         n_splits=configs.n_splits,
         n_repeats=configs.n_repeats,
+        path=Path("./Datasets")
     )
 
     """ 
@@ -569,24 +570,24 @@ if __name__ == "__main__":
 
     if estimator_name.split("_")[-1] == "reg":
         learning_method = "regression"
-        from dd_package.models.regression_estimators import RegressionEstimators
+        from s_package.models.regression_estimators import RegressionEstimators
         y = y_org.Reading_speed.values
 
     elif estimator_name.split("_")[-1] == "cls":
         learning_method = "classification"
-        from dd_package.models.classification_estimators import ClassificationEstimators
+        from s_package.models.classification_estimators import ClassificationEstimators
 
         y = y_org.Group.values
 
     elif estimator_name.split("_")[-1] == "clu":
         learning_method = "clustering"
-        from dd_package.models.clustering_estimators import ClusteringEstimators
+        from s_package.models.clustering_estimators import ClusteringEstimators
 
         y = y_org.Group.values
 
     elif estimator_name.split("_")[-1] == "ad":
         learning_method = "abnormality_detection"
-        from dd_package.models.abnormality_estimators import AbnormalityEstimators
+        from s_package.models.abnormality_estimators import AbnormalityEstimators
         y = y_org.Group.values
     else:
         assert False, "Undefined algorithm and thus undefined target values"
