@@ -1,0 +1,49 @@
+# Please note that all the arguments defined in this config file can (and should be) modified through CLI.
+# The current config.yaml file is merely provided to be compatible with HSE AI grant unified software, based on
+# the request of its designers and for the sake of compatibility.
+
+models_path: "./Models"  # path to save models/weights
+results_path: "./Results"  # path to save results in pickle format
+figures_path: "./Figures"  # path to save figures
+params_path: "./Params"  # path to save tuned hyper-parameters in pickle format
+n_repeats: 10  # number splits in the final train test 
+n_splits": 5  # number of CV-fold to fine-tune the hyper-parameters using Bayesian Optimization
+
+data_name: "DD_Demo"  # Dataset names. The following (lowercased) strings are supported:
+# 1) Demographic = dd_demo, "  # demographic only (reported in paper)
+# 2) IA_report = dd_ia, "  # interest area only (reported in paper)
+# 3) Fixation_report = dd_fix, "  # fixation only (reported in paper)
+# 4) Demographic + IA_report = dd_demo_ia, "  # combination of demographic and IA classification (reported in paper)
+# 5) Demographic + Fixation_report = dd_demo_fix,"  # combination of demographic and fix (reported in paper)
+# 6) IA_report + demo.Reading_speed = dd_ia_reg,"  # combination of demographic and IA regression 
+# 7) Fix_report + demo.Reading_speed = dd_fix_reg"  # combination of demographic and fix regression 
+
+estimator_name: "base_reg" # Estimator names. None case sensitive first letter abbreviated name 
+# of an estimator proceeds with one of the three following suffixes separated with an underscore." 
+# Possible suffixes are: regression := reg, "
+#  classification := cls, clustering := clu"
+#  E.g., Random Forest Regressor := rf_reg, or "
+#  Random Forest Classifiers := rf_cls "
+#  Note: First letter of the methods' name should be used for abbreviation. (refer to paper for the list)."
+
+run: 1  # Run modes of the package. The three following modes of operation is supported:
+# run = 1: fine-tunes the hyper-parameters of an estimator (defined by estimator_name) in five-fold CV and then 
+# splits the data set into ten-fold CV, and reports the average and standard deviation of the metrics.
+# run = 2: applies ten-fold CV of an already fine-tuned estimator (defined by estimator_name) and
+#  reports the average and standard deviation of the metrics.
+# run = 3: prints the average and standard deviation of the metrics for an already tuned and applied estimator.
+
+pp: "mm"  # Data preprocessing method: MinMax (mm), Z-Scoring (zs) etc. Refer to ./data/preprocess.py for more.
+
+n_clusters: 3  # Number of clusters/classes/discrete target values. No need to change it.
+
+target_is_org: 1  # Whether to use not preprocessed target values or not." No need to change it.
+
+to_shuffle: =1  # Whether to shuffle data during CV or not. Only setting it to one (shuffle=1) 
+# will shuffle data." No need to change it.
+
+to_exclude_at_risk: 0  # Whether to exclude at-risk class from experiments or not. 
+# Only setting it to one (to_exclude_at_risk=1) will exclude this class. No need to change it.
+
+
+
