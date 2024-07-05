@@ -1,6 +1,6 @@
 # Please note that all the arguments defined in this config file can (and should be) modified through CLI.
-# The current config.yaml file is merely provided to be compatible with HSE AI grant unified software, based on
-# the request of its designers and for the sake of compatibility.
+# The current config.yaml file is merely provided to be compatible with HSE Unified Library repository, based 
+# on the request of its designers (and for the sake of compatibility).
 
 models_path: "./Models"  # path to save models/weights
 results_path: "./Results"  # path to save results in pickle format
@@ -26,12 +26,15 @@ estimator_name: "base_reg" # Estimator names. None case sensitive first letter a
 #  Random Forest Classifiers := rf_cls "
 #  Note: First letter of the methods' name should be used for abbreviation. (refer to paper for the list)."
 
-run: 1  # Run modes of the package. The three following modes of operation is supported:
+run: 1  # Run modes of the package. The four following modes of operation is supported:
 # run = 1: fine-tunes the hyper-parameters of an estimator (defined by estimator_name) in five-fold CV and then 
 # splits the data set into ten-fold CV, and reports the average and standard deviation of the metrics.
 # run = 2: applies ten-fold CV of an already fine-tuned estimator (defined by estimator_name) and
 #  reports the average and standard deviation of the metrics.
 # run = 3: prints the average and standard deviation of the metrics for an already tuned and applied estimator.
+# run = 4: applies the saved weights of the wining estimator, i.e., MLP to identify dyslexia using the 
+# combination of demographic and fixation data with or without IQ.
+
 
 pp: "mm"  # Data preprocessing method: MinMax (mm), Z-Scoring (zs) etc. Refer to ./data/preprocess.py for more.
 
